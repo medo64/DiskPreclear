@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyName>DiskPreclear</AssemblyName>
+    <RootNamespace>DiskPreclear</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <StartupObject>DiskPreclear.App</StartupObject>
+    <ApplicationIcon>Properties\App.ico</ApplicationIcon>
+    <ApplicationManifest>Properties\App.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>Exercise disk a bit</Description>
+    <Authors>Josip Medved</Authors>
+    <Copyright>Copyright (c) 2021 Josip Medved</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Properties\App.ico" />
+  </ItemGroup>
+
+</Project>

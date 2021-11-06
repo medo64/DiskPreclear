@@ -1,0 +1,10 @@
+/bin/
+/build/
+/dist/
+/package/
+/research/
+
+**/bin
+**/obj
+**/.vs
+**/*.csproj.user
