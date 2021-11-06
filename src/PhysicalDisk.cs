@@ -71,23 +71,41 @@ internal sealed class PhysicalDisk : IDisposable {
         }
     }
 
+    public IList<LogicalVolume> GetLogicalVolumes() {
+        var volumes = new List<LogicalVolume>();
+        foreach (var volume in LogicalVolume.GetAllVolumes()) {
+            if (volume.PhysicalDiskNumber == Number) {
+                volumes.Add(volume);
+            }
+        }
+        return volumes.AsReadOnly();
+    }
+
+    public IList<string> GetLogicalVolumePaths() {
+        var paths = new List<string>();
+        foreach (var volume in GetLogicalVolumes()) {
+            var path = volume.Path;
+            if (path != null) {
+                paths.Add(path);
+            }
+        }
+        return paths.AsReadOnly();
+    }
+
     /// <summary>
     /// Returns text describing the object.
     /// </summary>
     public override string ToString() {
-        var sbLetters = new StringBuilder();
-        foreach (var volume in LogicalVolume.GetAllVolumes()) {
-            if (volume.PhysicalDiskNumber == Number) {
-                var path = volume.Path;
-                if (path != null) {
-                    if (sbLetters.Length > 0) { sbLetters.Append(", "); }
-                    sbLetters.Append(path);
-                }
+        var sbPaths = new StringBuilder();
+        foreach (var path in GetLogicalVolumePaths()) {
+            if (path != null) {
+                if (sbPaths.Length > 0) { sbPaths.Append(", "); }
+                sbPaths.Append(path);
             }
         }
 
-        if (sbLetters.Length > 0) {
-            return $"Physical Disk {Number}: {SizeInGB:#,##0} GB ({sbLetters})";
+        if (sbPaths.Length > 0) {
+            return $"Physical Disk {Number}: {SizeInGB:#,##0} GB ({sbPaths})";
         } else {
             return $"Physical Disk {Number}: {SizeInGB:#,##0} GB";
         }

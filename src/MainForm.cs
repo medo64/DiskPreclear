@@ -35,7 +35,18 @@ internal partial class MainForm : Form {
 
     private void mnuStart_Click(object sender, System.EventArgs e) {
         if (mnuDisks.SelectedItem is PhysicalDisk disk) {
-            if (disk.SizeInGB != 14000) { return; }  // TOFIX: to save my ass during testing
+            var hasVolumes = disk.GetLogicalVolumes().Count > 0;
+            var hasPaths = false;
+            var diskData = $"\n  Physical disk {disk.Number}"
+                         + $"\n  {disk.SizeInGB} GB";
+            foreach (var path in disk.GetLogicalVolumePaths()) {
+                hasPaths = true;
+                diskData += "\n  " + path;
+            }
+
+            if (Medo.Windows.Forms.MessageBox.ShowQuestion(this, "Are you sure you want to perform test on" + diskData, MessageBoxButtons.YesNo) == DialogResult.No) { return; }
+            if (hasVolumes && Medo.Windows.Forms.MessageBox.ShowWarning(this, "Selected disk has volumes present.\nAre you readlly sure you want to perform test on" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
+            if (hasPaths && Medo.Windows.Forms.MessageBox.ShowError(this, "Selected disk is in use!\nAre you goddamn sure you want to perform test on" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
 
             PrepareForTesting(true);
             var blockSizeMB = disk.SizeInGB > 1000 ? 32 : disk.SizeInGB > 1000 ? 16 : 8;
