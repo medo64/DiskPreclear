@@ -9,53 +9,46 @@ internal sealed class DiskWalker {
         Disk = disk;
         DiskSize = disk.Size;
         if (DiskSize % BlockSize == 0) {
-            BlockCount = (long)(DiskSize / BlockSize);
+            BlockCount = (int)(DiskSize / BlockSize);
         } else {
-            BlockCount = (long)(DiskSize / BlockSize) + 1;
+            BlockCount = (int)(DiskSize / BlockSize) + 1;
+        }
+
+        BlockIndices = new long[BlockCount];
+        long nextIndex = Random.Shared.Next(BlockCount);
+        for (var i = 0; i < BlockCount; i++) {
+            BlockIndices[i] = nextIndex;
+            nextIndex = (nextIndex + Step) % BlockCount;
         }
     }
 
-    private const long Step = 2147483647;
+    private const long Step = 2147483647;  // just make it a prime
     private const ulong BlockSize = 8 * 1024 * 1024;  // 8 MB
 
+    private readonly long[] BlockIndices;
     private readonly PhysicalDisk Disk;
     private readonly ulong DiskSize;
 
     /// <summary>
     /// Gets total block count.
     /// </summary>
-    public long BlockCount { get; init; }
+    public int BlockCount { get; init; }
 
-    private long _index;
     /// <summary>
     /// Gets/sets index used to calculate offset.
     /// </summary>
-    public long Index {
-        get { return _index; }
-        set {
-            if (value > _index) {  // go forward
-                while (value > _index) {
-                    OffsetBlock = (OffsetBlock + Step) % BlockCount;
-                    _index += 1;
-                }
-            } else if (value < _index) {  // go in reverse
-
-            }
-        }
-    }
+    public int Index { get; set; }
 
     /// <summary>
-    /// Gets offset block.
+    /// Gets block at given index.
     /// </summary>
-    public long OffsetBlock {
-        get; private set;
-    }
+    public long BlockIndex => BlockIndices[Index];
 
     /// <summary>
     /// Gets start offset for current block.
     /// </summary>
     public ulong OffsetStart {
-        get { return (ulong)OffsetBlock * BlockSize; }
+        get { return (ulong)BlockIndex * BlockSize; }
     }
 
     /// <summary>
