@@ -29,48 +29,18 @@ partial class MainForm
     private void InitializeComponent()
     {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.cmbPhysicalDisks = new System.Windows.Forms.ComboBox();
-            this.btnTest = new System.Windows.Forms.Button();
-            this.btnRefresh = new System.Windows.Forms.Button();
             this.bwTest = new System.ComponentModel.BackgroundWorker();
-            this.prgTest = new System.Windows.Forms.ProgressBar();
-            this.btnCancel = new System.Windows.Forms.Button();
+            this.mnu = new System.Windows.Forms.ToolStrip();
+            this.mnuDisks = new System.Windows.Forms.ToolStripComboBox();
+            this.mnuStart = new System.Windows.Forms.ToolStripButton();
+            this.mnu0 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuRefresh = new System.Windows.Forms.ToolStripButton();
+            this.sta = new System.Windows.Forms.StatusStrip();
+            this.staProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.staPercentage = new System.Windows.Forms.ToolStripStatusLabel();
+            this.mnu.SuspendLayout();
+            this.sta.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // cmbPhysicalDisks
-            // 
-            this.cmbPhysicalDisks.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbPhysicalDisks.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbPhysicalDisks.FormattingEnabled = true;
-            this.cmbPhysicalDisks.Location = new System.Drawing.Point(12, 12);
-            this.cmbPhysicalDisks.Name = "cmbPhysicalDisks";
-            this.cmbPhysicalDisks.Size = new System.Drawing.Size(318, 28);
-            this.cmbPhysicalDisks.TabIndex = 0;
-            this.cmbPhysicalDisks.SelectedValueChanged += new System.EventHandler(this.cmbPhysicalDisks_SelectedValueChanged);
-            // 
-            // btnTest
-            // 
-            this.btnTest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTest.Enabled = false;
-            this.btnTest.Location = new System.Drawing.Point(236, 46);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(94, 29);
-            this.btnTest.TabIndex = 1;
-            this.btnTest.Text = "Preclear";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Location = new System.Drawing.Point(12, 46);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(94, 29);
-            this.btnRefresh.TabIndex = 2;
-            this.btnRefresh.TabStop = false;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // bwTest
             // 
@@ -80,54 +50,106 @@ partial class MainForm
             this.bwTest.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bwTest_ProgressChanged);
             this.bwTest.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwTest_RunWorkerCompleted);
             // 
-            // prgTest
+            // mnu
             // 
-            this.prgTest.Location = new System.Drawing.Point(12, 46);
-            this.prgTest.Name = "prgTest";
-            this.prgTest.Size = new System.Drawing.Size(218, 29);
-            this.prgTest.TabIndex = 3;
-            this.prgTest.Visible = false;
+            this.mnu.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.mnu.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.mnu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuDisks,
+            this.mnuStart,
+            this.mnu0,
+            this.mnuRefresh});
+            this.mnu.Location = new System.Drawing.Point(0, 0);
+            this.mnu.Name = "mnu";
+            this.mnu.Size = new System.Drawing.Size(542, 28);
+            this.mnu.TabIndex = 2;
             // 
-            // btnCancel
+            // mnuDisks
             // 
-            this.btnCancel.Location = new System.Drawing.Point(236, 46);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(94, 29);
-            this.btnCancel.TabIndex = 4;
-            this.btnCancel.TabStop = false;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Visible = false;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.mnuDisks.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.mnuDisks.Name = "mnuDisks";
+            this.mnuDisks.Size = new System.Drawing.Size(270, 28);
+            this.mnuDisks.SelectedIndexChanged += new System.EventHandler(this.mnuDisks_SelectedIndexChanged);
+            // 
+            // mnuStart
+            // 
+            this.mnuStart.Image = global::DiskPreclear.Properties.Resources.mnuStart_16;
+            this.mnuStart.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuStart.Name = "mnuStart";
+            this.mnuStart.Size = new System.Drawing.Size(64, 25);
+            this.mnuStart.Text = "Start";
+            this.mnuStart.Click += new System.EventHandler(this.mnuStart_Click);
+            // 
+            // mnu0
+            // 
+            this.mnu0.Name = "mnu0";
+            this.mnu0.Size = new System.Drawing.Size(6, 28);
+            // 
+            // mnuRefresh
+            // 
+            this.mnuRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.mnuRefresh.Image = global::DiskPreclear.Properties.Resources.mnuRefresh_16;
+            this.mnuRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuRefresh.Name = "mnuRefresh";
+            this.mnuRefresh.Size = new System.Drawing.Size(29, 25);
+            this.mnuRefresh.Text = "Refresh";
+            this.mnuRefresh.Click += new System.EventHandler(this.mnuRefresh_Click);
+            // 
+            // sta
+            // 
+            this.sta.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.sta.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.staProgress,
+            this.staPercentage});
+            this.sta.Location = new System.Drawing.Point(0, 251);
+            this.sta.Name = "sta";
+            this.sta.Size = new System.Drawing.Size(542, 22);
+            this.sta.TabIndex = 3;
+            this.sta.Text = "statusStrip1";
+            // 
+            // staProgress
+            // 
+            this.staProgress.Name = "staProgress";
+            this.staProgress.Size = new System.Drawing.Size(270, 18);
+            this.staProgress.Visible = false;
+            // 
+            // staPercentage
+            // 
+            this.staPercentage.Name = "staPercentage";
+            this.staPercentage.Size = new System.Drawing.Size(29, 20);
+            this.staPercentage.Text = "0%";
+            this.staPercentage.Visible = false;
             // 
             // MainForm
             // 
-            this.AcceptButton = this.btnTest;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(342, 87);
-            this.Controls.Add(this.btnRefresh);
-            this.Controls.Add(this.btnTest);
-            this.Controls.Add(this.cmbPhysicalDisks);
-            this.Controls.Add(this.prgTest);
-            this.Controls.Add(this.btnCancel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.ClientSize = new System.Drawing.Size(542, 273);
+            this.Controls.Add(this.sta);
+            this.Controls.Add(this.mnu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(560, 320);
             this.Name = "MainForm";
             this.Text = "Disk Preclear";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.mnu.ResumeLayout(false);
+            this.mnu.PerformLayout();
+            this.sta.ResumeLayout(false);
+            this.sta.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
     }
 
     #endregion
-
-    private System.Windows.Forms.ComboBox cmbPhysicalDisks;
-    private System.Windows.Forms.Button btnTest;
-    private System.Windows.Forms.Button btnRefresh;
     private System.ComponentModel.BackgroundWorker bwTest;
-    private System.Windows.Forms.ProgressBar prgTest;
-    private System.Windows.Forms.Button btnCancel;
+    private System.Windows.Forms.ToolStrip mnu;
+    private System.Windows.Forms.ToolStripComboBox mnuDisks;
+    private System.Windows.Forms.ToolStripButton mnuStart;
+    private System.Windows.Forms.StatusStrip sta;
+    private System.Windows.Forms.ToolStripProgressBar staProgress;
+    private System.Windows.Forms.ToolStripSeparator mnu0;
+    private System.Windows.Forms.ToolStripButton mnuRefresh;
+    private System.Windows.Forms.ToolStripStatusLabel staPercentage;
 }

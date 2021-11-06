@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 
@@ -7,40 +8,38 @@ namespace DiskPreclear;
 internal partial class MainForm : Form {
     public MainForm() {
         InitializeComponent();
+
+        mnu.Renderer = Helpers.ToolStripBorderlessSystemRendererInstance;
+        Helpers.ScaleToolstrip(mnu);
     }
 
     private void MainForm_Load(object sender, System.EventArgs e) {
-        FillCombo();
+        FillDisks();
+    }
+
+    private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
+        if (bwTest.IsBusy) {
+            bwTest.CancelAsync();
+            e.Cancel = true;  // don't close the form if you had to cancel task
+        }
     }
 
 
-    private void cmbPhysicalDisks_SelectedValueChanged(object sender, System.EventArgs e) {
-        btnTest.Enabled = cmbPhysicalDisks.SelectedItem as PhysicalDisk is not null;
+    private void mnuDisks_SelectedIndexChanged(object sender, System.EventArgs e) {
+        mnuStart.Enabled = mnuDisks.SelectedItem as PhysicalDisk is not null;
     }
 
-
-    private void btnRefresh_Click(object sender, System.EventArgs e) {
-        FillCombo();
-    }
-
-    private void btnTest_Click(object sender, System.EventArgs e) {
-        if (cmbPhysicalDisks.SelectedItem is PhysicalDisk disk) {
+    private void mnuStart_Click(object sender, System.EventArgs e) {
+        if (mnuDisks.SelectedItem is PhysicalDisk disk) {
             if (disk.SizeInGB != 14000) { return; }  // TOFIX: to save my ass during testing
 
-            cmbPhysicalDisks.Enabled = false;
-            btnRefresh.Visible = false;
-            prgTest.Visible = true;
-            btnTest.Visible = false;
-            btnCancel.Visible = true;
-
-            prgTest.Value = 0;
+            PrepareToStart(true);
             bwTest.RunWorkerAsync(new DiskWalker(disk));
         }
     }
 
-    private void btnCancel_Click(object sender, System.EventArgs e) {
-        btnCancel.Enabled = false;
-        if (bwTest.IsBusy) { bwTest.CancelAsync(); }
+    private void mnuRefresh_Click(object sender, System.EventArgs e) {
+        FillDisks();
     }
 
 
@@ -51,7 +50,7 @@ internal partial class MainForm : Form {
         for (var i = 0; i < blockCount; i++) {
             var swRandom = Stopwatch.StartNew();
             var dataOut = walker.GetRandomData();
-            var dataIn = new byte[dataOut.Length];
+            var dataIn = new byte[walker.OffsetLength];
             swRandom.Stop();
 
             var swWrite = Stopwatch.StartNew();
@@ -66,48 +65,55 @@ internal partial class MainForm : Form {
                 throw new InvalidDataException();
             }
 
-            var percentage = (int)(i * 100 / blockCount);
-            bwTest.ReportProgress(percentage, $"{i:#,##0}/{blockCount:#,##0}");
-
             if (bwTest.CancellationPending) { break; }
+            var progress = new ProgressObjectState(walker.Index + 1, walker.BlockCount);
+            bwTest.ReportProgress(progress.PercentageAsInt, progress);
 
             walker.Index += 1;
         }
     }
 
     private void bwTest_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e) {
-        prgTest.Value = e.ProgressPercentage;
-        Text = e.UserState as string ?? "";
+        staProgress.Value = e.ProgressPercentage;
+        if (e.UserState is ProgressObjectState state) {
+            staPercentage.Text = state.Percentage.ToString("0.000%", CultureInfo.CurrentCulture);
+        }
     }
 
     private void bwTest_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
-        cmbPhysicalDisks.Enabled = true;
-        btnRefresh.Visible = true;
-        prgTest.Visible = false;
-        btnTest.Visible = true;
-        btnCancel.Visible = false;
+        PrepareToStart(false);
     }
 
 
-    private void FillCombo() {
-        btnTest.Enabled = false;
+    private void FillDisks() {
+        mnuStart.Enabled = false;
 
-        cmbPhysicalDisks.BeginUpdate();
+        mnuDisks.BeginUpdate();
 
-        var prevSelection = cmbPhysicalDisks.SelectedItem as PhysicalDisk;
+        var prevSelection = mnuDisks.SelectedItem as PhysicalDisk;
 
-        cmbPhysicalDisks.Items.Clear();
+        mnuDisks.Items.Clear();
         foreach (var disk in PhysicalDisk.GetAllDisks()) {
-            cmbPhysicalDisks.Items.Add(disk);
+            mnuDisks.Items.Add(disk);
             if ((prevSelection is not null) && (disk.Number == prevSelection.Number)) {
-                cmbPhysicalDisks.SelectedItem = disk;
+                mnuDisks.SelectedItem = disk;
             }
         }
-        if ((cmbPhysicalDisks.SelectedItem is null) && (cmbPhysicalDisks.Items.Count > 0)) {  // select the last disk
-            cmbPhysicalDisks.SelectedIndex = cmbPhysicalDisks.Items.Count - 1;
+        if ((mnuDisks.SelectedItem is null) && (mnuDisks.Items.Count > 0)) {  // select the last disk
+            mnuDisks.SelectedIndex = mnuDisks.Items.Count - 1;
         }
 
-        cmbPhysicalDisks.EndUpdate();
+        mnuDisks.EndUpdate();
+    }
+
+    private void PrepareToStart(bool starting) {
+        mnuDisks.Enabled = !starting;
+        mnuStart.Enabled = !starting;
+        mnuRefresh.Enabled = !starting;
+        staProgress.Visible = starting;
+        staProgress.Value = 0;
+        staPercentage.Visible = starting;
+        staPercentage.Text = "";
     }
 
 }
