@@ -1,4 +1,4 @@
-using System;
+using Medo.Math;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -35,8 +35,9 @@ internal partial class MainForm : Form {
         if (mnuDisks.SelectedItem is PhysicalDisk disk) {
             if (disk.SizeInGB != 14000) { return; }  // TOFIX: to save my ass during testing
 
-            PrepareToStart(true);
-            bwTest.RunWorkerAsync(new DiskWalker(disk));
+            PrepareForTesting(true);
+            var blockSizeMB = disk.SizeInGB > 1000 ? 32 : disk.SizeInGB > 1000 ? 16 : 8;
+            bwTest.RunWorkerAsync(new DiskWalker(disk, blockSizeMB));
         }
     }
 
@@ -53,8 +54,11 @@ internal partial class MainForm : Form {
         var swTotal = Stopwatch.StartNew();
         var nextUpdate = swTotal.ElapsedMilliseconds;
 
-        var dataOut = new byte[DiskWalker.MaxBufferSize];
-        var dataIn = new byte[DiskWalker.MaxBufferSize];
+        var dataOut = new byte[walker.MaxBufferSize];
+        var dataIn = new byte[walker.MaxBufferSize];
+
+        var writeSpeed = new MovingAverage(42);
+        var readSpeed = new MovingAverage(42);
 
         var blockCount = walker.BlockCount;
         for (var i = 0; i < blockCount; i++) {
@@ -64,11 +68,13 @@ internal partial class MainForm : Form {
 
             var swWrite = Stopwatch.StartNew();
             walker.Write(dataOut);
-            swWrite.Stop();
+            var writeTime = (double)swWrite.ElapsedMilliseconds / 1000;
+            writeSpeed.Add(walker.OffsetLength / writeTime);
 
             var swRead = Stopwatch.StartNew();
             walker.Read(dataIn);
-            swRead.Stop();
+            var readTime = (double)swRead.ElapsedMilliseconds / 1000;
+            readSpeed.Add(walker.OffsetLength / readTime);
 
             if (!DiskWalker.Validate(dataOut, dataIn)) {
                 throw new InvalidDataException();
@@ -77,7 +83,7 @@ internal partial class MainForm : Form {
             if (bwTest.CancellationPending) { break; }
 
             if (nextUpdate < swTotal.ElapsedMilliseconds) {
-                var progress = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount);
+                var progress = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount, writeSpeed.Average, readSpeed.Average);
                 bwTest.ReportProgress(progress.PercentageAsInt, progress);
                 nextUpdate = swTotal.ElapsedMilliseconds + 420;  // next update in 420ms
             }
@@ -91,11 +97,13 @@ internal partial class MainForm : Form {
         if (e.UserState is ProgressObjectState state) {
             staPercentage.Text = state.Percentage.ToString("0.000", CultureInfo.CurrentCulture) + "%";
             staRemaining.Text = state.EstimatedRemainingAsString;
+            staWriteSpeed.Text = $"W:{state.WriteSpeed:#,##0} MB/s";
+            staReadSpeed.Text = $"R:{state.ReadSpeed:#,##0} MB/s";
         }
     }
 
     private void bwTest_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
-        PrepareToStart(false);
+        PrepareForTesting(false);
     }
 
 
@@ -120,16 +128,20 @@ internal partial class MainForm : Form {
         mnuDisks.EndUpdate();
     }
 
-    private void PrepareToStart(bool starting) {
-        mnuDisks.Enabled = !starting;
-        mnuStart.Enabled = !starting;
-        mnuRefresh.Enabled = !starting;
-        staProgress.Visible = starting;
+    private void PrepareForTesting(bool testing) {
+        mnuDisks.Enabled = !testing;
+        mnuStart.Enabled = !testing;
+        mnuRefresh.Enabled = !testing;
+        staProgress.Visible = testing;
         staProgress.Value = 0;
-        staPercentage.Visible = starting;
+        staPercentage.Visible = testing;
         staPercentage.Text = "";
-        staRemaining.Visible = starting;
+        staRemaining.Visible = testing;
         staRemaining.Text = "";
+        staWriteSpeed.Visible = testing;
+        staWriteSpeed.Text = "";
+        staReadSpeed.Visible = testing;
+        staReadSpeed.Text = "";
     }
 
 }

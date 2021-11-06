@@ -103,7 +103,7 @@ internal sealed class PhysicalDisk : IDisposable {
                                                       NativeMethods.FILE_SHARE_READ | NativeMethods.FILE_SHARE_WRITE,
                                                       IntPtr.Zero,
                                                       NativeMethods.OPEN_EXISTING,
-                                                      NativeMethods.FILE_FLAG_NO_BUFFERING,
+                                                      NativeMethods.FILE_FLAG_NO_BUFFERING | NativeMethods.FILE_FLAG_WRITE_THROUGH,
                                                       IntPtr.Zero);
             if (!diskHandle.IsInvalid) { DiskHandle = diskHandle; }
         }
@@ -188,6 +188,7 @@ internal sealed class PhysicalDisk : IDisposable {
         public const UInt32 GENERIC_READ = 0x80000000;
         public const UInt32 GENERIC_WRITE = 0x40000000;
         public const UInt32 FILE_FLAG_NO_BUFFERING = 0x20000000;
+        public const UInt32 FILE_FLAG_WRITE_THROUGH = 0x80000000;
 
         public const UInt32 FILE_BEGIN = 0x00;
 

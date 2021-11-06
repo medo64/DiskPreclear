@@ -4,8 +4,10 @@ namespace DiskPreclear;
 
 internal sealed class DiskWalker {
 
-    public DiskWalker(PhysicalDisk disk) {
+    public DiskWalker(PhysicalDisk disk, int blockSizeInMB) {
         Disk = disk;
+        BlockSize = (ulong)blockSizeInMB * 1024 * 1024;
+
         DiskSize = disk.Size;
         if (DiskSize % BlockSize == 0) {
             BlockCount = (int)(DiskSize / BlockSize);
@@ -22,7 +24,7 @@ internal sealed class DiskWalker {
     }
 
     private const long Step = 2147483647;  // just make it a prime
-    private const ulong BlockSize = 8 * 1024 * 1024;  // 8 MB
+    private readonly ulong BlockSize;
 
     private readonly long[] BlockIndices;
     private readonly PhysicalDisk Disk;
@@ -36,7 +38,7 @@ internal sealed class DiskWalker {
     /// <summary>
     /// Gets maximum block size.
     /// </summary>
-    public static int MaxBufferSize => (int)BlockSize;
+    public int MaxBufferSize => (int)BlockSize;
 
     /// <summary>
     /// Gets/sets index used to calculate offset.

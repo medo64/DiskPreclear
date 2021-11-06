@@ -6,7 +6,7 @@ using System.Text;
 namespace DiskPreclear {
     internal sealed class ProgressObjectState {
 
-        public ProgressObjectState(Stopwatch operationStopwatch, long current, long maximum) {
+        public ProgressObjectState(Stopwatch operationStopwatch, long current, long maximum, double writeBytesPerSecond, double readBytesPerSecond) {
             Current = current;
             Maximum = maximum;
 
@@ -16,6 +16,9 @@ namespace DiskPreclear {
 
             var timeLeft = (timeTaken / progressDone) * progressRemaining;
             EstimatedRemaining = TimeSpan.FromSeconds(timeLeft);
+
+            WriteSpeed = writeBytesPerSecond / 1024 / 1024;
+            ReadSpeed = readBytesPerSecond / 1024 / 1024;
         }
 
         /// <summary>
@@ -29,10 +32,13 @@ namespace DiskPreclear {
         public long Maximum { get; }
 
         /// <summary>
-        /// Gets estimated time of completion.
+        /// Gets remaining time to completion.
         /// </summary>
         public TimeSpan EstimatedRemaining { get; }
 
+        /// <summary>
+        /// Gets remaining time as text.
+        /// </summary>
         public string EstimatedRemainingAsString {
             get {
                 var sb = new StringBuilder();
@@ -72,6 +78,16 @@ namespace DiskPreclear {
         /// Gets percentage as integer value.
         /// </summary>
         public int PercentageAsInt => (int)(Current * 100 / Maximum);
+
+        /// <summary>
+        /// Gets write speed in MB/s
+        /// </summary>
+        public double WriteSpeed { get; init; }
+
+        /// <summary>
+        /// Gets read speed in MB/s.
+        /// </summary>
+        public double ReadSpeed { get; init; }
 
     }
 }

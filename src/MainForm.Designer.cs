@@ -39,6 +39,8 @@ partial class MainForm
             this.staProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.staPercentage = new System.Windows.Forms.ToolStripStatusLabel();
             this.staRemaining = new System.Windows.Forms.ToolStripStatusLabel();
+            this.staWriteSpeed = new System.Windows.Forms.ToolStripStatusLabel();
+            this.staReadSpeed = new System.Windows.Forms.ToolStripStatusLabel();
             this.mnu.SuspendLayout();
             this.sta.SuspendLayout();
             this.SuspendLayout();
@@ -62,7 +64,7 @@ partial class MainForm
             this.mnuRefresh});
             this.mnu.Location = new System.Drawing.Point(0, 0);
             this.mnu.Name = "mnu";
-            this.mnu.Size = new System.Drawing.Size(542, 28);
+            this.mnu.Size = new System.Drawing.Size(782, 28);
             this.mnu.TabIndex = 2;
             // 
             // mnuDisks
@@ -102,10 +104,12 @@ partial class MainForm
             this.sta.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.staProgress,
             this.staPercentage,
-            this.staRemaining});
-            this.sta.Location = new System.Drawing.Point(0, 247);
+            this.staRemaining,
+            this.staWriteSpeed,
+            this.staReadSpeed});
+            this.sta.Location = new System.Drawing.Point(0, 527);
             this.sta.Name = "sta";
-            this.sta.Size = new System.Drawing.Size(542, 26);
+            this.sta.Size = new System.Drawing.Size(782, 26);
             this.sta.TabIndex = 3;
             this.sta.Text = "statusStrip1";
             // 
@@ -128,15 +132,29 @@ partial class MainForm
             this.staRemaining.Size = new System.Drawing.Size(15, 20);
             this.staRemaining.Text = "-";
             // 
+            // staWriteSpeed
+            // 
+            this.staWriteSpeed.Name = "staWriteSpeed";
+            this.staWriteSpeed.Size = new System.Drawing.Size(26, 20);
+            this.staWriteSpeed.Text = "W:";
+            this.staWriteSpeed.Visible = false;
+            // 
+            // staReadSpeed
+            // 
+            this.staReadSpeed.Name = "staReadSpeed";
+            this.staReadSpeed.Size = new System.Drawing.Size(21, 20);
+            this.staReadSpeed.Text = "R:";
+            this.staReadSpeed.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(542, 273);
+            this.ClientSize = new System.Drawing.Size(782, 553);
             this.Controls.Add(this.sta);
             this.Controls.Add(this.mnu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(560, 320);
+            this.MinimumSize = new System.Drawing.Size(480, 320);
             this.Name = "MainForm";
             this.Text = "Disk Preclear";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -161,4 +179,6 @@ partial class MainForm
     private System.Windows.Forms.ToolStripButton mnuRefresh;
     private System.Windows.Forms.ToolStripStatusLabel staPercentage;
     private System.Windows.Forms.ToolStripStatusLabel staRemaining;
+    private System.Windows.Forms.ToolStripStatusLabel staWriteSpeed;
+    private System.Windows.Forms.ToolStripStatusLabel staReadSpeed;
 }
