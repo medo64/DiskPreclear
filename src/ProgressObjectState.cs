@@ -1,15 +1,21 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
+using System.Globalization;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DiskPreclear {
     internal sealed class ProgressObjectState {
 
-        public ProgressObjectState(long current, long maximum) {
+        public ProgressObjectState(Stopwatch operationStopwatch, long current, long maximum) {
             Current = current;
             Maximum = maximum;
+
+            var timeTaken = operationStopwatch.Elapsed.TotalSeconds;
+            var progressDone = (double)Current / Maximum;
+            var progressRemaining = 1.0 - progressDone;
+
+            var timeLeft = (timeTaken / progressDone) * progressRemaining;
+            EstimatedRemaining = TimeSpan.FromSeconds(timeLeft);
         }
 
         /// <summary>
@@ -23,9 +29,44 @@ namespace DiskPreclear {
         public long Maximum { get; }
 
         /// <summary>
+        /// Gets estimated time of completion.
+        /// </summary>
+        public TimeSpan EstimatedRemaining { get; }
+
+        public string EstimatedRemainingAsString {
+            get {
+                var sb = new StringBuilder();
+                var remaining = EstimatedRemaining;
+                var days = remaining.Days;
+                var hours = remaining.Hours;
+                var minutes = remaining.Minutes;
+                var seconds = remaining.Seconds;
+                if (days > 0) {  // give result in days and hours
+                    sb.AppendFormat(CultureInfo.CurrentCulture, "{0} {1}", days, days > 1 ? "days" : "day");
+                    if (hours > 0) {
+                        sb.AppendFormat(CultureInfo.CurrentCulture, " {0} {1}", hours, hours > 1 ? "hours" : "hour");
+                    }
+                } else if (hours > 0) {  // give hours and minutes
+                    sb.AppendFormat(CultureInfo.CurrentCulture, "{0} {1}", hours, hours > 1 ? "hours" : "hour");
+                    if (hours > 0) {
+                        sb.AppendFormat(CultureInfo.CurrentCulture, " {0} {1}", minutes, minutes > 1 ? "minutes" : "minute");
+                    }
+                } else if (minutes > 0) {  // give minutes and seconds
+                    sb.AppendFormat(CultureInfo.CurrentCulture, "{0} {1}", minutes, minutes > 1 ? "minutes" : "minute");
+                    if (hours > 0) {
+                        sb.AppendFormat(CultureInfo.CurrentCulture, " {0} {1}", seconds, seconds > 1 ? "seconds" : "second");
+                    }
+                } else {  // give seconds
+                    sb.AppendFormat(CultureInfo.CurrentCulture, "{0} {1}", seconds, seconds > 1 ? "seconds" : "second");
+                }
+                return sb.ToString();
+            }
+        }
+
+        /// <summary>
         /// Gets percentage.
         /// </summary>
-        public double Percentage => Current / (double)Maximum;
+        public double Percentage => Current * 100.0 / Maximum;
 
         /// <summary>
         /// Gets percentage as integer value.

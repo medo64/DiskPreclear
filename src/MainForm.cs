@@ -46,6 +46,9 @@ internal partial class MainForm : Form {
     private void bwTest_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e) {
         if (e.Argument is not DiskWalker walker) { return; }
 
+        var swTotal = Stopwatch.StartNew();
+        var nextUpdate = swTotal.ElapsedMilliseconds;
+
         var blockCount = walker.BlockCount;
         for (var i = 0; i < blockCount; i++) {
             var swRandom = Stopwatch.StartNew();
@@ -66,8 +69,12 @@ internal partial class MainForm : Form {
             }
 
             if (bwTest.CancellationPending) { break; }
-            var progress = new ProgressObjectState(walker.Index + 1, walker.BlockCount);
-            bwTest.ReportProgress(progress.PercentageAsInt, progress);
+
+            if (nextUpdate < swTotal.ElapsedMilliseconds) {
+                var progress = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount);
+                bwTest.ReportProgress(progress.PercentageAsInt, progress);
+                nextUpdate = swTotal.ElapsedMilliseconds + 420;  // next update in 420ms
+            }
 
             walker.Index += 1;
         }
@@ -76,7 +83,8 @@ internal partial class MainForm : Form {
     private void bwTest_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e) {
         staProgress.Value = e.ProgressPercentage;
         if (e.UserState is ProgressObjectState state) {
-            staPercentage.Text = state.Percentage.ToString("0.000%", CultureInfo.CurrentCulture);
+            staPercentage.Text = state.Percentage.ToString("0.000", CultureInfo.CurrentCulture) + "%";
+            staRemaining.Text = state.EstimatedRemainingAsString;
         }
     }
 
@@ -114,6 +122,8 @@ internal partial class MainForm : Form {
         staProgress.Value = 0;
         staPercentage.Visible = starting;
         staPercentage.Text = "";
+        staRemaining.Visible = starting;
+        staRemaining.Text = "";
     }
 
 }

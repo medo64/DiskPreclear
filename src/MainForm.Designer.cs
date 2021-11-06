@@ -38,6 +38,7 @@ partial class MainForm
             this.sta = new System.Windows.Forms.StatusStrip();
             this.staProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.staPercentage = new System.Windows.Forms.ToolStripStatusLabel();
+            this.staRemaining = new System.Windows.Forms.ToolStripStatusLabel();
             this.mnu.SuspendLayout();
             this.sta.SuspendLayout();
             this.SuspendLayout();
@@ -100,10 +101,11 @@ partial class MainForm
             this.sta.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.sta.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.staProgress,
-            this.staPercentage});
-            this.sta.Location = new System.Drawing.Point(0, 251);
+            this.staPercentage,
+            this.staRemaining});
+            this.sta.Location = new System.Drawing.Point(0, 247);
             this.sta.Name = "sta";
-            this.sta.Size = new System.Drawing.Size(542, 22);
+            this.sta.Size = new System.Drawing.Size(542, 26);
             this.sta.TabIndex = 3;
             this.sta.Text = "statusStrip1";
             // 
@@ -119,6 +121,12 @@ partial class MainForm
             this.staPercentage.Size = new System.Drawing.Size(29, 20);
             this.staPercentage.Text = "0%";
             this.staPercentage.Visible = false;
+            // 
+            // staRemaining
+            // 
+            this.staRemaining.Name = "staRemaining";
+            this.staRemaining.Size = new System.Drawing.Size(15, 20);
+            this.staRemaining.Text = "-";
             // 
             // MainForm
             // 
@@ -152,4 +160,5 @@ partial class MainForm
     private System.Windows.Forms.ToolStripSeparator mnu0;
     private System.Windows.Forms.ToolStripButton mnuRefresh;
     private System.Windows.Forms.ToolStripStatusLabel staPercentage;
+    private System.Windows.Forms.ToolStripStatusLabel staRemaining;
 }
