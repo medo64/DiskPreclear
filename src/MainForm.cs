@@ -84,7 +84,7 @@ internal partial class MainForm : Form {
 
             if (nextUpdate < swTotal.ElapsedMilliseconds) {
                 var progress = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount, writeSpeed.Average, readSpeed.Average);
-                bwTest.ReportProgress(progress.PercentageAsInt, progress);
+                bwTest.ReportProgress(0, progress);
                 nextUpdate = swTotal.ElapsedMilliseconds + 420;  // next update in 420ms
             }
 
@@ -93,9 +93,9 @@ internal partial class MainForm : Form {
     }
 
     private void bwTest_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e) {
-        staProgress.Value = e.ProgressPercentage;
         if (e.UserState is ProgressObjectState state) {
-            staPercentage.Text = state.Percentage.ToString("0.000", CultureInfo.CurrentCulture) + "%";
+            staProgress.Value = state.Permilles;
+            staPercentage.Text = state.Percents.ToString("0.000", CultureInfo.CurrentCulture) + "%";
             staRemaining.Text = state.EstimatedRemainingAsString;
             staWriteSpeed.Text = $"W:{state.WriteSpeed:#,##0} MB/s";
             staReadSpeed.Text = $"R:{state.ReadSpeed:#,##0} MB/s";

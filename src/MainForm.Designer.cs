@@ -107,14 +107,14 @@ partial class MainForm
             this.staRemaining,
             this.staWriteSpeed,
             this.staReadSpeed});
-            this.sta.Location = new System.Drawing.Point(0, 527);
+            this.sta.Location = new System.Drawing.Point(0, 407);
             this.sta.Name = "sta";
             this.sta.Size = new System.Drawing.Size(782, 26);
             this.sta.TabIndex = 3;
-            this.sta.Text = "statusStrip1";
             // 
             // staProgress
             // 
+            this.staProgress.Maximum = 1000;
             this.staProgress.Name = "staProgress";
             this.staProgress.Size = new System.Drawing.Size(270, 18);
             this.staProgress.Visible = false;
@@ -150,7 +150,7 @@ partial class MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(782, 553);
+            this.ClientSize = new System.Drawing.Size(782, 433);
             this.Controls.Add(this.sta);
             this.Controls.Add(this.mnu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

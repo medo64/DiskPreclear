@@ -70,14 +70,14 @@ namespace DiskPreclear {
         }
 
         /// <summary>
-        /// Gets percentage.
+        /// Gets percentage of completion.
         /// </summary>
-        public double Percentage => Current * 100.0 / Maximum;
+        public double Percents => Current * 100.0 / Maximum;
 
         /// <summary>
-        /// Gets percentage as integer value.
+        /// Gets permille as integer value.
         /// </summary>
-        public int PercentageAsInt => (int)(Current * 100 / Maximum);
+        public int Permilles => (int)(Current * 1000 / Maximum);
 
         /// <summary>
         /// Gets write speed in MB/s
