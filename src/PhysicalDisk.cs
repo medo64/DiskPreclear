@@ -110,7 +110,7 @@ internal sealed class PhysicalDisk : IDisposable {
         return DiskHandle;
     }
 
-    public bool Write(ulong offset, byte[] buffer) {
+    public bool Write(byte[] buffer, ulong offset, int length) {
         var diskHandle = GetDiskHandle();
         if (diskHandle == null) { return false; }
 
@@ -122,14 +122,14 @@ internal sealed class PhysicalDisk : IDisposable {
 
         var ok = NativeMethods.WriteFile(diskHandle,
                                          buffer,
-                                         buffer.Length,
+                                         length,
                                          out var _,
                                          IntPtr.Zero);
         return ok;
     }
 
 
-    public bool Read(ulong offset, byte[] buffer) {
+    public bool Read(byte[] buffer, ulong offset, int length) {
         var diskHandle = GetDiskHandle();
         if (diskHandle == null) { return false; }
 
@@ -141,7 +141,7 @@ internal sealed class PhysicalDisk : IDisposable {
 
         var ok = NativeMethods.ReadFile(diskHandle,
                                         buffer,
-                                        buffer.Length,
+                                        length,
                                         out var _,
                                         IntPtr.Zero);
         return ok;

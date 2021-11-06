@@ -1,6 +1,8 @@
+using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace DiskPreclear;
@@ -43,17 +45,21 @@ internal partial class MainForm : Form {
     }
 
 
+    private static readonly RandomNumberGenerator Rnd = RandomNumberGenerator.Create();
+
     private void bwTest_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e) {
         if (e.Argument is not DiskWalker walker) { return; }
 
         var swTotal = Stopwatch.StartNew();
         var nextUpdate = swTotal.ElapsedMilliseconds;
 
+        var dataOut = new byte[DiskWalker.MaxBufferSize];
+        var dataIn = new byte[DiskWalker.MaxBufferSize];
+
         var blockCount = walker.BlockCount;
         for (var i = 0; i < blockCount; i++) {
             var swRandom = Stopwatch.StartNew();
-            var dataOut = walker.GetRandomData();
-            var dataIn = new byte[walker.OffsetLength];
+            Rnd.GetBytes(dataOut);
             swRandom.Stop();
 
             var swWrite = Stopwatch.StartNew();

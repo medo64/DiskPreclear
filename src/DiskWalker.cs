@@ -1,5 +1,4 @@
 using System;
-using System.Security.Cryptography;
 
 namespace DiskPreclear;
 
@@ -33,6 +32,11 @@ internal sealed class DiskWalker {
     /// Gets total block count.
     /// </summary>
     public int BlockCount { get; init; }
+
+    /// <summary>
+    /// Gets maximum block size.
+    /// </summary>
+    public static int MaxBufferSize => (int)BlockSize;
 
     /// <summary>
     /// Gets/sets index used to calculate offset.
@@ -70,18 +74,14 @@ internal sealed class DiskWalker {
     /// </summary>
     /// <param name="data">Random data.</param>
     public bool Write(byte[] data) {
-        if (data == null) { return false; }
-        if (data.Length != OffsetLength) { return false; }
-        return Disk.Write(OffsetStart, data);
+        return Disk.Write(data, OffsetStart, OffsetLength);
     }
 
     /// <summary>
     /// Returns data that was read.
     /// </summary>
     public bool Read(byte[] data) {
-        if (data == null) { return false; }
-        if (data.Length != OffsetLength) { return false; }
-        return Disk.Read(OffsetStart, data);
+        return Disk.Read(data, OffsetStart, OffsetLength);
     }
 
     public static bool Validate(byte[] bytesWritten, byte[] bytesRead) {
@@ -94,19 +94,6 @@ internal sealed class DiskWalker {
             if (bytesWritten[i] != bytesRead[i]) { return false; }
         }
         return true;
-    }
-
-
-    private static readonly RandomNumberGenerator Rnd = RandomNumberGenerator.Create();
-
-    /// <summary>
-    /// Returns random data for given offset.
-    /// </summary>
-    /// <returns></returns>
-    public byte[] GetRandomData() {
-        var bytes = new byte[OffsetLength];
-        Rnd.GetBytes(bytes);
-        return bytes;
     }
 
 }
