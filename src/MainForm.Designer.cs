@@ -36,11 +36,12 @@ partial class MainForm
             this.mnu0 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRefresh = new System.Windows.Forms.ToolStripButton();
             this.sta = new System.Windows.Forms.StatusStrip();
-            this.staProgress = new System.Windows.Forms.ToolStripProgressBar();
-            this.staPercentage = new System.Windows.Forms.ToolStripStatusLabel();
-            this.staRemaining = new System.Windows.Forms.ToolStripStatusLabel();
+            this.staDisk = new System.Windows.Forms.ToolStripStatusLabel();
             this.staWriteSpeed = new System.Windows.Forms.ToolStripStatusLabel();
             this.staReadSpeed = new System.Windows.Forms.ToolStripStatusLabel();
+            this.staPercents = new System.Windows.Forms.ToolStripStatusLabel();
+            this.staProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.staRemaining = new System.Windows.Forms.ToolStripStatusLabel();
             this.mnu.SuspendLayout();
             this.sta.SuspendLayout();
             this.SuspendLayout();
@@ -102,38 +103,27 @@ partial class MainForm
             // 
             this.sta.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.sta.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.staProgress,
-            this.staPercentage,
-            this.staRemaining,
+            this.staDisk,
             this.staWriteSpeed,
-            this.staReadSpeed});
+            this.staReadSpeed,
+            this.staPercents,
+            this.staProgress,
+            this.staRemaining});
             this.sta.Location = new System.Drawing.Point(0, 407);
             this.sta.Name = "sta";
             this.sta.Size = new System.Drawing.Size(782, 26);
             this.sta.TabIndex = 3;
             // 
-            // staProgress
+            // staDisk
             // 
-            this.staProgress.Maximum = 1000;
-            this.staProgress.Name = "staProgress";
-            this.staProgress.Size = new System.Drawing.Size(270, 18);
-            this.staProgress.Visible = false;
-            // 
-            // staPercentage
-            // 
-            this.staPercentage.Name = "staPercentage";
-            this.staPercentage.Size = new System.Drawing.Size(29, 20);
-            this.staPercentage.Text = "0%";
-            this.staPercentage.Visible = false;
-            // 
-            // staRemaining
-            // 
-            this.staRemaining.Name = "staRemaining";
-            this.staRemaining.Size = new System.Drawing.Size(15, 20);
-            this.staRemaining.Text = "-";
+            this.staDisk.Margin = new System.Windows.Forms.Padding(0, 4, 2, 2);
+            this.staDisk.Name = "staDisk";
+            this.staDisk.Size = new System.Drawing.Size(15, 20);
+            this.staDisk.Text = "-";
             // 
             // staWriteSpeed
             // 
+            this.staWriteSpeed.Margin = new System.Windows.Forms.Padding(2, 4, 2, 2);
             this.staWriteSpeed.Name = "staWriteSpeed";
             this.staWriteSpeed.Size = new System.Drawing.Size(26, 20);
             this.staWriteSpeed.Text = "W:";
@@ -141,10 +131,34 @@ partial class MainForm
             // 
             // staReadSpeed
             // 
+            this.staReadSpeed.Margin = new System.Windows.Forms.Padding(2, 4, 2, 2);
             this.staReadSpeed.Name = "staReadSpeed";
             this.staReadSpeed.Size = new System.Drawing.Size(21, 20);
             this.staReadSpeed.Text = "R:";
             this.staReadSpeed.Visible = false;
+            // 
+            // staPercents
+            // 
+            this.staPercents.Margin = new System.Windows.Forms.Padding(2, 4, 0, 2);
+            this.staPercents.Name = "staPercents";
+            this.staPercents.Size = new System.Drawing.Size(29, 20);
+            this.staPercents.Text = "0%";
+            this.staPercents.Visible = false;
+            // 
+            // staProgress
+            // 
+            this.staProgress.Margin = new System.Windows.Forms.Padding(0, 4, 0, 2);
+            this.staProgress.Maximum = 1000;
+            this.staProgress.Name = "staProgress";
+            this.staProgress.Size = new System.Drawing.Size(270, 20);
+            this.staProgress.Visible = false;
+            // 
+            // staRemaining
+            // 
+            this.staRemaining.Name = "staRemaining";
+            this.staRemaining.Size = new System.Drawing.Size(76, 20);
+            this.staRemaining.Text = "remaining";
+            this.staRemaining.Visible = false;
             // 
             // MainForm
             // 
@@ -177,8 +191,9 @@ partial class MainForm
     private System.Windows.Forms.ToolStripProgressBar staProgress;
     private System.Windows.Forms.ToolStripSeparator mnu0;
     private System.Windows.Forms.ToolStripButton mnuRefresh;
-    private System.Windows.Forms.ToolStripStatusLabel staPercentage;
+    private System.Windows.Forms.ToolStripStatusLabel staPercents;
     private System.Windows.Forms.ToolStripStatusLabel staRemaining;
     private System.Windows.Forms.ToolStripStatusLabel staWriteSpeed;
     private System.Windows.Forms.ToolStripStatusLabel staReadSpeed;
+    private System.Windows.Forms.ToolStripStatusLabel staDisk;
 }

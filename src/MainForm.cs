@@ -28,7 +28,9 @@ internal partial class MainForm : Form {
 
 
     private void mnuDisks_SelectedIndexChanged(object sender, System.EventArgs e) {
-        mnuStart.Enabled = mnuDisks.SelectedItem as PhysicalDisk is not null;
+        var disk = mnuDisks.SelectedItem as PhysicalDisk;
+        mnuStart.Enabled = disk is not null;
+        staDisk.Text = disk?.Path ?? "-";
     }
 
     private void mnuStart_Click(object sender, System.EventArgs e) {
@@ -94,11 +96,11 @@ internal partial class MainForm : Form {
 
     private void bwTest_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e) {
         if (e.UserState is ProgressObjectState state) {
-            staProgress.Value = state.Permilles;
-            staPercentage.Text = state.Percents.ToString("0.000", CultureInfo.CurrentCulture) + "%";
-            staRemaining.Text = state.EstimatedRemainingAsString;
             staWriteSpeed.Text = $"W:{state.WriteSpeed:#,##0} MB/s";
             staReadSpeed.Text = $"R:{state.ReadSpeed:#,##0} MB/s";
+            staPercents.Text = state.Percents.ToString("0.000", CultureInfo.CurrentCulture) + "%";
+            staProgress.Value = state.Permilles;
+            staRemaining.Text = state.EstimatedRemainingAsString + " remaining";
         }
     }
 
@@ -132,16 +134,17 @@ internal partial class MainForm : Form {
         mnuDisks.Enabled = !testing;
         mnuStart.Enabled = !testing;
         mnuRefresh.Enabled = !testing;
-        staProgress.Visible = testing;
-        staProgress.Value = 0;
-        staPercentage.Visible = testing;
-        staPercentage.Text = "";
-        staRemaining.Visible = testing;
-        staRemaining.Text = "";
         staWriteSpeed.Visible = testing;
         staWriteSpeed.Text = "";
         staReadSpeed.Visible = testing;
         staReadSpeed.Text = "";
+        staPercents.Visible = testing;
+        staPercents.Text = "";
+        staPercents.Height = staDisk.Height;
+        staProgress.Visible = testing;
+        staProgress.Value = 0;
+        staRemaining.Visible = testing;
+        staRemaining.Text = "";
     }
 
 }
