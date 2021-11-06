@@ -1,4 +1,5 @@
 using Medo.Math;
+using Medo.Windows.Forms;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -56,6 +57,10 @@ internal partial class MainForm : Form {
 
     private void mnuRefresh_Click(object sender, System.EventArgs e) {
         FillDisks();
+    }
+
+    private void mnuAppAbout_Click(object sender, System.EventArgs e) {
+        AboutBox.ShowDialog(this);
     }
 
 

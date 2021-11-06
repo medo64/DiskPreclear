@@ -42,6 +42,8 @@ partial class MainForm
             this.staPercents = new System.Windows.Forms.ToolStripStatusLabel();
             this.staProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.staRemaining = new System.Windows.Forms.ToolStripStatusLabel();
+            this.mnuApp = new System.Windows.Forms.ToolStripDropDownButton();
+            this.mnuAppAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu.SuspendLayout();
             this.sta.SuspendLayout();
             this.SuspendLayout();
@@ -62,7 +64,8 @@ partial class MainForm
             this.mnuDisks,
             this.mnuStart,
             this.mnu0,
-            this.mnuRefresh});
+            this.mnuRefresh,
+            this.mnuApp});
             this.mnu.Location = new System.Drawing.Point(0, 0);
             this.mnu.Name = "mnu";
             this.mnu.Size = new System.Drawing.Size(782, 28);
@@ -160,6 +163,25 @@ partial class MainForm
             this.staRemaining.Text = "remaining";
             this.staRemaining.Visible = false;
             // 
+            // mnuApp
+            // 
+            this.mnuApp.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.mnuApp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.mnuApp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuAppAbout});
+            this.mnuApp.Image = global::DiskPreclear.Properties.Resources.mnuApp_16;
+            this.mnuApp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuApp.Name = "mnuApp";
+            this.mnuApp.Size = new System.Drawing.Size(34, 25);
+            this.mnuApp.Text = "Application";
+            // 
+            // mnuAppAbout
+            // 
+            this.mnuAppAbout.Name = "mnuAppAbout";
+            this.mnuAppAbout.Size = new System.Drawing.Size(224, 26);
+            this.mnuAppAbout.Text = "&About";
+            this.mnuAppAbout.Click += new System.EventHandler(this.mnuAppAbout_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -196,4 +218,6 @@ partial class MainForm
     private System.Windows.Forms.ToolStripStatusLabel staWriteSpeed;
     private System.Windows.Forms.ToolStripStatusLabel staReadSpeed;
     private System.Windows.Forms.ToolStripStatusLabel staDisk;
+    private System.Windows.Forms.ToolStripDropDownButton mnuApp;
+    private System.Windows.Forms.ToolStripMenuItem mnuAppAbout;
 }
