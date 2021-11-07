@@ -123,6 +123,10 @@ internal partial class DefragControl : Control {
             }
             if (index >= ElementCount) { break; }
         }
+
+        lock (SyncBlockStates) {
+            LastFoldedIndex = -1;
+        }
     }
 
 
@@ -148,10 +152,10 @@ internal partial class DefragControl : Control {
                 return SystemBrushes.Control;
             } else if (count < 0) {
                 return Brushes.Red;
-            } else if (count == 1) { // to make sure it doesn't get rounded down to 0
-                return OkBrushes[0];
             } else {
-                return OkBrushes[count * 100 / ElementFoldCount];
+                var percentage = count * 100 / ElementFoldCount;
+                if (percentage == 0) { percentage = 1; }  // to make sure it doesn't get rounded down to 0
+                return OkBrushes[percentage];
             }
         }
     }
