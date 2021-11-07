@@ -133,6 +133,51 @@
   <data name="mnuApp_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\App_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="mnuExecuteRO_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteRO_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuExecuteRO_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteRO_24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuExecuteRO_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteRO_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuExecuteRO_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteRO_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuExecuteRO_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteRO_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuExecuteRW_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteRW_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuExecuteRW_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteRW_24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuExecuteRW_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteRW_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuExecuteRW_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteRW_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuExecuteRW_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteRW_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuExecuteWO_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteWO_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuExecuteWO_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteWO_24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuExecuteWO_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteWO_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuExecuteWO_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteWO_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuExecuteWO_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ExecuteWO_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="mnuRefresh_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Refresh_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -147,20 +192,5 @@
   </data>
   <data name="mnuRefresh_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Refresh_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="mnuStart_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Execute_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="mnuStart_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Execute_24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="mnuStart_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Execute_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="mnuStart_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Execute_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="mnuStart_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Execute_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

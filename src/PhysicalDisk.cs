@@ -114,25 +114,64 @@ internal sealed class PhysicalDisk : IDisposable {
 
     private SafeFileHandle? DiskHandle = null;
 
-    private SafeFileHandle? GetDiskHandle() {
+    /// <summary>
+    /// Opens disk for access operations.
+    /// </summary>
+    public bool Open(bool allowRead, bool allowWrite) {
         if (DiskHandle == null) {
+            uint accessMode = 0;
+            if (allowRead) { accessMode |= NativeMethods.GENERIC_READ; }
+            if (allowWrite) { accessMode |= NativeMethods.GENERIC_WRITE; }
+
+            uint shareMode = 0;
+            if (allowRead && allowWrite) {
+                shareMode |= NativeMethods.FILE_SHARE_READ;
+            } else if (allowRead) {
+                shareMode |= NativeMethods.FILE_SHARE_READ | NativeMethods.FILE_SHARE_WRITE;
+            } else if (allowWrite) {
+                shareMode |= NativeMethods.FILE_SHARE_READ;
+            }
+
+            uint flags = NativeMethods.FILE_FLAG_NO_BUFFERING | NativeMethods.FILE_FLAG_WRITE_THROUGH;
+
             var diskHandle = NativeMethods.CreateFile(Path,
-                                                      NativeMethods.GENERIC_READ | NativeMethods.GENERIC_WRITE,
-                                                      NativeMethods.FILE_SHARE_READ | NativeMethods.FILE_SHARE_WRITE,
+                                                      accessMode,
+                                                      shareMode,
                                                       IntPtr.Zero,
                                                       NativeMethods.OPEN_EXISTING,
-                                                      NativeMethods.FILE_FLAG_NO_BUFFERING | NativeMethods.FILE_FLAG_WRITE_THROUGH,
+                                                      flags,
                                                       IntPtr.Zero);
-            if (!diskHandle.IsInvalid) { DiskHandle = diskHandle; }
+            if (!diskHandle.IsInvalid) {
+                DiskHandle = diskHandle;
+                return true;
+            }
         }
-        return DiskHandle;
+        return false;
     }
 
-    public bool Write(byte[] buffer, ulong offset, int length) {
-        var diskHandle = GetDiskHandle();
-        if (diskHandle == null) { return false; }
+    /// <summary>
+    /// Closes disk access.
+    /// </summary>
+    public bool Close() {
+        if (DiskHandle != null) {
+            DiskHandle.Dispose();
+            DiskHandle = null;
+            return true;
+        }
+        return false;
+    }
 
-        var okMove = NativeMethods.SetFilePointerEx(diskHandle,
+    /// <summary>
+    /// Writes bytes to the specified location.
+    /// </summary>
+    /// <param name="buffer">Buffer.</param>
+    /// <param name="offset">Start offset.</param>
+    /// <param name="length">Buffer lenght.</param>
+    /// <returns></returns>
+    public bool Write(byte[] buffer, ulong offset, int length) {
+        if (DiskHandle == null) { return false; }
+
+        var okMove = NativeMethods.SetFilePointerEx(DiskHandle,
                                                     offset,
                                                     out var _,
                                                     NativeMethods.FILE_BEGIN);
@@ -141,7 +180,7 @@ internal sealed class PhysicalDisk : IDisposable {
             return false;
         }
 
-        var ok = NativeMethods.WriteFile(diskHandle,
+        var ok = NativeMethods.WriteFile(DiskHandle,
                                          buffer,
                                          length,
                                          out var _,
@@ -149,12 +188,16 @@ internal sealed class PhysicalDisk : IDisposable {
         return ok;
     }
 
-
+    /// <summary>
+    /// Reads bytes fromt the specified location.
+    /// </summary>
+    /// <param name="buffer">Buffer.</param>
+    /// <param name="offset">Start offset.</param>
+    /// <param name="length">Buffer lenght.</param>
     public bool Read(byte[] buffer, ulong offset, int length) {
-        var diskHandle = GetDiskHandle();
-        if (diskHandle == null) { return false; }
+        if (DiskHandle == null) { return false; }
 
-        var okMove = NativeMethods.SetFilePointerEx(diskHandle,
+        var okMove = NativeMethods.SetFilePointerEx(DiskHandle,
                                                     offset,
                                                     out var _,
                                                     NativeMethods.FILE_BEGIN);
@@ -163,7 +206,7 @@ internal sealed class PhysicalDisk : IDisposable {
             return false;
         }
 
-        var ok = NativeMethods.ReadFile(diskHandle,
+        var ok = NativeMethods.ReadFile(DiskHandle,
                                         buffer,
                                         length,
                                         out var _,
@@ -171,14 +214,13 @@ internal sealed class PhysicalDisk : IDisposable {
         return ok;
     }
 
+
     /// <summary>
-    /// Disposed disk resources.
+    /// Dispose disk resources.
     /// </summary>
     public void Dispose() {
-        if (DiskHandle != null) {
-            DiskHandle.Dispose();
-            DiskHandle = null;
-        }
+        Close();
+        GC.SuppressFinalize(this);
     }
 
 

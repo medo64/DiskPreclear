@@ -2,7 +2,7 @@ using System;
 
 namespace DiskPreclear;
 
-internal sealed class DiskWalker {
+internal sealed class DiskWalker : IDisposable {
 
     public DiskWalker(PhysicalDisk disk, int blockSizeInMB) {
         Disk = disk;
@@ -72,10 +72,35 @@ internal sealed class DiskWalker {
 
 
     /// <summary>
+    /// Gets/sets if reads are allowed.
+    /// </summary>
+    public bool AllowRead { get; set; }
+
+    /// <summary>
+    /// Gets sets if writes are allowed.
+    /// </summary>
+    public bool AllowWrite { get; set; }
+
+    /// <summary>
+    /// Opens disk for access operations.
+    /// </summary>
+    public bool Open(bool allowRead, bool allowWrite) {
+        return Disk.Open(allowRead, allowWrite);
+    }
+
+    /// <summary>
+    /// Closes disk access.
+    /// </summary>
+    public bool Close() {
+        return Disk.Close();
+    }
+
+    /// <summary>
     /// Writes given data.
     /// </summary>
     /// <param name="data">Random data.</param>
     public bool Write(byte[] data) {
+        if (!AllowWrite) { return false; }
         return Disk.Write(data, OffsetStart, OffsetLength);
     }
 
@@ -83,6 +108,7 @@ internal sealed class DiskWalker {
     /// Returns data that was read.
     /// </summary>
     public bool Read(byte[] data) {
+        if (!AllowRead) { return false; }
         return Disk.Read(data, OffsetStart, OffsetLength);
     }
 
@@ -96,6 +122,15 @@ internal sealed class DiskWalker {
             if (bytesWritten[i] != bytesRead[i]) { return false; }
         }
         return true;
+    }
+
+
+    /// <summary>
+    /// Dispose walker resources.
+    /// </summary>
+    public void Dispose() {
+        Close();
+        GC.SuppressFinalize(this);
     }
 
 }

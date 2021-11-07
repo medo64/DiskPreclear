@@ -32,7 +32,10 @@ partial class MainForm
             this.bwTest = new System.ComponentModel.BackgroundWorker();
             this.mnu = new System.Windows.Forms.ToolStrip();
             this.mnuDisks = new System.Windows.Forms.ToolStripComboBox();
-            this.mnuStart = new System.Windows.Forms.ToolStripButton();
+            this.mnuExecute = new System.Windows.Forms.ToolStripSplitButton();
+            this.mnuExecuteUseRW = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuExecuteUseRO = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuExecuteUseWO = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu0 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRefresh = new System.Windows.Forms.ToolStripButton();
             this.mnuApp = new System.Windows.Forms.ToolStripDropDownButton();
@@ -64,7 +67,7 @@ partial class MainForm
             this.mnu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.mnu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuDisks,
-            this.mnuStart,
+            this.mnuExecute,
             this.mnu0,
             this.mnuRefresh,
             this.mnuApp});
@@ -80,14 +83,41 @@ partial class MainForm
             this.mnuDisks.Size = new System.Drawing.Size(270, 28);
             this.mnuDisks.SelectedIndexChanged += new System.EventHandler(this.mnuDisks_SelectedIndexChanged);
             // 
-            // mnuStart
+            // mnuExecute
             // 
-            this.mnuStart.Image = global::DiskPreclear.Properties.Resources.mnuStart_16;
-            this.mnuStart.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuStart.Name = "mnuStart";
-            this.mnuStart.Size = new System.Drawing.Size(64, 25);
-            this.mnuStart.Text = "Start";
-            this.mnuStart.Click += new System.EventHandler(this.mnuStart_Click);
+            this.mnuExecute.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuExecuteUseRW,
+            this.mnuExecuteUseRO,
+            this.mnuExecuteUseWO});
+            this.mnuExecute.Image = global::DiskPreclear.Properties.Resources.mnuExecuteRW_16;
+            this.mnuExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuExecute.Name = "mnuExecute";
+            this.mnuExecute.Size = new System.Drawing.Size(159, 25);
+            this.mnuExecute.Tag = "mnuExecuteRW";
+            this.mnuExecute.Text = "Start Read/Write";
+            this.mnuExecute.ButtonClick += new System.EventHandler(this.mnuExecute_Click);
+            this.mnuExecute.DropDownOpening += new System.EventHandler(this.mnuExecute_DropDownOpening);
+            // 
+            // mnuExecuteUseRW
+            // 
+            this.mnuExecuteUseRW.Name = "mnuExecuteUseRW";
+            this.mnuExecuteUseRW.Size = new System.Drawing.Size(254, 26);
+            this.mnuExecuteUseRW.Text = "Read/Write (destructive)";
+            this.mnuExecuteUseRW.Click += new System.EventHandler(this.mnuExecuteUseRW_Click);
+            // 
+            // mnuExecuteUseRO
+            // 
+            this.mnuExecuteUseRO.Name = "mnuExecuteUseRO";
+            this.mnuExecuteUseRO.Size = new System.Drawing.Size(254, 26);
+            this.mnuExecuteUseRO.Text = "Read-only";
+            this.mnuExecuteUseRO.Click += new System.EventHandler(this.mnuExecuteUseRO_Click);
+            // 
+            // mnuExecuteUseWO
+            // 
+            this.mnuExecuteUseWO.Name = "mnuExecuteUseWO";
+            this.mnuExecuteUseWO.Size = new System.Drawing.Size(254, 26);
+            this.mnuExecuteUseWO.Text = "Write-only (destructive)";
+            this.mnuExecuteUseWO.Click += new System.EventHandler(this.mnuExecuteUseWO_Click);
             // 
             // mnu0
             // 
@@ -231,7 +261,6 @@ partial class MainForm
     private System.ComponentModel.BackgroundWorker bwTest;
     private System.Windows.Forms.ToolStrip mnu;
     private System.Windows.Forms.ToolStripComboBox mnuDisks;
-    private System.Windows.Forms.ToolStripButton mnuStart;
     private System.Windows.Forms.StatusStrip sta;
     private System.Windows.Forms.ToolStripProgressBar staProgress;
     private System.Windows.Forms.ToolStripSeparator mnu0;
@@ -245,4 +274,8 @@ partial class MainForm
     private System.Windows.Forms.ToolStripMenuItem mnuAppAbout;
     private Controls.DefragControl dfgMain;
     private System.Windows.Forms.ToolStripStatusLabel staErrors;
+    private System.Windows.Forms.ToolStripSplitButton mnuExecute;
+    private System.Windows.Forms.ToolStripMenuItem mnuExecuteUseRW;
+    private System.Windows.Forms.ToolStripMenuItem mnuExecuteUseRO;
+    private System.Windows.Forms.ToolStripMenuItem mnuExecuteUseWO;
 }

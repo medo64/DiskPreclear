@@ -1,9 +1,9 @@
-using Medo.Math;
-using Medo.Windows.Forms;
 using System.Diagnostics;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using Medo.Math;
+using Medo.Windows.Forms;
 
 namespace DiskPreclear;
 
@@ -28,30 +28,87 @@ internal partial class MainForm : Form {
 
 
     private void mnuDisks_SelectedIndexChanged(object sender, System.EventArgs e) {
-        var disk = mnuDisks.SelectedItem as PhysicalDisk;
-        dfgMain.Walker = GetWalker(disk);
-        mnuStart.Enabled = disk is not null;
-        staDisk.Text = disk?.Path ?? "-";
+        if (mnuDisks.SelectedItem is PhysicalDisk disk) {
+            dfgMain.Walker = GetWalker(disk);
+            mnuExecute.Enabled = disk is not null;
+            staDisk.Text = disk?.Path ?? "-";
+        }
     }
 
-    private void mnuStart_Click(object sender, System.EventArgs e) {
+    private void mnuExecute_Click(object sender, System.EventArgs e) {
+        var allowRead = false;
+        var allowWrite = false;
+        var operation = "";
+        if (mnuExecute.Tag is string tag) {
+            if (tag == "mnuExecuteRO") {
+                allowRead = true;
+                operation = "read";
+            } else if (tag == "mnuExecuteWO") {
+                allowWrite = true;
+                operation = "write";
+            } else {
+                allowRead = true;
+                allowWrite = true;
+                operation = "read/write";
+            }
+        }
+
         if (mnuDisks.SelectedItem is PhysicalDisk disk) {
             var hasVolumes = disk.GetLogicalVolumes().Count > 0;
             var hasPaths = false;
-            var diskData = $"\n  Physical disk {disk.Number}"
-                         + $"\n  {disk.SizeInGB} GB";
+            var diskData = $"\nPhysical disk {disk.Number}"
+                         + $"\n{disk.SizeInGB} GB";
             foreach (var path in disk.GetLogicalVolumePaths()) {
                 hasPaths = true;
                 diskData += "\n  " + path;
             }
 
-            if (Medo.Windows.Forms.MessageBox.ShowQuestion(this, "Are you sure you want to perform test on" + diskData, MessageBoxButtons.YesNo) == DialogResult.No) { return; }
-            if (hasVolumes && Medo.Windows.Forms.MessageBox.ShowWarning(this, "Selected disk has volumes present.\nAre you readlly sure you want to perform test on" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
-            if (hasPaths && Medo.Windows.Forms.MessageBox.ShowError(this, "Selected disk is in use!\nAre you goddamn sure you want to perform test on" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
+            if (Medo.Windows.Forms.MessageBox.ShowQuestion(this, "Are you sure you want to perform " + operation + " test?\n" + diskData, MessageBoxButtons.YesNo) == DialogResult.No) { return; }
+            if (hasVolumes && Medo.Windows.Forms.MessageBox.ShowWarning(this, "Selected disk has volumes present.\nAre you really sure you want to perform " + operation + " test?\nPlease note that test could fail if another process keeps disk open.\n" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
+            if (hasPaths && Medo.Windows.Forms.MessageBox.ShowError(this, "Selected disk is in use!\nAre you goddamn sure you want to perform " + operation + " test?\nPlease note that test could fail if another process keeps disk open.\n" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
 
-            PrepareForTesting(true);
-            bwTest.RunWorkerAsync(GetWalker(disk));
+            var walker = GetWalker(disk, allowRead, allowWrite);
+            dfgMain.Walker = walker;
+            if (walker.Open(allowRead, allowWrite)) {
+                PrepareForTesting(walker);
+                bwTest.RunWorkerAsync(walker);
+            } else {
+                Medo.Windows.Forms.MessageBox.ShowError(this, "Cannot open disk for " + operation + ".");
+            }
         }
+    }
+
+    private void mnuExecute_DropDownOpening(object sender, System.EventArgs e) {
+        mnuExecuteUseRW.Checked = false;
+        mnuExecuteUseRO.Checked = false;
+        mnuExecuteUseWO.Checked = false;
+        if (mnuExecute.Tag is string tag) {
+            if (tag == "mnuExecuteRO") {
+                mnuExecuteUseRO.Checked = true;
+            } else if (tag == "mnuExecuteWO") {
+                mnuExecuteUseWO.Checked = true;
+            } else {
+                mnuExecuteUseRW.Checked = true;
+            }
+        }
+    }
+
+    private void mnuExecuteUseRW_Click(object sender, System.EventArgs e) {
+        mnuExecute.Tag = "mnuExecuteRW";
+        mnuExecute.Text = "Execute Read-Write";
+        Helpers.ScaleToolstrip(mnu);
+    }
+
+    private void mnuExecuteUseRO_Click(object sender, System.EventArgs e) {
+        mnuExecute.Tag = "mnuExecuteRO";
+        mnuExecute.Text = "Execute Read-Only";
+        Helpers.ScaleToolstrip(mnu);
+    }
+
+    private void mnuExecuteUseWO_Click(object sender, System.EventArgs e) {
+        mnuExecute.Tag = "mnuExecuteWO";
+        mnuExecute.Text = "Execute Write-Only";
+        Helpers.ScaleToolstrip(mnu);
     }
 
     private void mnuRefresh_Click(object sender, System.EventArgs e) {
@@ -82,25 +139,38 @@ internal partial class MainForm : Form {
 
         var blockCount = walker.BlockCount;
         for (var i = 0; i < blockCount; i++) {
-            var swRandom = Stopwatch.StartNew();
-            Rnd.GetBytes(dataOut);
-            swRandom.Stop();
+            if (walker.AllowWrite) {
+                var swRandom = Stopwatch.StartNew();
+                Rnd.GetBytes(dataOut);
+                swRandom.Stop();
+            }
 
-            var swWrite = Stopwatch.StartNew();
-            walker.Write(dataOut);
-            var writeTime = (double)swWrite.ElapsedMilliseconds / 1000;
-            writeSpeed.Add(walker.OffsetLength / writeTime);
+            var ok = true;
 
-            var swRead = Stopwatch.StartNew();
-            walker.Read(dataIn);
-            var readTime = (double)swRead.ElapsedMilliseconds / 1000;
-            readSpeed.Add(walker.OffsetLength / readTime);
+            if (walker.AllowWrite) {
+                var swWrite = Stopwatch.StartNew();
+                ok &= walker.Write(dataOut);
+                var writeTime = (double)swWrite.ElapsedMilliseconds / 1000;
+                if (writeTime == 0) { writeTime = 0.000001; }
+                writeSpeed.Add(walker.OffsetLength / writeTime);
+            }
 
-            var ok = DiskWalker.Validate(dataOut, dataIn);
+            if (walker.AllowRead) {
+                var swRead = Stopwatch.StartNew();
+                ok &= walker.Read(dataIn);
+                var readTime = (double)swRead.ElapsedMilliseconds / 1000;
+                if (readTime == 0) { readTime = 0.000001; }
+                readSpeed.Add(walker.OffsetLength / readTime);
+            }
+
+            if (walker.AllowRead && walker.AllowWrite) {
+                ok &= DiskWalker.Validate(dataOut, dataIn);
+            }
             if (ok) { okCount += 1; } else { nokCount += 1; }
             dfgMain.SetBlockState(walker.BlockIndex, ok);
 
             if (bwTest.CancellationPending) {
+                walker.Close();
                 e.Cancel = true;
                 break;
             }
@@ -114,7 +184,10 @@ internal partial class MainForm : Form {
             walker.Index += 1;
         }
 
-        e.Result = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount, okCount, nokCount, walker.MaxBufferSize, writeSpeed.Average, readSpeed.Average);
+        walker.Close();
+        var finalProgress = new ProgressObjectState(swTotal, walker.Index, walker.BlockCount, okCount, nokCount, walker.MaxBufferSize, writeSpeed.Average, readSpeed.Average);
+        bwTest.ReportProgress(100, finalProgress);
+        e.Result = finalProgress;
     }
 
     private void bwTest_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e) {
@@ -131,6 +204,7 @@ internal partial class MainForm : Form {
     }
 
     private void bwTest_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
+        dfgMain.Invalidate();
         if (e.Cancelled) {
             Medo.Windows.Forms.MessageBox.ShowWarning(this, "Operation cancelled.");
         } else if (e.Error != null) {
@@ -147,12 +221,12 @@ internal partial class MainForm : Form {
                 }
             }
         }
-        PrepareForTesting(false);
+        PrepareForTesting(null);
     }
 
 
     private void FillDisks() {
-        mnuStart.Enabled = false;
+        mnuExecute.Enabled = false;
 
         mnuDisks.BeginUpdate();
 
@@ -172,13 +246,17 @@ internal partial class MainForm : Form {
         mnuDisks.EndUpdate();
     }
 
-    private void PrepareForTesting(bool testing) {
+    private void PrepareForTesting(DiskWalker? walker) {
+        var testing = (walker != null);
+        var testingRead = (walker != null) && walker.AllowRead;
+        var testingWrite = (walker != null) && walker.AllowWrite;
+
         mnuDisks.Enabled = !testing;
-        mnuStart.Enabled = !testing;
+        mnuExecute.Enabled = !testing;
         mnuRefresh.Enabled = !testing;
-        staWriteSpeed.Visible = testing;
+        staWriteSpeed.Visible = testingWrite;
         staWriteSpeed.Text = "";
-        staReadSpeed.Visible = testing;
+        staReadSpeed.Visible = testingRead;
         staReadSpeed.Text = "";
         staErrors.Visible = testing;
         staErrors.Text = "";
@@ -191,10 +269,12 @@ internal partial class MainForm : Form {
         staRemaining.Text = "";
     }
 
-    private static DiskWalker? GetWalker(PhysicalDisk? disk) {
-        if (disk == null) { return null; }
+    private static DiskWalker GetWalker(PhysicalDisk disk, bool allowRead = false, bool allowWrite = false) {
         var blockSizeMB = disk.SizeInGB > 1000 ? 16 : disk.SizeInGB > 1000 ? 8 : 4;
-        return new DiskWalker(disk, blockSizeMB);
+        return new DiskWalker(disk, blockSizeMB) {
+            AllowRead = allowRead,
+            AllowWrite = allowWrite
+        };
     }
 
 }

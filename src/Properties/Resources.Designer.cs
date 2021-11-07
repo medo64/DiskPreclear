@@ -113,6 +113,156 @@ namespace DiskPreclear.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteRO_16 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteRO_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteRO_24 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteRO_24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteRO_32 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteRO_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteRO_48 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteRO_48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteRO_64 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteRO_64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteRW_16 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteRW_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteRW_24 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteRW_24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteRW_32 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteRW_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteRW_48 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteRW_48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteRW_64 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteRW_64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteWO_16 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteWO_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteWO_24 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteWO_24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteWO_32 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteWO_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteWO_48 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteWO_48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuExecuteWO_64 {
+            get {
+                object obj = ResourceManager.GetObject("mnuExecuteWO_64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap mnuRefresh_16 {
             get {
                 object obj = ResourceManager.GetObject("mnuRefresh_16", resourceCulture);
@@ -156,56 +306,6 @@ namespace DiskPreclear.Properties {
         internal static System.Drawing.Bitmap mnuRefresh_64 {
             get {
                 object obj = ResourceManager.GetObject("mnuRefresh_64", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap mnuStart_16 {
-            get {
-                object obj = ResourceManager.GetObject("mnuStart_16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap mnuStart_24 {
-            get {
-                object obj = ResourceManager.GetObject("mnuStart_24", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap mnuStart_32 {
-            get {
-                object obj = ResourceManager.GetObject("mnuStart_32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap mnuStart_48 {
-            get {
-                object obj = ResourceManager.GetObject("mnuStart_48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap mnuStart_64 {
-            get {
-                object obj = ResourceManager.GetObject("mnuStart_64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
