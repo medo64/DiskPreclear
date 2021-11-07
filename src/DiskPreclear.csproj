@@ -27,6 +27,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <Product>Disk Preclear</Product>
     <Description>Exercise disk a bit</Description>
     <Authors>Josip Medved</Authors>
     <Copyright>Copyright (c) 2021 Josip Medved</Copyright>

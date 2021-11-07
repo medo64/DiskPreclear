@@ -39,6 +39,8 @@ partial class MainForm
             this.mnu0 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRefresh = new System.Windows.Forms.ToolStripButton();
             this.mnuApp = new System.Windows.Forms.ToolStripDropDownButton();
+            this.mnuAppFeedback = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuApp0 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuAppAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.sta = new System.Windows.Forms.StatusStrip();
             this.staDisk = new System.Windows.Forms.ToolStripStatusLabel();
@@ -139,6 +141,8 @@ partial class MainForm
             this.mnuApp.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.mnuApp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.mnuApp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuAppFeedback,
+            this.mnuApp0,
             this.mnuAppAbout});
             this.mnuApp.Image = global::DiskPreclear.Properties.Resources.mnuApp_16;
             this.mnuApp.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -146,10 +150,22 @@ partial class MainForm
             this.mnuApp.Size = new System.Drawing.Size(34, 25);
             this.mnuApp.Text = "Application";
             // 
+            // mnuAppFeedback
+            // 
+            this.mnuAppFeedback.Name = "mnuAppFeedback";
+            this.mnuAppFeedback.Size = new System.Drawing.Size(224, 26);
+            this.mnuAppFeedback.Text = "Send &Feedback";
+            this.mnuAppFeedback.Click += new System.EventHandler(this.mnuAppFeedback_Click);
+            // 
+            // mnuApp0
+            // 
+            this.mnuApp0.Name = "mnuApp0";
+            this.mnuApp0.Size = new System.Drawing.Size(221, 6);
+            // 
             // mnuAppAbout
             // 
             this.mnuAppAbout.Name = "mnuAppAbout";
-            this.mnuAppAbout.Size = new System.Drawing.Size(133, 26);
+            this.mnuAppAbout.Size = new System.Drawing.Size(224, 26);
             this.mnuAppAbout.Text = "&About";
             this.mnuAppAbout.Click += new System.EventHandler(this.mnuAppAbout_Click);
             // 
@@ -278,4 +294,6 @@ partial class MainForm
     private System.Windows.Forms.ToolStripMenuItem mnuExecuteUseRW;
     private System.Windows.Forms.ToolStripMenuItem mnuExecuteUseRO;
     private System.Windows.Forms.ToolStripMenuItem mnuExecuteUseWO;
+    private System.Windows.Forms.ToolStripMenuItem mnuAppFeedback;
+    private System.Windows.Forms.ToolStripSeparator mnuApp0;
 }

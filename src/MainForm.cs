@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Security.Cryptography;
@@ -113,6 +114,10 @@ internal partial class MainForm : Form {
 
     private void mnuRefresh_Click(object sender, System.EventArgs e) {
         FillDisks();
+    }
+
+    private void mnuAppFeedback_Click(object sender, System.EventArgs e) {
+        ErrorReport.ShowDialog(this, new Uri("https://medo64.com/feedback/"));
     }
 
     private void mnuAppAbout_Click(object sender, System.EventArgs e) {
