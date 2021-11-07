@@ -20,8 +20,11 @@ internal partial class DefragControl : Control {
         };
         RefreshTimer.Start();
 
-        for (var i = 0; i <= 99; i++) {
-            OkBrushes[i] = new SolidBrush(Color.FromArgb(0, 128 + i, 0));
+        for (var i = 0; i <= 100; i++) {
+            var r = Math.Max(128 - i * 3, 0);
+            var g = Math.Min(128 + i, 255);
+
+            OkBrushes[i] = new SolidBrush(Color.FromArgb(r, g, 0));
         }
         OkBrushes[100] = new SolidBrush(Color.FromArgb(0, 240, 0));
         OkBrushes[101] = new SolidBrush(Color.FromArgb(0, 255, 0));
