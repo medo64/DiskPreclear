@@ -158,7 +158,11 @@ internal partial class DefragControl : Control {
         get { return _walker; }
         set {
             _walker = value;
-            BlockStates = _walker != null ? new bool?[_walker.BlockCount] : Array.Empty<bool?>();
+            lock (SyncBlockStates) {
+                BlockStates = _walker != null ? new bool?[_walker.BlockCount] : Array.Empty<bool?>();
+                FoldedBlockStates = Array.Empty<int>();
+                LastFoldedIndex = -1;
+            }
             OnResize(EventArgs.Empty);
         }
     }

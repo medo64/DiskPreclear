@@ -71,6 +71,9 @@ internal partial class MainForm : Form {
         var swTotal = Stopwatch.StartNew();
         var nextUpdate = swTotal.ElapsedMilliseconds;
 
+        var okCount = 0;
+        var nokCount = 0;
+
         var dataOut = new byte[walker.MaxBufferSize];
         var dataIn = new byte[walker.MaxBufferSize];
 
@@ -94,24 +97,33 @@ internal partial class MainForm : Form {
             readSpeed.Add(walker.OffsetLength / readTime);
 
             var ok = DiskWalker.Validate(dataOut, dataIn);
+            if (ok) { okCount += 1; } else { nokCount += 1; }
             dfgMain.SetBlockState(walker.BlockIndex, ok);
 
-            if (bwTest.CancellationPending) { break; }
+            if (bwTest.CancellationPending) {
+                e.Cancel = true;
+                break;
+            }
 
             if (nextUpdate < swTotal.ElapsedMilliseconds) {
-                var progress = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount, writeSpeed.Average, readSpeed.Average);
+                var progress = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount, okCount, nokCount, walker.MaxBufferSize, writeSpeed.Average, readSpeed.Average);
                 bwTest.ReportProgress(0, progress);
                 nextUpdate = swTotal.ElapsedMilliseconds + 420;  // next update in 420ms
             }
 
             walker.Index += 1;
         }
+
+        e.Result = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount, okCount, nokCount, walker.MaxBufferSize, writeSpeed.Average, readSpeed.Average);
     }
 
     private void bwTest_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e) {
         if (e.UserState is ProgressObjectState state) {
             staWriteSpeed.Text = $"W:{state.WriteSpeed:#,##0} MB/s";
             staReadSpeed.Text = $"R:{state.ReadSpeed:#,##0} MB/s";
+            if (state.NokCount > 0) {
+                staErrors.Text = $"{state.NokCount:#,##0} " + ((state.NokCount != 1) ? "errors" : "error");
+            }
             staPercents.Text = state.Percents.ToString("0.000", CultureInfo.CurrentCulture) + "%";
             staProgress.Value = state.Permilles;
             staRemaining.Text = state.EstimatedRemainingAsString + " remaining";
@@ -119,6 +131,22 @@ internal partial class MainForm : Form {
     }
 
     private void bwTest_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
+        if (e.Cancelled) {
+            Medo.Windows.Forms.MessageBox.ShowWarning(this, "Operation cancelled.");
+        } else if (e.Error != null) {
+            Medo.Windows.Forms.MessageBox.ShowError(this, e.Error.Message);
+        } else {
+            if (e.Result is ProgressObjectState state) {
+                var text = $"Verification completed in {state.TimeUsedAsString}.";
+                if (state.NokCount == 0) {
+                    text += "\nNo errors found.";
+                    Medo.Windows.Forms.MessageBox.ShowInformation(this, text);
+                } else {
+                    text += $"\n{state.NokCount} " + ((state.NokCount != 1) ? "errors" : "error") + " found.";
+                    Medo.Windows.Forms.MessageBox.ShowError(this, text);
+                }
+            }
+        }
         PrepareForTesting(false);
     }
 
@@ -152,6 +180,8 @@ internal partial class MainForm : Form {
         staWriteSpeed.Text = "";
         staReadSpeed.Visible = testing;
         staReadSpeed.Text = "";
+        staErrors.Visible = testing;
+        staErrors.Text = "";
         staPercents.Visible = testing;
         staPercents.Text = "";
         staPercents.Height = staDisk.Height;
