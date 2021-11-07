@@ -2,7 +2,6 @@ using Medo.Math;
 using Medo.Windows.Forms;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 
@@ -30,6 +29,7 @@ internal partial class MainForm : Form {
 
     private void mnuDisks_SelectedIndexChanged(object sender, System.EventArgs e) {
         var disk = mnuDisks.SelectedItem as PhysicalDisk;
+        dfgMain.Walker = GetWalker(disk);
         mnuStart.Enabled = disk is not null;
         staDisk.Text = disk?.Path ?? "-";
     }
@@ -50,8 +50,7 @@ internal partial class MainForm : Form {
             if (hasPaths && Medo.Windows.Forms.MessageBox.ShowError(this, "Selected disk is in use!\nAre you goddamn sure you want to perform test on" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
 
             PrepareForTesting(true);
-            var blockSizeMB = disk.SizeInGB > 1000 ? 32 : disk.SizeInGB > 1000 ? 16 : 8;
-            bwTest.RunWorkerAsync(new DiskWalker(disk, blockSizeMB));
+            bwTest.RunWorkerAsync(GetWalker(disk));
         }
     }
 
@@ -94,9 +93,8 @@ internal partial class MainForm : Form {
             var readTime = (double)swRead.ElapsedMilliseconds / 1000;
             readSpeed.Add(walker.OffsetLength / readTime);
 
-            if (!DiskWalker.Validate(dataOut, dataIn)) {
-                throw new InvalidDataException();
-            }
+            var ok = DiskWalker.Validate(dataOut, dataIn);
+            dfgMain.SetBlockState(walker.BlockIndex, ok);
 
             if (bwTest.CancellationPending) { break; }
 
@@ -161,6 +159,12 @@ internal partial class MainForm : Form {
         staProgress.Value = 0;
         staRemaining.Visible = testing;
         staRemaining.Text = "";
+    }
+
+    private static DiskWalker? GetWalker(PhysicalDisk? disk) {
+        if (disk == null) { return null; }
+        var blockSizeMB = disk.SizeInGB > 1000 ? 16 : disk.SizeInGB > 1000 ? 8 : 4;
+        return new DiskWalker(disk, blockSizeMB);
     }
 
 }

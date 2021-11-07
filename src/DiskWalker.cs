@@ -15,10 +15,10 @@ internal sealed class DiskWalker {
             BlockCount = (int)(DiskSize / BlockSize) + 1;
         }
 
-        BlockIndices = new long[BlockCount];
+        BlockIndices = new int[BlockCount];
         long nextIndex = Random.Shared.Next(BlockCount);
         for (var i = 0; i < BlockCount; i++) {
-            BlockIndices[i] = nextIndex;
+            BlockIndices[i] = (int)nextIndex;
             nextIndex = (nextIndex + Step) % BlockCount;
         }
     }
@@ -26,7 +26,7 @@ internal sealed class DiskWalker {
     private const long Step = 2147483647;  // just make it a prime
     private readonly ulong BlockSize;
 
-    private readonly long[] BlockIndices;
+    private readonly int[] BlockIndices;
     private readonly PhysicalDisk Disk;
     private readonly ulong DiskSize;
 
@@ -48,7 +48,7 @@ internal sealed class DiskWalker {
     /// <summary>
     /// Gets block at given index.
     /// </summary>
-    public long BlockIndex => BlockIndices[Index];
+    public int BlockIndex => BlockIndices[Index];
 
     /// <summary>
     /// Gets start offset for current block.

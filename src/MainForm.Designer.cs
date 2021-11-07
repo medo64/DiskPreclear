@@ -35,6 +35,8 @@ partial class MainForm
             this.mnuStart = new System.Windows.Forms.ToolStripButton();
             this.mnu0 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRefresh = new System.Windows.Forms.ToolStripButton();
+            this.mnuApp = new System.Windows.Forms.ToolStripDropDownButton();
+            this.mnuAppAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.sta = new System.Windows.Forms.StatusStrip();
             this.staDisk = new System.Windows.Forms.ToolStripStatusLabel();
             this.staWriteSpeed = new System.Windows.Forms.ToolStripStatusLabel();
@@ -42,8 +44,7 @@ partial class MainForm
             this.staPercents = new System.Windows.Forms.ToolStripStatusLabel();
             this.staProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.staRemaining = new System.Windows.Forms.ToolStripStatusLabel();
-            this.mnuApp = new System.Windows.Forms.ToolStripDropDownButton();
-            this.mnuAppAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.dfgMain = new DiskPreclear.Controls.DefragControl();
             this.mnu.SuspendLayout();
             this.sta.SuspendLayout();
             this.SuspendLayout();
@@ -101,6 +102,25 @@ partial class MainForm
             this.mnuRefresh.Size = new System.Drawing.Size(29, 25);
             this.mnuRefresh.Text = "Refresh";
             this.mnuRefresh.Click += new System.EventHandler(this.mnuRefresh_Click);
+            // 
+            // mnuApp
+            // 
+            this.mnuApp.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.mnuApp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.mnuApp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuAppAbout});
+            this.mnuApp.Image = global::DiskPreclear.Properties.Resources.mnuApp_16;
+            this.mnuApp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuApp.Name = "mnuApp";
+            this.mnuApp.Size = new System.Drawing.Size(34, 25);
+            this.mnuApp.Text = "Application";
+            // 
+            // mnuAppAbout
+            // 
+            this.mnuAppAbout.Name = "mnuAppAbout";
+            this.mnuAppAbout.Size = new System.Drawing.Size(133, 26);
+            this.mnuAppAbout.Text = "&About";
+            this.mnuAppAbout.Click += new System.EventHandler(this.mnuAppAbout_Click);
             // 
             // sta
             // 
@@ -163,30 +183,22 @@ partial class MainForm
             this.staRemaining.Text = "remaining";
             this.staRemaining.Visible = false;
             // 
-            // mnuApp
+            // dfgMain
             // 
-            this.mnuApp.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.mnuApp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.mnuApp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuAppAbout});
-            this.mnuApp.Image = global::DiskPreclear.Properties.Resources.mnuApp_16;
-            this.mnuApp.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuApp.Name = "mnuApp";
-            this.mnuApp.Size = new System.Drawing.Size(34, 25);
-            this.mnuApp.Text = "Application";
-            // 
-            // mnuAppAbout
-            // 
-            this.mnuAppAbout.Name = "mnuAppAbout";
-            this.mnuAppAbout.Size = new System.Drawing.Size(224, 26);
-            this.mnuAppAbout.Text = "&About";
-            this.mnuAppAbout.Click += new System.EventHandler(this.mnuAppAbout_Click);
+            this.dfgMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dfgMain.Location = new System.Drawing.Point(0, 28);
+            this.dfgMain.Name = "dfgMain";
+            this.dfgMain.Size = new System.Drawing.Size(782, 379);
+            this.dfgMain.TabIndex = 4;
+            this.dfgMain.Text = "defragControl1";
+            this.dfgMain.Walker = null;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(782, 433);
+            this.Controls.Add(this.dfgMain);
             this.Controls.Add(this.sta);
             this.Controls.Add(this.mnu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -220,4 +232,5 @@ partial class MainForm
     private System.Windows.Forms.ToolStripStatusLabel staDisk;
     private System.Windows.Forms.ToolStripDropDownButton mnuApp;
     private System.Windows.Forms.ToolStripMenuItem mnuAppAbout;
+    private Controls.DefragControl dfgMain;
 }
