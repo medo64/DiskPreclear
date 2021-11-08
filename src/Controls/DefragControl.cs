@@ -44,6 +44,7 @@ internal partial class DefragControl : Control {
     private int OriginTop;
     private bool?[] BlockStates = Array.Empty<bool?>();  // null: not visited; true: ok, false: nok
     private readonly Queue<int> BlockTrail = new();
+    private readonly Dictionary<int, Brush> ElementBrushCache = new();
     private bool BlockStatesUpdateNeeded = false;
     private readonly object SyncBlockStates = new();
     private readonly Timer RefreshTimer = new() { Interval = 230 };
@@ -82,6 +83,7 @@ internal partial class DefragControl : Control {
             lock (SyncBlockStates) {
                 ElementCount = elementCount;
                 ElementFoldCount = elementFoldCount;
+                ElementBrushCache.Clear();
             }
         } else {
             ElementCount = 0;
@@ -121,6 +123,18 @@ internal partial class DefragControl : Control {
     }
 
     private Brush GetElementBrush(int elementIndex) {
+        lock (SyncBlockStates) {
+            if (ElementBrushCache.TryGetValue(elementIndex, out var cachedBrush)) {
+                return cachedBrush;
+            } else {
+                var brush = GetCalculatedElementBrush(elementIndex);
+                ElementBrushCache.Add(elementIndex, brush);
+                return brush;
+            }
+        }
+    }
+
+    private Brush GetCalculatedElementBrush(int elementIndex) {
         var startIndex = elementIndex * ElementFoldCount;
 
         lock (SyncBlockStates) {
@@ -166,6 +180,7 @@ internal partial class DefragControl : Control {
             lock (SyncBlockStates) {
                 BlockStates = _walker != null ? new bool?[_walker.BlockCount] : Array.Empty<bool?>();
                 BlockTrail.Clear();
+                ElementBrushCache.Clear();
             }
             OnResize(EventArgs.Empty);
         }
@@ -177,6 +192,9 @@ internal partial class DefragControl : Control {
 
             BlockTrail.Enqueue(index);
             if (BlockTrail.Count > 5000) { BlockTrail.Dequeue(); }
+
+            var foldedIndex = index / ElementFoldCount;
+            ElementBrushCache.Remove(foldedIndex);
 
             BlockStatesUpdateNeeded = true;
         }
