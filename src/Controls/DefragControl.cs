@@ -12,12 +12,12 @@ internal partial class DefragControl : Control {
         SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
         RefreshTimer.Tick += delegate (object? _, EventArgs _) {
-            bool updateNeeded;
+            bool needsUpdate;
             lock (SyncBlockStates) {
-                updateNeeded = BlockStatesUpdateNeeded;
-                BlockStatesUpdateNeeded = false;
+                needsUpdate = NeedsUpdate;
+                NeedsUpdate = false;
             }
-            if (updateNeeded) { Invalidate(); }
+            if (needsUpdate) { Invalidate(); }
         };
         RefreshTimer.Start();
 
@@ -43,11 +43,10 @@ internal partial class DefragControl : Control {
     private int OriginLeft;
     private int OriginTop;
     private bool?[] BlockStates = Array.Empty<bool?>();  // null: not visited; true: ok, false: nok
-    private readonly List<int> BlockTrail = new();
-    private readonly Dictionary<int, Brush> ElementBrushCache = new();
-    private bool BlockStatesUpdateNeeded = false;
+    private readonly LinkedList<int> BlockTrail = new();
+    private bool NeedsUpdate = false;
     private readonly object SyncBlockStates = new();
-    private readonly Timer RefreshTimer = new() { Interval = 230 };
+    private readonly System.Windows.Forms.Timer RefreshTimer = new() { Interval = 230 };
 
     protected override void OnResize(EventArgs e) {
         base.OnResize(e);
@@ -83,7 +82,6 @@ internal partial class DefragControl : Control {
             lock (SyncBlockStates) {
                 ElementCount = elementCount;
                 ElementFoldCount = elementFoldCount;
-                ElementBrushCache.Clear();
             }
         } else {
             ElementCount = 0;
@@ -123,18 +121,6 @@ internal partial class DefragControl : Control {
     }
 
     private Brush GetElementBrush(int elementIndex) {
-        lock (SyncBlockStates) {
-            if (ElementBrushCache.TryGetValue(elementIndex, out var cachedBrush)) {
-                return cachedBrush;
-            } else {
-                var brush = GetCalculatedElementBrush(elementIndex);
-                ElementBrushCache.Add(elementIndex, brush);
-                return brush;
-            }
-        }
-    }
-
-    private Brush GetCalculatedElementBrush(int elementIndex) {
         var startIndex = elementIndex * ElementFoldCount;
 
         lock (SyncBlockStates) {
@@ -154,13 +140,15 @@ internal partial class DefragControl : Control {
             if (allDone) {
                 return Brushes.Green;
             } else {  // select color based on trail
-                for (var i = 0; i < BlockTrail.Count; i++) {
-                    var foldedIndex = BlockTrail[i] / ElementFoldCount;  // fold trail
+                var i = 0;
+                foreach (var index in BlockTrail) {
+                    var foldedIndex = index / ElementFoldCount;  // fold trail
                     if (foldedIndex == elementIndex) {
                         var percent = i * 100 / BlockTrail.Count;
                         if (percent >= TrailBrushes.Length) { percent = TrailBrushes.Length - 1; }
                         return TrailBrushes[percent];
                     }
+                    i++;
                 }
             }
 
@@ -177,7 +165,6 @@ internal partial class DefragControl : Control {
             lock (SyncBlockStates) {
                 BlockStates = _walker != null ? new bool?[_walker.BlockCount] : Array.Empty<bool?>();
                 BlockTrail.Clear();
-                ElementBrushCache.Clear();
             }
             OnResize(EventArgs.Empty);
         }
@@ -187,13 +174,10 @@ internal partial class DefragControl : Control {
         lock (SyncBlockStates) {
             BlockStates[index] = ok;
 
-            BlockTrail.Insert(0,index);
-            while (BlockTrail.Count > 4200) { BlockTrail.RemoveAt(4200); }
+            BlockTrail.AddFirst(index);
+            while (BlockTrail.Count > 4200) { BlockTrail.RemoveLast(); }
 
-            var foldedIndex = index / ElementFoldCount;
-            ElementBrushCache.Remove(foldedIndex);
-
-            BlockStatesUpdateNeeded = true;
+            NeedsUpdate = true;
         }
     }
 
