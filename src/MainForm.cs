@@ -117,7 +117,7 @@ internal partial class MainForm : Form {
     }
 
     private void mnuAppFeedback_Click(object sender, System.EventArgs e) {
-        ErrorReport.ShowDialog(this, new Uri("https://medo64.com/feedback/"));
+        ErrorReportBox.ShowDialog(this, new Uri("https://medo64.com/feedback/"));
     }
 
     private void mnuAppAbout_Click(object sender, System.EventArgs e) {

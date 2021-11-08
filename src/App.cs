@@ -25,7 +25,7 @@ internal static class App {
     }
 
     private static void UnhandledCatch_UnhandledException(object? sender, UnhandledCatchEventArgs e) {
-        ErrorReport.ShowDialog(null, new Uri("https://medo64.com/feedback/"), e.Exception);
+        ErrorReportBox.ShowDialog(null, new Uri("https://medo64.com/feedback/"), e.Exception);
 #if DEBUG
         throw e.Exception;
 #endif
