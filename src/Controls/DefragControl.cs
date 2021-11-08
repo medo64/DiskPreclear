@@ -43,7 +43,7 @@ internal partial class DefragControl : Control {
     private int OriginLeft;
     private int OriginTop;
     private bool?[] BlockStates = Array.Empty<bool?>();  // null: not visited; true: ok, false: nok
-    private readonly Queue<int> BlockTrail = new();
+    private readonly List<int> BlockTrail = new();
     private readonly Dictionary<int, Brush> ElementBrushCache = new();
     private bool BlockStatesUpdateNeeded = false;
     private readonly object SyncBlockStates = new();
@@ -154,13 +154,10 @@ internal partial class DefragControl : Control {
             if (allDone) {
                 return Brushes.Green;
             } else {  // select color based on trail
-                var blockTrail = BlockTrail.ToArray();
-                Array.Reverse(blockTrail);
-
-                for (var i = 0; i < blockTrail.Length; i++) {
-                    var foldedIndex = blockTrail[i] / ElementFoldCount;  // fold trail
+                for (var i = 0; i < BlockTrail.Count; i++) {
+                    var foldedIndex = BlockTrail[i] / ElementFoldCount;  // fold trail
                     if (foldedIndex == elementIndex) {
-                        var percent = i * 100 / blockTrail.Length;
+                        var percent = i * 100 / BlockTrail.Count;
                         if (percent >= TrailBrushes.Length) { percent = TrailBrushes.Length - 1; }
                         return TrailBrushes[percent];
                     }
@@ -190,8 +187,8 @@ internal partial class DefragControl : Control {
         lock (SyncBlockStates) {
             BlockStates[index] = ok;
 
-            BlockTrail.Enqueue(index);
-            if (BlockTrail.Count > 5000) { BlockTrail.Dequeue(); }
+            BlockTrail.Insert(0,index);
+            while (BlockTrail.Count > 4200) { BlockTrail.RemoveAt(4200); }
 
             var foldedIndex = index / ElementFoldCount;
             ElementBrushCache.Remove(foldedIndex);
