@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Medo.Diagnostics;
@@ -20,17 +21,18 @@ internal partial class DefragControl : Control {
         };
         RefreshTimer.Start();
 
+        var colorFrom = Color.FromArgb(160, 160, 0);
+        var colorTo = SystemColors.Control;
         for (var i = 0; i <= 100; i++) {
-            var r = Math.Max(128 - i * 3, 0);
-            var g = Math.Min(128 + i, 255);
-
-            OkBrushes[i] = new SolidBrush(Color.FromArgb(r, g, 0));
+            var r = (colorFrom.R * (110 - i) + colorTo.R * i) / 110;
+            var g = (colorFrom.G * (110 - i) + colorTo.G * i) / 110;
+            var b = (colorFrom.B * (110 - i) + colorTo.B * i) / 110;
+            var a = (colorFrom.A * (110 - i) + colorTo.A * i) / 110;
+            TrailBrushes[i] = new SolidBrush(Color.FromArgb(a, r, g, b));
         }
-        OkBrushes[100] = new SolidBrush(Color.FromArgb(0, 240, 0));
-        OkBrushes[101] = new SolidBrush(Color.FromArgb(0, 255, 0));
     }
 
-    private readonly Brush[] OkBrushes = new Brush[102];  // 0th brush is shown as soon as 1 is hit; 1-100: shown at percent; 101: last hit
+    private readonly Brush[] TrailBrushes = new Brush[101];
 
     private int ElementWidth;
     private int ElementHeight;
@@ -41,9 +43,8 @@ internal partial class DefragControl : Control {
     private int OriginLeft;
     private int OriginTop;
     private bool?[] BlockStates = Array.Empty<bool?>();  // null: not visited; true: ok, false: nok
-    private int[] FoldedBlockStates = Array.Empty<int>();  // handy cache for BlockStates -> negative number is NOK; 0: not visited; pos: how many visited
+    private readonly Queue<int> BlockTrail = new();
     private bool BlockStatesUpdateNeeded = false;
-    private int LastFoldedIndex = -1;
     private readonly object SyncBlockStates = new();
     private readonly Timer RefreshTimer = new() { Interval = 230 };
 
@@ -56,8 +57,6 @@ internal partial class DefragControl : Control {
         VerticalElements = (ClientRectangle.Height - SystemInformation.Border3DSize.Height * 4) / ElementHeight;
         var maxElements = HorizontalElements * VerticalElements;
 
-        //OriginLeft = (ClientRectangle.Width - HorizontalElements * ElementWidth) / 2;
-        //OriginTop = Math.Max(OriginLeft - SystemInformation.Border3DSize.Height, 0);
         OriginLeft = SystemInformation.Border3DSize.Width * 2;
         OriginTop = SystemInformation.Border3DSize.Height;
 
@@ -83,24 +82,7 @@ internal partial class DefragControl : Control {
             lock (SyncBlockStates) {
                 ElementCount = elementCount;
                 ElementFoldCount = elementFoldCount;
-
-                if (ElementCount != FoldedBlockStates.Length) {  // recalculate folded states
-                    FoldedBlockStates = new int[ElementCount];
-                    if (ElementCount > 0) {
-                        for (var i = 0; i < BlockStates.Length; i++) {
-                            var blockState = BlockStates[i];
-                            if (blockState == null) { continue; }
-                            var foldedIndex = i / ElementFoldCount;
-                            if (blockState == true) {
-                                if (FoldedBlockStates[foldedIndex] >= 0) { FoldedBlockStates[foldedIndex] += 1; }
-                            } else if (blockState == false) {
-                                FoldedBlockStates[foldedIndex] = int.MinValue;
-                            }
-                        }
-                    }
-                }
             }
-
         } else {
             ElementCount = 0;
         }
@@ -118,14 +100,10 @@ internal partial class DefragControl : Control {
         for (var y = 0; y < VerticalElements; y++) {
             for (var x = 0; x < HorizontalElements; x++) {
                 if (index >= ElementCount) { break; }
-                DrawBox(g, x, y, GetFoldedBlockBrush(index));
+                DrawBox(g, x, y, GetElementBrush(index));
                 index += 1;
             }
             if (index >= ElementCount) { break; }
-        }
-
-        lock (SyncBlockStates) {
-            LastFoldedIndex = -1;
         }
     }
 
@@ -142,21 +120,40 @@ internal partial class DefragControl : Control {
         g.DrawLine(SystemPens.ButtonShadow, left + 1, bottom, right, bottom);
     }
 
-    private Brush GetFoldedBlockBrush(int elementIndex) {
-        lock (SyncBlockStates) {
-            if (elementIndex >= FoldedBlockStates.Length) { return SystemBrushes.Control; }  // something went wrong
-            if (elementIndex == LastFoldedIndex) { return OkBrushes[101]; }
+    private Brush GetElementBrush(int elementIndex) {
+        var startIndex = elementIndex * ElementFoldCount;
 
-            var count = FoldedBlockStates[elementIndex];
-            if (count == 0) {
-                return SystemBrushes.Control;
-            } else if (count < 0) {
-                return Brushes.Red;
-            } else {
-                var percentage = count * 100 / ElementFoldCount;
-                if (percentage == 0) { percentage = 1; }  // to make sure it doesn't get rounded down to 0
-                return OkBrushes[percentage];
+        lock (SyncBlockStates) {
+            var allDone = true;
+            for (var i = 0; i < ElementFoldCount; i++) {
+                var index = startIndex + i;
+                if (index >= BlockStates.Length) { break; }
+
+                if (BlockStates[index] == false) {  // error takes precedence
+                    return Brushes.Red;
+                } else if (BlockStates[index] == null) {  // if any block is not filled; you can proceed with percent highlight logic
+                    allDone = false;
+                    break;
+                }
             }
+
+            if (allDone) {
+                return Brushes.Green;
+            } else {  // select color based on trail
+                var blockTrail = BlockTrail.ToArray();
+                Array.Reverse(blockTrail);
+
+                for (var i = 0; i < blockTrail.Length; i++) {
+                    var foldedIndex = blockTrail[i] / ElementFoldCount;  // fold trail
+                    if (foldedIndex == elementIndex) {
+                        var percent = i * 100 / blockTrail.Length;
+                        if (percent >= TrailBrushes.Length) { percent = TrailBrushes.Length - 1; }
+                        return TrailBrushes[percent];
+                    }
+                }
+            }
+
+            return SystemBrushes.Control;
         }
     }
 
@@ -168,8 +165,7 @@ internal partial class DefragControl : Control {
             _walker = value;
             lock (SyncBlockStates) {
                 BlockStates = _walker != null ? new bool?[_walker.BlockCount] : Array.Empty<bool?>();
-                FoldedBlockStates = Array.Empty<int>();
-                LastFoldedIndex = -1;
+                BlockTrail.Clear();
             }
             OnResize(EventArgs.Empty);
         }
@@ -178,16 +174,11 @@ internal partial class DefragControl : Control {
     public void SetBlockState(int index, bool ok) {
         lock (SyncBlockStates) {
             BlockStates[index] = ok;
-            if (FoldedBlockStates.Length > 0) {
-                var foldedIndex = index / ElementFoldCount;
-                if (ok) {
-                    if (FoldedBlockStates[foldedIndex] >= 0) { FoldedBlockStates[foldedIndex] += 1; }
-                } else {
-                    FoldedBlockStates[foldedIndex] = int.MinValue;
-                }
-                LastFoldedIndex = foldedIndex;
-                BlockStatesUpdateNeeded = true;
-            }
+
+            BlockTrail.Enqueue(index);
+            if (BlockTrail.Count > 5000) { BlockTrail.Dequeue(); }
+
+            BlockStatesUpdateNeeded = true;
         }
     }
 
