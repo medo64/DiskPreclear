@@ -40,6 +40,7 @@ partial class MainForm
             this.mnuRefresh = new System.Windows.Forms.ToolStripButton();
             this.mnuApp = new System.Windows.Forms.ToolStripDropDownButton();
             this.mnuAppFeedback = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuAppUpgrade = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuApp0 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuAppAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.sta = new System.Windows.Forms.StatusStrip();
@@ -142,6 +143,7 @@ partial class MainForm
             this.mnuApp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.mnuApp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuAppFeedback,
+            this.mnuAppUpgrade,
             this.mnuApp0,
             this.mnuAppAbout});
             this.mnuApp.Image = global::DiskPreclear.Properties.Resources.mnuApp_16;
@@ -156,6 +158,13 @@ partial class MainForm
             this.mnuAppFeedback.Size = new System.Drawing.Size(224, 26);
             this.mnuAppFeedback.Text = "Send &Feedback";
             this.mnuAppFeedback.Click += new System.EventHandler(this.mnuAppFeedback_Click);
+            // 
+            // mnuAppUpgrade
+            // 
+            this.mnuAppUpgrade.Name = "mnuAppUpgrade";
+            this.mnuAppUpgrade.Size = new System.Drawing.Size(224, 26);
+            this.mnuAppUpgrade.Text = "Check for &Upgrade";
+            this.mnuAppUpgrade.Click += new System.EventHandler(this.mnuAppUpgrade_Click);
             // 
             // mnuApp0
             // 
@@ -296,4 +305,5 @@ partial class MainForm
     private System.Windows.Forms.ToolStripMenuItem mnuExecuteUseWO;
     private System.Windows.Forms.ToolStripMenuItem mnuAppFeedback;
     private System.Windows.Forms.ToolStripSeparator mnuApp0;
+    private System.Windows.Forms.ToolStripMenuItem mnuAppUpgrade;
 }

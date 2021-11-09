@@ -69,7 +69,7 @@ namespace Medo.Windows.Forms {
         /// Setting up of initial variable values in order to avoid setting them once problems (e.g. OutOfMemoryException) occur.
         /// </summary>
         static ErrorReportBox() {
-            var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly(); ;
+            var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly();
 
             var productAttributes = assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), true);
             if ((productAttributes != null) && (productAttributes.Length >= 1)) {

@@ -120,6 +120,10 @@ internal partial class MainForm : Form {
         ErrorReportBox.ShowDialog(this, new Uri("https://medo64.com/feedback/"));
     }
 
+    private void mnuAppUpgrade_Click(object sender, EventArgs e) {
+        UpgradeBox.ShowDialog(this, new Uri("https://medo64.com/upgrade/"));
+    }
+
     private void mnuAppAbout_Click(object sender, System.EventArgs e) {
         AboutBox.ShowDialog(this);
     }
