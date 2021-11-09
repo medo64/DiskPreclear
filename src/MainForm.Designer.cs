@@ -95,9 +95,9 @@ partial class MainForm
             this.mnuExecute.Image = global::DiskPreclear.Properties.Resources.mnuExecuteRW_16;
             this.mnuExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.mnuExecute.Name = "mnuExecute";
-            this.mnuExecute.Size = new System.Drawing.Size(159, 25);
+            this.mnuExecute.Size = new System.Drawing.Size(154, 25);
             this.mnuExecute.Tag = "mnuExecuteRW";
-            this.mnuExecute.Text = "Start Read/Write";
+            this.mnuExecute.Text = "Test Read/Write";
             this.mnuExecute.ButtonClick += new System.EventHandler(this.mnuExecute_Click);
             this.mnuExecute.DropDownOpening += new System.EventHandler(this.mnuExecute_DropDownOpening);
             // 
@@ -155,26 +155,26 @@ partial class MainForm
             // mnuAppFeedback
             // 
             this.mnuAppFeedback.Name = "mnuAppFeedback";
-            this.mnuAppFeedback.Size = new System.Drawing.Size(224, 26);
+            this.mnuAppFeedback.Size = new System.Drawing.Size(216, 26);
             this.mnuAppFeedback.Text = "Send &Feedback";
             this.mnuAppFeedback.Click += new System.EventHandler(this.mnuAppFeedback_Click);
             // 
             // mnuAppUpgrade
             // 
             this.mnuAppUpgrade.Name = "mnuAppUpgrade";
-            this.mnuAppUpgrade.Size = new System.Drawing.Size(224, 26);
+            this.mnuAppUpgrade.Size = new System.Drawing.Size(216, 26);
             this.mnuAppUpgrade.Text = "Check for &Upgrade";
             this.mnuAppUpgrade.Click += new System.EventHandler(this.mnuAppUpgrade_Click);
             // 
             // mnuApp0
             // 
             this.mnuApp0.Name = "mnuApp0";
-            this.mnuApp0.Size = new System.Drawing.Size(221, 6);
+            this.mnuApp0.Size = new System.Drawing.Size(213, 6);
             // 
             // mnuAppAbout
             // 
             this.mnuAppAbout.Name = "mnuAppAbout";
-            this.mnuAppAbout.Size = new System.Drawing.Size(224, 26);
+            this.mnuAppAbout.Size = new System.Drawing.Size(216, 26);
             this.mnuAppAbout.Text = "&About";
             this.mnuAppAbout.Click += new System.EventHandler(this.mnuAppAbout_Click);
             // 

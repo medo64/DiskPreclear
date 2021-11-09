@@ -96,19 +96,19 @@ internal partial class MainForm : Form {
 
     private void mnuExecuteUseRW_Click(object sender, System.EventArgs e) {
         mnuExecute.Tag = "mnuExecuteRW";
-        mnuExecute.Text = "Execute Read-Write";
+        mnuExecute.Text = "Test Read-Write";
         Helpers.ScaleToolstrip(mnu);
     }
 
     private void mnuExecuteUseRO_Click(object sender, System.EventArgs e) {
         mnuExecute.Tag = "mnuExecuteRO";
-        mnuExecute.Text = "Execute Read-Only";
+        mnuExecute.Text = "Test Read-Only";
         Helpers.ScaleToolstrip(mnu);
     }
 
     private void mnuExecuteUseWO_Click(object sender, System.EventArgs e) {
         mnuExecute.Tag = "mnuExecuteWO";
-        mnuExecute.Text = "Execute Write-Only";
+        mnuExecute.Text = "Test Write-Only";
         Helpers.ScaleToolstrip(mnu);
     }
 
