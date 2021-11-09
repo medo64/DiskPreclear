@@ -133,7 +133,7 @@ internal partial class MainForm : Form {
     private void dfgMain_ElementCountUpdated(object sender, EventArgs e) {
         var sizeInMB = dfgMain.BlockElementSizeInMegabytes;
         if (sizeInMB > 0) {
-            staElementMB.Text = $"{1} block = {dfgMain.BlockElementSizeInMegabytes} MB";
+            staElementMB.Text = $"{1} block = {dfgMain.BlockElementSizeInMegabytes:#,##0} MB";
             staElementMB.ToolTipText = $"{dfgMain.BlockElementCount} blocks total";
         } else {
             staElementMB.Text = "";
