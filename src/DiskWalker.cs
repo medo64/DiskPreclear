@@ -15,15 +15,20 @@ internal sealed class DiskWalker : IDisposable {
             BlockCount = (int)(DiskSize / BlockSize) + 1;
         }
 
+        using var lw = new Medo.Diagnostics.LifetimeWatch("Block randomization");
+
         BlockIndices = new int[BlockCount];
-        long nextIndex = Random.Shared.Next(BlockCount);
         for (var i = 0; i < BlockCount; i++) {
-            BlockIndices[i] = (int)nextIndex;
-            nextIndex = (nextIndex + Step) % BlockCount;
+            BlockIndices[i] = i;
+        }
+
+        var rnd = Random.Shared;
+        for (var i = 0; i < BlockCount; i++) {
+            var j = rnd.Next(BlockCount);
+            (BlockIndices[i], BlockIndices[j]) = (BlockIndices[j], BlockIndices[i]);  // swap
         }
     }
 
-    private const long Step = 2147483647;  // just make it a prime
     private readonly ulong BlockSize;
 
     private readonly int[] BlockIndices;
