@@ -70,11 +70,12 @@ internal partial class MainForm : Form {
 
             var walker = GetWalker(disk, allowRead, allowWrite);
             dfgMain.Walker = walker;
-            if (walker.Open(allowRead, allowWrite)) {
+            try {
+                walker.Open(allowRead, allowWrite);
                 PrepareForTesting(walker);
                 bwTest.RunWorkerAsync(walker);
-            } else {
-                Medo.Windows.Forms.MessageBox.ShowError(this, "Cannot open disk for " + operation + ".");
+            } catch (Exception ex) {
+                Medo.Windows.Forms.MessageBox.ShowError(this, $"Cannot open disk for {operation}.\n{ex.Message}");
             }
         }
     }

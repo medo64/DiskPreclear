@@ -208,6 +208,7 @@ partial class MainForm
             // 
             this.staWriteSpeed.Margin = new System.Windows.Forms.Padding(2, 4, 2, 2);
             this.staWriteSpeed.Name = "staWriteSpeed";
+            this.staWriteSpeed.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.staWriteSpeed.Size = new System.Drawing.Size(26, 20);
             this.staWriteSpeed.Text = "W:";
             this.staWriteSpeed.Visible = false;
@@ -216,6 +217,7 @@ partial class MainForm
             // 
             this.staReadSpeed.Margin = new System.Windows.Forms.Padding(2, 4, 2, 2);
             this.staReadSpeed.Name = "staReadSpeed";
+            this.staReadSpeed.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.staReadSpeed.Size = new System.Drawing.Size(21, 20);
             this.staReadSpeed.Text = "R:";
             this.staReadSpeed.Visible = false;
@@ -225,6 +227,7 @@ partial class MainForm
             this.staErrors.ForeColor = System.Drawing.Color.Red;
             this.staErrors.Margin = new System.Windows.Forms.Padding(2, 4, 2, 2);
             this.staErrors.Name = "staErrors";
+            this.staErrors.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.staErrors.Size = new System.Drawing.Size(47, 20);
             this.staErrors.Text = "errors";
             this.staErrors.Visible = false;

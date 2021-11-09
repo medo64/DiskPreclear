@@ -89,15 +89,15 @@ internal sealed class DiskWalker : IDisposable {
     /// <summary>
     /// Opens disk for access operations.
     /// </summary>
-    public bool Open(bool allowRead, bool allowWrite) {
-        return Disk.Open(allowRead, allowWrite);
+    public void Open(bool allowRead, bool allowWrite) {
+        Disk.Open(allowRead, allowWrite);
     }
 
     /// <summary>
     /// Closes disk access.
     /// </summary>
-    public bool Close() {
-        return Disk.Close();
+    public void Close() {
+        Disk.Close();
     }
 
     /// <summary>

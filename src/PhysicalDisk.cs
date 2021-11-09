@@ -117,7 +117,7 @@ internal sealed class PhysicalDisk : IDisposable {
     /// <summary>
     /// Opens disk for access operations.
     /// </summary>
-    public bool Open(bool allowRead, bool allowWrite) {
+    public void Open(bool allowRead, bool allowWrite) {
         if (DiskHandle == null) {
             uint accessMode = 0;
             if (allowRead) { accessMode |= NativeMethods.GENERIC_READ; }
@@ -141,24 +141,23 @@ internal sealed class PhysicalDisk : IDisposable {
                                                       NativeMethods.OPEN_EXISTING,
                                                       flags,
                                                       IntPtr.Zero);
-            if (!diskHandle.IsInvalid) {
-                DiskHandle = diskHandle;
-                return true;
-            }
+            if (diskHandle.IsInvalid) { throw new Win32Exception(); }
+            DiskHandle = diskHandle;
+        } else {
+            throw new InvalidOperationException("Disk already open.");
         }
-        return false;
     }
 
     /// <summary>
     /// Closes disk access.
     /// </summary>
-    public bool Close() {
+    public void Close() {
         if (DiskHandle != null) {
             DiskHandle.Dispose();
             DiskHandle = null;
-            return true;
+        } else {
+            throw new InvalidOperationException("Disk already closed.");
         }
-        return false;
     }
 
     /// <summary>
