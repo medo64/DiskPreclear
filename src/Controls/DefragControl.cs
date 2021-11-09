@@ -83,6 +83,8 @@ internal partial class DefragControl : Control {
                 ElementCount = elementCount;
                 ElementFoldCount = elementFoldCount;
             }
+
+            ElementCountUpdated?.Invoke(this, EventArgs.Empty);
         } else {
             ElementCount = 0;
         }
@@ -161,12 +163,12 @@ internal partial class DefragControl : Control {
     public DiskWalker? Walker {
         get { return _walker; }
         set {
-            _walker = value;
             lock (SyncBlockStates) {
+                _walker = value;
                 BlockStates = _walker != null ? new bool?[_walker.BlockCount] : Array.Empty<bool?>();
                 BlockTrail.Clear();
             }
-            OnResize(EventArgs.Empty);
+            OnResize(EventArgs.Empty);  // force resize to recalculate
         }
     }
 
@@ -178,6 +180,32 @@ internal partial class DefragControl : Control {
             while (BlockTrail.Count > 4200) { BlockTrail.RemoveLast(); }
 
             NeedsUpdate = true;
+        }
+    }
+
+
+    public event EventHandler<EventArgs>? ElementCountUpdated;
+
+    public long BlockElementCount {
+        get {
+            lock (SyncBlockStates) {
+                return ElementCount;
+            }
+        }
+    }
+
+    public long BlockElementSizeInBytes {
+        get {
+            lock (SyncBlockStates) {
+                if (_walker is null) { return 0; }
+                return ElementFoldCount * (long)_walker.MaxBlockSize;
+            }
+        }
+    }
+
+    public long BlockElementSizeInMegabytes {
+        get {
+            return BlockElementSizeInBytes / 1024 / 1024;
         }
     }
 

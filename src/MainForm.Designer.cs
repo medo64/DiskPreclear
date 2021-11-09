@@ -51,6 +51,7 @@ partial class MainForm
             this.staPercents = new System.Windows.Forms.ToolStripStatusLabel();
             this.staProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.staRemaining = new System.Windows.Forms.ToolStripStatusLabel();
+            this.staElementMB = new System.Windows.Forms.ToolStripStatusLabel();
             this.dfgMain = new DiskPreclear.Controls.DefragControl();
             this.mnu.SuspendLayout();
             this.sta.SuspendLayout();
@@ -188,9 +189,11 @@ partial class MainForm
             this.staErrors,
             this.staPercents,
             this.staProgress,
-            this.staRemaining});
+            this.staRemaining,
+            this.staElementMB});
             this.sta.Location = new System.Drawing.Point(0, 407);
             this.sta.Name = "sta";
+            this.sta.ShowItemToolTips = true;
             this.sta.Size = new System.Drawing.Size(782, 26);
             this.sta.TabIndex = 3;
             // 
@@ -249,6 +252,13 @@ partial class MainForm
             this.staRemaining.Text = "remaining";
             this.staRemaining.Visible = false;
             // 
+            // staElementMB
+            // 
+            this.staElementMB.Margin = new System.Windows.Forms.Padding(2, 4, 2, 2);
+            this.staElementMB.Name = "staElementMB";
+            this.staElementMB.Size = new System.Drawing.Size(85, 20);
+            this.staElementMB.Text = "block = MB";
+            // 
             // dfgMain
             // 
             this.dfgMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -258,6 +268,7 @@ partial class MainForm
             this.dfgMain.TabIndex = 4;
             this.dfgMain.Text = "defragControl1";
             this.dfgMain.Walker = null;
+            this.dfgMain.ElementCountUpdated += new System.EventHandler<System.EventArgs>(this.dfgMain_ElementCountUpdated);
             // 
             // MainForm
             // 
@@ -306,4 +317,5 @@ partial class MainForm
     private System.Windows.Forms.ToolStripMenuItem mnuAppFeedback;
     private System.Windows.Forms.ToolStripSeparator mnuApp0;
     private System.Windows.Forms.ToolStripMenuItem mnuAppUpgrade;
+    private System.Windows.Forms.ToolStripStatusLabel staElementMB;
 }

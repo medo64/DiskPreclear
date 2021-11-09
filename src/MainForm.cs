@@ -129,6 +129,18 @@ internal partial class MainForm : Form {
     }
 
 
+    private void dfgMain_ElementCountUpdated(object sender, EventArgs e) {
+        var sizeInMB = dfgMain.BlockElementSizeInMegabytes;
+        if (sizeInMB > 0) {
+            staElementMB.Text = $"{1} block = {dfgMain.BlockElementSizeInMegabytes} MB";
+            staElementMB.ToolTipText = $"{dfgMain.BlockElementCount} blocks total";
+        } else {
+            staElementMB.Text = "";
+            staElementMB.ToolTipText = "";
+        }
+    }
+
+
     private static readonly RandomNumberGenerator Rnd = RandomNumberGenerator.Create();
 
     private void bwTest_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e) {
@@ -140,8 +152,8 @@ internal partial class MainForm : Form {
         var okCount = 0;
         var nokCount = 0;
 
-        var dataOut = new byte[walker.MaxBufferSize];
-        var dataIn = new byte[walker.MaxBufferSize];
+        var dataOut = new byte[walker.MaxBlockSize];
+        var dataIn = new byte[walker.MaxBlockSize];
 
         var writeSpeed = new MovingAverage(42);
         var readSpeed = new MovingAverage(42);
@@ -185,7 +197,7 @@ internal partial class MainForm : Form {
             }
 
             if (nextUpdate < swTotal.ElapsedMilliseconds) {
-                var progress = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount, okCount, nokCount, walker.MaxBufferSize, writeSpeed.Average, readSpeed.Average);
+                var progress = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount, okCount, nokCount, walker.MaxBlockSize, writeSpeed.Average, readSpeed.Average);
                 bwTest.ReportProgress(0, progress);
                 nextUpdate = swTotal.ElapsedMilliseconds + 420;  // next update in 420ms
             }
@@ -194,15 +206,15 @@ internal partial class MainForm : Form {
         }
 
         walker.Close();
-        var finalProgress = new ProgressObjectState(swTotal, walker.Index, walker.BlockCount, okCount, nokCount, walker.MaxBufferSize, writeSpeed.Average, readSpeed.Average);
+        var finalProgress = new ProgressObjectState(swTotal, walker.Index, walker.BlockCount, okCount, nokCount, walker.MaxBlockSize, writeSpeed.Average, readSpeed.Average);
         bwTest.ReportProgress(100, finalProgress);
         e.Result = finalProgress;
     }
 
     private void bwTest_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e) {
         if (e.UserState is ProgressObjectState state) {
-            staWriteSpeed.Text = $"W:{state.WriteSpeed:#,##0} MB/s";
-            staReadSpeed.Text = $"R:{state.ReadSpeed:#,##0} MB/s";
+            staWriteSpeed.Text = $"W: {state.WriteSpeed:#,##0} MB/s";
+            staReadSpeed.Text = $"R: {state.ReadSpeed:#,##0} MB/s";
             if (state.NokCount > 0) {
                 staErrors.Text = $"{state.NokCount:#,##0} " + ((state.NokCount != 1) ? "errors" : "error");
             }

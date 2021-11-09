@@ -43,7 +43,7 @@ internal sealed class DiskWalker : IDisposable {
     /// <summary>
     /// Gets maximum block size.
     /// </summary>
-    public int MaxBufferSize => (int)BlockSize;
+    public int MaxBlockSize => (int)BlockSize;
 
     /// <summary>
     /// Gets/sets index used to calculate offset.
