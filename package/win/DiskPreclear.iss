@@ -51,7 +51,7 @@ Source: "..\README.md";      DestName: "README.txt";   DestDir: "{app}";  Flags:
 Source: "..\LICENSE.md";     DestName: "LICENSE.txt";  DestDir: "{app}";  Flags: overwritereadonly uninsremovereadonly;  Attribs: readonly;
 
 [Icons]
-Name: "{userstartmenu}\DiskPreclear";  Filename: "{app}\DiskPreclear.exe"
+Name: "{userstartmenu}\Disk Preclear";  Filename: "{app}\DiskPreclear.exe"
 
 [Run]
 Description: "Launch application now";  Filename: "{app}\DiskPreclear.exe";  Flags: postinstall nowait skipifsilent runasoriginaluser shellexec
