@@ -224,7 +224,7 @@ internal partial class MainForm : Form {
             if (bwTest.CancellationPending) {
                 walker.Close();
                 e.Cancel = true;
-                break;
+                return;  // done
             }
 
             if (nextUpdate < swTotal.ElapsedMilliseconds) {
