@@ -154,25 +154,26 @@ partial class MainForm
             this.mnuRandom.Tag = "mnuRandomSecure";
             this.mnuRandom.Text = "Random";
             this.mnuRandom.ButtonClick += new System.EventHandler(this.mnuRandom_ButtonClick);
+            this.mnuRandom.DropDownOpening += new System.EventHandler(this.mnuRandom_DropDownOpening);
             // 
             // mnuRandomSecure
             // 
             this.mnuRandomSecure.Name = "mnuRandomSecure";
-            this.mnuRandomSecure.Size = new System.Drawing.Size(220, 26);
+            this.mnuRandomSecure.Size = new System.Drawing.Size(224, 26);
             this.mnuRandomSecure.Text = "Secure Random";
             this.mnuRandomSecure.Click += new System.EventHandler(this.mnuRandomSecure_Click);
             // 
             // mnuRandomRepeat
             // 
             this.mnuRandomRepeat.Name = "mnuRandomRepeat";
-            this.mnuRandomRepeat.Size = new System.Drawing.Size(220, 26);
+            this.mnuRandomRepeat.Size = new System.Drawing.Size(224, 26);
             this.mnuRandomRepeat.Text = "Repeating Random";
             this.mnuRandomRepeat.Click += new System.EventHandler(this.mnuRandomRepeat_Click);
             // 
             // mnuRandomZero
             // 
             this.mnuRandomZero.Name = "mnuRandomZero";
-            this.mnuRandomZero.Size = new System.Drawing.Size(220, 26);
+            this.mnuRandomZero.Size = new System.Drawing.Size(224, 26);
             this.mnuRandomZero.Text = "Zero";
             this.mnuRandomZero.Click += new System.EventHandler(this.mnuRandomZero_Click);
             // 
@@ -188,18 +189,19 @@ partial class MainForm
             this.mnuOrder.Tag = "mnuOrderRandom";
             this.mnuOrder.Text = "Random";
             this.mnuOrder.ButtonClick += new System.EventHandler(this.mnuOrder_ButtonClick);
+            this.mnuOrder.DropDownOpening += new System.EventHandler(this.mnuOrder_DropDownOpening);
             // 
             // mnuOrderRandom
             // 
             this.mnuOrderRandom.Name = "mnuOrderRandom";
-            this.mnuOrderRandom.Size = new System.Drawing.Size(202, 26);
+            this.mnuOrderRandom.Size = new System.Drawing.Size(224, 26);
             this.mnuOrderRandom.Text = "Random order";
             this.mnuOrderRandom.Click += new System.EventHandler(this.mnuOrderRandom_Click);
             // 
             // mnuOrderSequential
             // 
             this.mnuOrderSequential.Name = "mnuOrderSequential";
-            this.mnuOrderSequential.Size = new System.Drawing.Size(202, 26);
+            this.mnuOrderSequential.Size = new System.Drawing.Size(224, 26);
             this.mnuOrderSequential.Text = "Sequential order";
             this.mnuOrderSequential.Click += new System.EventHandler(this.mnuOrderSequential_Click);
             // 

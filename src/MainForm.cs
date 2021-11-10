@@ -226,6 +226,19 @@ internal partial class MainForm : Form {
         }
     }
 
+    private void mnuRandom_DropDownOpening(object sender, EventArgs e) {
+        mnuRandomSecure.Checked = false;
+        mnuRandomRepeat.Checked = false;
+        mnuRandomZero.Checked = false;
+        if ("mnuRandomRepeat".Equals(mnuRandom.Tag)) {
+            mnuRandomRepeat.Checked = true;
+        } else if ("mnuRandomZero".Equals(mnuRandom.Tag)) {
+            mnuRandomZero.Checked = true;
+        } else {
+            mnuRandomSecure.Checked = true;
+        }
+    }
+
     private void mnuRandomSecure_Click(object sender, EventArgs e) {
         mnuRandom.Tag = "mnuRandomSecure";
         mnuRandom.Text = "Random";
@@ -246,6 +259,16 @@ internal partial class MainForm : Form {
             mnuOrderSequential_Click(sender, EventArgs.Empty);
         } else {
             mnuOrderRandom_Click(sender, EventArgs.Empty);
+        }
+    }
+
+    private void mnuOrder_DropDownOpening(object sender, EventArgs e) {
+        mnuOrderRandom.Checked = false;
+        mnuOrderSequential.Checked = false;
+        if ("mnuOrderSequential".Equals(mnuOrder.Tag)) {
+            mnuOrderSequential.Checked = true;
+        } else {
+            mnuOrderRandom.Checked = true;
         }
     }
 
