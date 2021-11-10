@@ -1,5 +1,9 @@
 ## Release Notes ##
 
+### 0.2.1 [2021-11-10] ###
+
+* Menu improvements
+
 ### 0.2.0 [2021-11-10] ###
 
 * Option to turn off randomization
