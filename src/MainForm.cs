@@ -332,6 +332,8 @@ internal partial class MainForm : Form {
         mnuExecute.Enabled = !testing;
         mnuRandom.Enabled = !testing;
         mnuRefresh.Enabled = !testing;
+        mnuAppUpgrade.Enabled = !testing;
+
         staWriteSpeed.Visible = testingWrite;
         staWriteSpeed.Text = "";
         staReadSpeed.Visible = testingRead;
