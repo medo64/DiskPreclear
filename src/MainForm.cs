@@ -31,17 +31,20 @@ internal partial class MainForm : Form {
 
     protected override void OnKeyDown(KeyEventArgs e) {
         switch (e.KeyData) {
-            case Keys.PageUp:
-                if (mnuDisks.SelectedIndex > 0) { mnuDisks.SelectedIndex -= 1; }
-                break;
-            case Keys.PageDown:
-                if (mnuDisks.SelectedIndex < mnuDisks.Items.Count - 1) { mnuDisks.SelectedIndex += 1; }
-                break;
-            case Keys.F5:
-                mnuExecute.PerformButtonClick();
-                break;
             case Keys.Escape:
                 if (bwTest.IsBusy) { Close(); }  // cancel operation only if running
+                break;
+            case Keys.PageUp:
+                if (mnuDisks.Enabled && mnuDisks.SelectedIndex > 0) { mnuDisks.SelectedIndex -= 1; }
+                break;
+            case Keys.PageDown:
+                if (mnuDisks.Enabled && mnuDisks.SelectedIndex < mnuDisks.Items.Count - 1) { mnuDisks.SelectedIndex += 1; }
+                break;
+            case Keys.F5:
+                if (mnuExecute.Enabled) { mnuExecute.PerformButtonClick(); }
+                break;
+            case Keys.Control | Keys.R:
+                if (mnuRefresh.Enabled) { mnuRefresh.PerformClick(); }
                 break;
             default:
                 base.OnKeyDown(e);
