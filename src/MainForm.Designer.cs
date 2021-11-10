@@ -58,6 +58,7 @@ partial class MainForm
             this.staRemaining = new System.Windows.Forms.ToolStripStatusLabel();
             this.staElementMB = new System.Windows.Forms.ToolStripStatusLabel();
             this.dfgMain = new DiskPreclear.Controls.DefragControl();
+            this.bwUpgradeCheck = new System.ComponentModel.BackgroundWorker();
             this.mnu.SuspendLayout();
             this.sta.SuspendLayout();
             this.SuspendLayout();
@@ -318,6 +319,12 @@ partial class MainForm
             this.dfgMain.Walker = null;
             this.dfgMain.ElementCountUpdated += new System.EventHandler<System.EventArgs>(this.dfgMain_ElementCountUpdated);
             // 
+            // bwUpgradeCheck
+            // 
+            this.bwUpgradeCheck.WorkerSupportsCancellation = true;
+            this.bwUpgradeCheck.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwUpgradeCheck_DoWork);
+            this.bwUpgradeCheck.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwUpgradeCheck_RunWorkerCompleted);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -372,4 +379,5 @@ partial class MainForm
     private System.Windows.Forms.ToolStripMenuItem mnuRandomRepeat;
     private System.Windows.Forms.ToolStripMenuItem mnuRandomZero;
     private System.Windows.Forms.ToolStripSeparator mnu1;
+    private System.ComponentModel.BackgroundWorker bwUpgradeCheck;
 }

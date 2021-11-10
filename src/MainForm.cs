@@ -1,7 +1,9 @@
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Windows.Forms;
 using Medo.Math;
 using Medo.Windows.Forms;
@@ -19,9 +21,11 @@ internal partial class MainForm : Form {
 
     private void MainForm_Load(object sender, System.EventArgs e) {
         FillDisks();
+        bwUpgradeCheck.RunWorkerAsync();
     }
 
     private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
+        bwUpgradeCheck.CancelAsync();
         if (bwTest.IsBusy) {
             bwTest.CancelAsync();
             e.Cancel = true;  // don't close the form if you had to cancel task
@@ -186,6 +190,30 @@ internal partial class MainForm : Form {
         } else {
             staElementMB.Text = "";
             staElementMB.ToolTipText = "";
+        }
+    }
+
+
+    private void bwUpgradeCheck_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e) {
+        e.Cancel = true;
+
+        var sw = Stopwatch.StartNew();
+        while (sw.ElapsedMilliseconds < 3000) { //wait for three seconds
+            Thread.Sleep(100);
+            if (bwUpgradeCheck.CancellationPending) { return; }
+        }
+
+        var file = UpgradeBox.GetUpgradeFile(new Uri("https://medo64.com/upgrade/"));
+        if (file != null) {
+            if (bwUpgradeCheck.CancellationPending) { return; }
+            e.Cancel = false;
+        }
+    }
+
+    private void bwUpgradeCheck_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
+        if (!e.Cancelled && (e.Error == null)) {
+            Helpers.ScaleToolstripItem(mnuApp, "mnuAppUpgrade");
+            mnuAppUpgrade.Text = "Upgrade is available";
         }
     }
 

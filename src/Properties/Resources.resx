@@ -118,6 +118,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="mnuAppUpgrade_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\AppUpgrade_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuAppUpgrade_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\AppUpgrade_24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuAppUpgrade_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\AppUpgrade_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuAppUpgrade_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\AppUpgrade_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuAppUpgrade_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\AppUpgrade_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="mnuApp_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\App_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

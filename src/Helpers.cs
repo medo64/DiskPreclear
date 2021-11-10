@@ -57,6 +57,22 @@ internal static class Helpers {
         }
     }
 
+    internal static void ScaleToolstripItem(ToolStripItem item, string name) {
+        var sizeAndSet = GetSizeAndSet();
+        var size = sizeAndSet.Key;
+        var set = sizeAndSet.Value;
+
+        var resources = DiskPreclear.Properties.Resources.ResourceManager;
+        item.ImageScaling = ToolStripItemImageScaling.None;
+        if (resources.GetObject(name + set) is Bitmap bitmap) {
+            item.Image = new Bitmap(bitmap, size, size);
+        } else {
+#if DEBUG
+            item.Image = new Bitmap(size, size, PixelFormat.Format8bppIndexed);
+#endif
+        }
+    }
+
     private static KeyValuePair<int, string> GetSizeAndSet() {
         return GetSizeAndSet(0.5);
     }
