@@ -70,10 +70,18 @@ internal partial class MainForm : Form {
 
             var walker = GetWalker(disk, allowRead, allowWrite);
             dfgMain.Walker = walker;
+
+            var randomKind = RandomKind.Secure;
+            if ("mnuRandomZero".Equals(mnuRandom.Tag)) {
+                randomKind = RandomKind.Zero;
+            } else if ("mnuRandomRepeat".Equals(mnuRandom.Tag)) {
+                randomKind = RandomKind.Repeat;
+            }
+
             try {
                 walker.Open(allowRead, allowWrite);
                 PrepareForTesting(walker);
-                bwTest.RunWorkerAsync(walker);
+                bwTest.RunWorkerAsync(new InitObjectState(walker, randomKind));
             } catch (Exception ex) {
                 Medo.Windows.Forms.MessageBox.ShowError(this, $"Cannot open disk for {operation}.\n{ex.Message}");
             }
@@ -113,6 +121,21 @@ internal partial class MainForm : Form {
         Helpers.ScaleToolstrip(mnu);
     }
 
+    private void mnuRandomSecure_Click(object sender, EventArgs e) {
+        mnuRandom.Tag = "mnuRandomSecure";
+        mnuRandom.Text = "Random";
+    }
+
+    private void mnuRandomRepeat_Click(object sender, EventArgs e) {
+        mnuRandom.Tag = "mnuRandomRepeat";
+        mnuRandom.Text = "Repeat";
+    }
+
+    private void mnuRandomZero_Click(object sender, EventArgs e) {
+        mnuRandom.Tag = "mnuRandomZero";
+        mnuRandom.Text = "Zero";
+    }
+
     private void mnuRefresh_Click(object sender, System.EventArgs e) {
         FillDisks();
     }
@@ -145,7 +168,10 @@ internal partial class MainForm : Form {
     private static readonly RandomNumberGenerator Rnd = RandomNumberGenerator.Create();
 
     private void bwTest_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e) {
-        if (e.Argument is not DiskWalker walker) { return; }
+        if (e.Argument is not InitObjectState state) { return; }
+
+        var walker = state.Walker;
+        var randomKind = state.RandomKind;
 
         var swTotal = Stopwatch.StartNew();
         var nextUpdate = swTotal.ElapsedMilliseconds;
@@ -163,7 +189,11 @@ internal partial class MainForm : Form {
         for (var i = 0; i < blockCount; i++) {
             if (walker.AllowWrite) {
                 var swRandom = Stopwatch.StartNew();
-                Rnd.GetBytes(dataOut);
+                if (randomKind == RandomKind.Secure) {
+                    Rnd.GetBytes(dataOut);
+                } else if ((randomKind == RandomKind.Repeat) && (i == 0)) {
+                    Rnd.GetBytes(dataOut);
+                }
                 swRandom.Stop();
             }
 

@@ -36,6 +36,10 @@ partial class MainForm
             this.mnuExecuteUseRW = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuExecuteUseRO = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuExecuteUseWO = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuRandom = new System.Windows.Forms.ToolStripSplitButton();
+            this.mnuRandomSecure = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuRandomRepeat = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuRandomZero = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu0 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRefresh = new System.Windows.Forms.ToolStripButton();
             this.mnuApp = new System.Windows.Forms.ToolStripDropDownButton();
@@ -53,6 +57,7 @@ partial class MainForm
             this.staRemaining = new System.Windows.Forms.ToolStripStatusLabel();
             this.staElementMB = new System.Windows.Forms.ToolStripStatusLabel();
             this.dfgMain = new DiskPreclear.Controls.DefragControl();
+            this.mnu1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnu.SuspendLayout();
             this.sta.SuspendLayout();
             this.SuspendLayout();
@@ -73,6 +78,8 @@ partial class MainForm
             this.mnuDisks,
             this.mnuExecute,
             this.mnu0,
+            this.mnuRandom,
+            this.mnu1,
             this.mnuRefresh,
             this.mnuApp});
             this.mnu.Location = new System.Drawing.Point(0, 0);
@@ -122,6 +129,39 @@ partial class MainForm
             this.mnuExecuteUseWO.Size = new System.Drawing.Size(254, 26);
             this.mnuExecuteUseWO.Text = "Write-only (destructive)";
             this.mnuExecuteUseWO.Click += new System.EventHandler(this.mnuExecuteUseWO_Click);
+            // 
+            // mnuRandom
+            // 
+            this.mnuRandom.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuRandomSecure,
+            this.mnuRandomRepeat,
+            this.mnuRandomZero});
+            this.mnuRandom.Image = global::DiskPreclear.Properties.Resources.mnuRandom_16;
+            this.mnuRandom.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuRandom.Name = "mnuRandom";
+            this.mnuRandom.Size = new System.Drawing.Size(104, 25);
+            this.mnuRandom.Text = "Random";
+            // 
+            // mnuRandomSecure
+            // 
+            this.mnuRandomSecure.Name = "mnuRandomSecure";
+            this.mnuRandomSecure.Size = new System.Drawing.Size(220, 26);
+            this.mnuRandomSecure.Text = "Secure Random";
+            this.mnuRandomSecure.Click += new System.EventHandler(this.mnuRandomSecure_Click);
+            // 
+            // mnuRandomRepeat
+            // 
+            this.mnuRandomRepeat.Name = "mnuRandomRepeat";
+            this.mnuRandomRepeat.Size = new System.Drawing.Size(220, 26);
+            this.mnuRandomRepeat.Text = "Repeating Random";
+            this.mnuRandomRepeat.Click += new System.EventHandler(this.mnuRandomRepeat_Click);
+            // 
+            // mnuRandomZero
+            // 
+            this.mnuRandomZero.Name = "mnuRandomZero";
+            this.mnuRandomZero.Size = new System.Drawing.Size(220, 26);
+            this.mnuRandomZero.Text = "Zero";
+            this.mnuRandomZero.Click += new System.EventHandler(this.mnuRandomZero_Click);
             // 
             // mnu0
             // 
@@ -273,6 +313,11 @@ partial class MainForm
             this.dfgMain.Walker = null;
             this.dfgMain.ElementCountUpdated += new System.EventHandler<System.EventArgs>(this.dfgMain_ElementCountUpdated);
             // 
+            // mnu1
+            // 
+            this.mnu1.Name = "mnu1";
+            this.mnu1.Size = new System.Drawing.Size(6, 28);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -321,4 +366,9 @@ partial class MainForm
     private System.Windows.Forms.ToolStripSeparator mnuApp0;
     private System.Windows.Forms.ToolStripMenuItem mnuAppUpgrade;
     private System.Windows.Forms.ToolStripStatusLabel staElementMB;
+    private System.Windows.Forms.ToolStripSplitButton mnuRandom;
+    private System.Windows.Forms.ToolStripMenuItem mnuRandomSecure;
+    private System.Windows.Forms.ToolStripMenuItem mnuRandomRepeat;
+    private System.Windows.Forms.ToolStripMenuItem mnuRandomZero;
+    private System.Windows.Forms.ToolStripSeparator mnu1;
 }
