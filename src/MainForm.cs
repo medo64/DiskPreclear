@@ -14,6 +14,8 @@ internal partial class MainForm : Form {
     public MainForm() {
         InitializeComponent();
 
+        mnu.Font = SystemFonts.MessageBoxFont;
+        mnuDisks.Font = SystemFonts.MessageBoxFont;
         mnu.Renderer = Helpers.ToolStripBorderlessSystemRendererInstance;
         Helpers.ScaleToolstrip(mnu);
     }
@@ -33,26 +35,88 @@ internal partial class MainForm : Form {
     }
 
 
-    protected override void OnKeyDown(KeyEventArgs e) {
-        switch (e.KeyData) {
+    private bool SuppressMenuKey = false;
+
+    private void ToggleMenu() {
+        if (!mnu.ContainsFocus) {
+            mnu.Select();
+            if (mnuDisks.Enabled) {
+                mnuDisks.ComboBox.Select();
+            } else if (mnuApp.Enabled) {
+                mnuApp.ShowDropDown();
+            }
+        } else {
+            dfgMain.Focus();
+        }
+    }
+
+    protected override bool ProcessDialogKey(Keys keyData) {
+        if (((keyData & Keys.Alt) == Keys.Alt) && (keyData != (Keys.Alt | Keys.Menu))) { SuppressMenuKey = true; }
+
+        switch (keyData) {
+            case Keys.F10:
+                ToggleMenu();
+                return true;
+
+            case Keys.Alt | Keys.O:
+                if (mnuOrder.Enabled) { mnuOrder.ShowDropDown(); }
+                return true;
+
+            case Keys.Alt | Keys.R:
+                if (mnuRandom.Enabled) { mnuRandom.ShowDropDown(); }
+                return true;
+
+            case Keys.Alt | Keys.T:
+                if (mnuExecute.Enabled) { mnuExecute.ShowDropDown(); }
+                return true;
+
             case Keys.Escape:
                 if (bwTest.IsBusy) { Close(); }  // cancel operation only if running
-                break;
+                return true;
+
             case Keys.PageUp:
                 if (mnuDisks.Enabled && mnuDisks.SelectedIndex > 0) { mnuDisks.SelectedIndex -= 1; }
-                break;
+                return true;
+
             case Keys.PageDown:
                 if (mnuDisks.Enabled && mnuDisks.SelectedIndex < mnuDisks.Items.Count - 1) { mnuDisks.SelectedIndex += 1; }
-                break;
+                return true;
+
+            case Keys.F1:
+                if (mnuApp.Enabled) { mnuApp.ShowDropDown(); }
+                return true;
+
             case Keys.F5:
                 if (mnuExecute.Enabled) { mnuExecute.PerformButtonClick(); }
-                break;
+                return true;
+
             case Keys.Control | Keys.R:
                 if (mnuRefresh.Enabled) { mnuRefresh.PerformClick(); }
-                break;
-            default:
-                base.OnKeyDown(e);
-                break;
+                return true;
+        }
+
+        return base.ProcessDialogKey(keyData);
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e) {
+        if (e.KeyData == Keys.Menu) {
+            if (SuppressMenuKey) { SuppressMenuKey = false; return; }
+            ToggleMenu();
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+        } else {
+            base.OnKeyDown(e);
+        }
+    }
+
+    protected override void OnKeyUp(KeyEventArgs e) {
+        if (e.KeyData == Keys.Menu) {
+            if (SuppressMenuKey) { SuppressMenuKey = false; return; }
+            ToggleMenu();
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+        } else {
+            base.OnKeyUp(e);
         }
     }
 
@@ -371,6 +435,7 @@ internal partial class MainForm : Form {
         mnuDisks.Enabled = !testing;
         mnuExecute.Enabled = !testing;
         mnuRandom.Enabled = !testing;
+        mnuOrder.Enabled = !testing;
         mnuRefresh.Enabled = !testing;
         mnuAppUpgrade.Enabled = !testing;
 
