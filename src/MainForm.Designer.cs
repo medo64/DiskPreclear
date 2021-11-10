@@ -327,6 +327,7 @@ partial class MainForm
             this.Controls.Add(this.sta);
             this.Controls.Add(this.mnu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(480, 320);
             this.Name = "MainForm";
             this.Text = "Disk Preclear";

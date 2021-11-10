@@ -16,6 +16,7 @@ internal partial class MainForm : Form {
         Helpers.ScaleToolstrip(mnu);
     }
 
+
     private void MainForm_Load(object sender, System.EventArgs e) {
         FillDisks();
     }
@@ -24,6 +25,27 @@ internal partial class MainForm : Form {
         if (bwTest.IsBusy) {
             bwTest.CancelAsync();
             e.Cancel = true;  // don't close the form if you had to cancel task
+        }
+    }
+
+
+    protected override void OnKeyDown(KeyEventArgs e) {
+        switch (e.KeyData) {
+            case Keys.PageUp:
+                if (mnuDisks.SelectedIndex > 0) { mnuDisks.SelectedIndex -= 1; }
+                break;
+            case Keys.PageDown:
+                if (mnuDisks.SelectedIndex < mnuDisks.Items.Count - 1) { mnuDisks.SelectedIndex += 1; }
+                break;
+            case Keys.F5:
+                mnuExecute.PerformButtonClick();
+                break;
+            case Keys.Escape:
+                if (bwTest.IsBusy) { Close(); }  // cancel operation only if running
+                break;
+            default:
+                base.OnKeyDown(e);
+                break;
         }
     }
 
