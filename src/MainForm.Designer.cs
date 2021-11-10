@@ -270,8 +270,8 @@ partial class MainForm
             this.staPercents,
             this.staProgress,
             this.staRemaining,
-            this.staElementMB,
-            this.staProcessed});
+            this.staProcessed,
+            this.staElementMB});
             this.sta.Location = new System.Drawing.Point(0, 407);
             this.sta.Name = "sta";
             this.sta.ShowItemToolTips = true;
