@@ -36,11 +36,12 @@ partial class MainForm
             this.mnuExecuteUseRW = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuExecuteUseRO = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuExecuteUseWO = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnu0 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRandom = new System.Windows.Forms.ToolStripSplitButton();
             this.mnuRandomSecure = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRandomRepeat = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRandomZero = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnu0 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnu1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRefresh = new System.Windows.Forms.ToolStripButton();
             this.mnuApp = new System.Windows.Forms.ToolStripDropDownButton();
             this.mnuAppFeedback = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,7 +58,6 @@ partial class MainForm
             this.staRemaining = new System.Windows.Forms.ToolStripStatusLabel();
             this.staElementMB = new System.Windows.Forms.ToolStripStatusLabel();
             this.dfgMain = new DiskPreclear.Controls.DefragControl();
-            this.mnu1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnu.SuspendLayout();
             this.sta.SuspendLayout();
             this.SuspendLayout();
@@ -130,6 +130,11 @@ partial class MainForm
             this.mnuExecuteUseWO.Text = "Write-only (destructive)";
             this.mnuExecuteUseWO.Click += new System.EventHandler(this.mnuExecuteUseWO_Click);
             // 
+            // mnu0
+            // 
+            this.mnu0.Name = "mnu0";
+            this.mnu0.Size = new System.Drawing.Size(6, 28);
+            // 
             // mnuRandom
             // 
             this.mnuRandom.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -163,10 +168,10 @@ partial class MainForm
             this.mnuRandomZero.Text = "Zero";
             this.mnuRandomZero.Click += new System.EventHandler(this.mnuRandomZero_Click);
             // 
-            // mnu0
+            // mnu1
             // 
-            this.mnu0.Name = "mnu0";
-            this.mnu0.Size = new System.Drawing.Size(6, 28);
+            this.mnu1.Name = "mnu1";
+            this.mnu1.Size = new System.Drawing.Size(6, 28);
             // 
             // mnuRefresh
             // 
@@ -312,11 +317,6 @@ partial class MainForm
             this.dfgMain.Text = "defragControl1";
             this.dfgMain.Walker = null;
             this.dfgMain.ElementCountUpdated += new System.EventHandler<System.EventArgs>(this.dfgMain_ElementCountUpdated);
-            // 
-            // mnu1
-            // 
-            this.mnu1.Name = "mnu1";
-            this.mnu1.Size = new System.Drawing.Size(6, 28);
             // 
             // MainForm
             // 
