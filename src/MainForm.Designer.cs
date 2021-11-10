@@ -60,6 +60,7 @@ partial class MainForm
             this.staProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.staRemaining = new System.Windows.Forms.ToolStripStatusLabel();
             this.staElementMB = new System.Windows.Forms.ToolStripStatusLabel();
+            this.staProcessed = new System.Windows.Forms.ToolStripStatusLabel();
             this.dfgMain = new DiskPreclear.Controls.DefragControl();
             this.bwUpgradeCheck = new System.ComponentModel.BackgroundWorker();
             this.mnu.SuspendLayout();
@@ -157,21 +158,21 @@ partial class MainForm
             // mnuRandomSecure
             // 
             this.mnuRandomSecure.Name = "mnuRandomSecure";
-            this.mnuRandomSecure.Size = new System.Drawing.Size(224, 26);
+            this.mnuRandomSecure.Size = new System.Drawing.Size(220, 26);
             this.mnuRandomSecure.Text = "Secure Random";
             this.mnuRandomSecure.Click += new System.EventHandler(this.mnuRandomSecure_Click);
             // 
             // mnuRandomRepeat
             // 
             this.mnuRandomRepeat.Name = "mnuRandomRepeat";
-            this.mnuRandomRepeat.Size = new System.Drawing.Size(224, 26);
+            this.mnuRandomRepeat.Size = new System.Drawing.Size(220, 26);
             this.mnuRandomRepeat.Text = "Repeating Random";
             this.mnuRandomRepeat.Click += new System.EventHandler(this.mnuRandomRepeat_Click);
             // 
             // mnuRandomZero
             // 
             this.mnuRandomZero.Name = "mnuRandomZero";
-            this.mnuRandomZero.Size = new System.Drawing.Size(224, 26);
+            this.mnuRandomZero.Size = new System.Drawing.Size(220, 26);
             this.mnuRandomZero.Text = "Zero";
             this.mnuRandomZero.Click += new System.EventHandler(this.mnuRandomZero_Click);
             // 
@@ -191,14 +192,14 @@ partial class MainForm
             // mnuOrderRandom
             // 
             this.mnuOrderRandom.Name = "mnuOrderRandom";
-            this.mnuOrderRandom.Size = new System.Drawing.Size(224, 26);
+            this.mnuOrderRandom.Size = new System.Drawing.Size(202, 26);
             this.mnuOrderRandom.Text = "Random order";
             this.mnuOrderRandom.Click += new System.EventHandler(this.mnuOrderRandom_Click);
             // 
             // mnuOrderSequential
             // 
             this.mnuOrderSequential.Name = "mnuOrderSequential";
-            this.mnuOrderSequential.Size = new System.Drawing.Size(224, 26);
+            this.mnuOrderSequential.Size = new System.Drawing.Size(202, 26);
             this.mnuOrderSequential.Text = "Sequential order";
             this.mnuOrderSequential.Click += new System.EventHandler(this.mnuOrderSequential_Click);
             // 
@@ -269,7 +270,8 @@ partial class MainForm
             this.staPercents,
             this.staProgress,
             this.staRemaining,
-            this.staElementMB});
+            this.staElementMB,
+            this.staProcessed});
             this.sta.Location = new System.Drawing.Point(0, 407);
             this.sta.Name = "sta";
             this.sta.ShowItemToolTips = true;
@@ -340,6 +342,14 @@ partial class MainForm
             this.staElementMB.Name = "staElementMB";
             this.staElementMB.Size = new System.Drawing.Size(85, 20);
             this.staElementMB.Text = "block = MB";
+            // 
+            // staProcessed
+            // 
+            this.staProcessed.Margin = new System.Windows.Forms.Padding(2, 4, 2, 2);
+            this.staProcessed.Name = "staProcessed";
+            this.staProcessed.Size = new System.Drawing.Size(102, 20);
+            this.staProcessed.Text = "MB processed";
+            this.staProcessed.Visible = false;
             // 
             // dfgMain
             // 
@@ -416,4 +426,5 @@ partial class MainForm
     private System.Windows.Forms.ToolStripSplitButton mnuOrder;
     private System.Windows.Forms.ToolStripMenuItem mnuOrderRandom;
     private System.Windows.Forms.ToolStripMenuItem mnuOrderSequential;
+    private System.Windows.Forms.ToolStripStatusLabel staProcessed;
 }

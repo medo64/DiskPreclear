@@ -399,6 +399,7 @@ internal partial class MainForm : Form {
             staPercents.Text = state.Percents.ToString("0.000", CultureInfo.CurrentCulture) + "%";
             staProgress.Value = state.Permilles;
             staRemaining.Text = state.EstimatedRemainingAsString + " remaining";
+            staProcessed.Text = $"{state.ProcessedMB:#,##0} MB processed";
         }
     }
 
@@ -470,6 +471,8 @@ internal partial class MainForm : Form {
         staProgress.Value = 0;
         staRemaining.Visible = testing;
         staRemaining.Text = "";
+        staProcessed.Visible = testing;
+        staProcessed.Text = "";
     }
 
     private static DiskWalker GetWalker(PhysicalDisk disk, bool randomAccess = false, bool allowRead = false, bool allowWrite = false) {

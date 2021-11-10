@@ -24,6 +24,7 @@ namespace DiskPreclear {
 
             WriteSpeed = writeBytesPerSecond / 1024 / 1024;
             ReadSpeed = readBytesPerSecond / 1024 / 1024;
+            ProcessedMB = ((long)current * blockSize) / 1024 / 1024;
         }
 
         /// <summary>
@@ -95,6 +96,10 @@ namespace DiskPreclear {
         /// </summary>
         public double ReadSpeed { get; init; }
 
+        /// <summary>
+        /// Gets processed MB.
+        /// </summary>
+        public long ProcessedMB { get; init; }
 
         private static string GetTimeSpanText(TimeSpan time, int extra = 0) {
             var sb = new StringBuilder();
