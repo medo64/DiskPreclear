@@ -1,5 +1,8 @@
 #!/bin/bash
 
+CERTIFICATE_THUMBPRINT="e9b444fffb1375ece027e40d8637b6da3fdaaf0e"
+TIMESTAMP_URL="http://timestamp.digicert.com"
+
 if [ -t 1 ]; then
     ANSI_RESET="$(tput sgr0)"
     ANSI_UNDERLINE="$(tput smul)"
@@ -44,6 +47,46 @@ if ! command -v $DOTNET_CMD >/dev/null; then
     echo "${ANSI_RED}No dotnet found!${ANSI_RESET}" >&2
     exit 1
 fi
+
+CMD_CERTUTIL=`command -v certutil`
+if [[ ! -f "$CMD_CERTUTIL" ]]; then
+    echo -e "${ANSI_YELLOW}Cannot find certutil!${ANSI_RESET}" >&2
+    CERTIFICATE_THUMBPRINT=""
+elif [[ "$CERTIFICATE_THUMBPRINT" == "" ]]; then
+    echo -e "${ANSI_YELLOW}No signing certificate thumbprint!${ANSI_RESET}" >&2
+else
+    $CMD_CERTUTIL -silent -verifystore -user My $CERTIFICATE_THUMBPRINT > /dev/null
+    if [[ $? -ne 0 ]]; then
+        echo -e "${ANSI_YELLOW}Cannot validate certificate thumbprint!${ANSI_RESET}" >&2
+        CERTIFICATE_THUMBPRINT=""
+    fi
+fi
+
+CMD_SIGNTOOL=""
+for SIGNTOOL_PATH in "/c/Program Files (x86)/Microsoft SDKs/ClickOnce/SignTool/signtool.exe" \
+            "/c/Program Files (x86)/Windows Kits/10/App Certification Kit/signtool.exe" \
+            "/c/Program Files (x86)/Windows Kits/10/bin/x86/signtool.exe"; do
+    if [[ -f "$SIGNTOOL_PATH" ]]; then
+        CMD_SIGNTOOL="$SIGNTOOL_PATH"
+        break
+    fi
+done
+
+CMD_INNOSETUP=""
+for INNOSETUP_PATH in "/c/Program Files (x86)/Inno Setup 6/ISCC.exe"; do
+    if [[ -f "$INNOSETUP_PATH" ]]; then
+        CMD_INNOSETUP="$INNOSETUP_PATH"
+        break
+    fi
+done
+
+CMD_WINRAR=""
+for WINRAR_PATH in "/c/Program Files/WinRAR/WinRAR.exe"; do
+    if [[ -f "$WINRAR_PATH" ]]; then
+        CMD_WINRAR="$WINRAR_PATH"
+        break
+    fi
+done
 
 trap "exit 255" SIGHUP SIGINT SIGQUIT SIGPIPE SIGTERM
 trap "echo -n \"$ANSI_RESET\"" EXIT
@@ -107,6 +150,14 @@ function release() {
                       --output "$BASE_DIRECTORY/build/release/" \
                       --verbosity "minimal" \
                       "$BASE_DIRECTORY/src/DiskPreclear.sln" || return 1
+    if [[ "$CERTIFICATE_THUMBPRINT" != "" ]] && [[ -f "$CMD_SIGNTOOL" ]]; then
+        echo
+        if [[ "$TIMESTAMP_URL" != "" ]]; then
+            "$CMD_SIGNTOOL" sign -s "My" -sha1 $CERTIFICATE_THUMBPRINT -tr $TIMESTAMP_URL -v "$BASE_DIRECTORY/build/release/$APP_NAME.exe"
+        else
+            "$CMD_SIGNTOOL" sign -s "My" -sha1 $CERTIFICATE_THUMBPRINT -v "$BASE_DIRECTORY/build/release/$APP_NAME.exe"
+        fi
+    fi
     cp "$BASE_DIRECTORY/build/release/$APP_NAME"* "$BASE_DIRECTORY/bin/" || return 1
     echo "${ANSI_CYAN}Binaries in 'bin/'${ANSI_RESET}"
 }
@@ -133,8 +184,53 @@ function publish() {
                         -p:EnableCompressionInSingleFile=true \
                         -p:DebugType=portable \
                         "$BASE_DIRECTORY/src/DiskPreclear.csproj" || return 1
+    if [[ "$CERTIFICATE_THUMBPRINT" != "" ]] && [[ -f "$CMD_SIGNTOOL" ]]; then
+        echo
+        if [[ "$TIMESTAMP_URL" != "" ]]; then
+            "$CMD_SIGNTOOL" sign -s "My" -sha1 $CERTIFICATE_THUMBPRINT -tr $TIMESTAMP_URL -v "$BASE_DIRECTORY/build/publish/$APP_NAME.exe"
+        else
+            "$CMD_SIGNTOOL" sign -s "My" -sha1 $CERTIFICATE_THUMBPRINT -v "$BASE_DIRECTORY/build/publish/$APP_NAME.exe"
+        fi
+    fi
     cp "$BASE_DIRECTORY/build/publish/$APP_NAME"* "$BASE_DIRECTORY/bin/" || return 1
     echo "${ANSI_CYAN}Binaries in 'bin/'${ANSI_RESET}"
+}
+
+function package() {
+    if [[ ! -f "$CMD_INNOSETUP" ]]; then
+        echo -e "${ANSI_RED}Cannot find InnoSetup 6!${ANSI_RESET}" >&2
+        exit 1
+    fi
+
+    "$CMD_INNOSETUP" package/win/DiskPreclear.iss
+    if [[ $? -eq 0 ]]; then
+        LAST_PACKAGE=`ls -t dist/*.exe | head -1`
+
+        if [[ "$CERTIFICATE_THUMBPRINT" != "" ]] && [[ -f "$CMD_SIGNTOOL" ]]; then
+            echo
+            if [[ "$TIMESTAMP_URL" != "" ]]; then
+                "$CMD_SIGNTOOL" sign -s "My" -sha1 $CERTIFICATE_THUMBPRINT -tr $TIMESTAMP_URL -v $LAST_PACKAGE
+            else
+                "$CMD_SIGNTOOL" sign -s "My" -sha1 $CERTIFICATE_THUMBPRINT -v $LAST_PACKAGE
+            fi
+        fi
+
+        echo
+        echo -e "${ANSI_CYAN}Package created ($LAST_PACKAGE).${ANSI_RESET}" >&2
+    else
+        echo -e "${ANSI_RED}Packaging failed!${ANSI_RESET}" >&2
+        exit 1
+    fi
+
+    # make ZIP
+    ZIP_NAME="dist/${APP_NAME,,}-$APP_VERSION.zip"
+    "$CMD_WINRAR" a -afzip -ep -m5 $ZIP_NAME bin/*
+    if [[ $? -eq 0 ]]; then
+        echo -e "${ANSI_CYAN}Package created ($ZIP_NAME).${ANSI_RESET}" >&2
+    else
+        echo -e "${ANSI_RED}Packaging failed ($ZIP_NAME)!${ANSI_RESET}" >&2
+        exit 1
+    fi
 }
 
 function test() {
@@ -153,12 +249,13 @@ APP_VERSION=`cat "$BASE_DIRECTORY/src/DiskPreclear.csproj" | grep "<Version>" | 
 while [ $# -gt 0 ]; do
     OPERATION="$1"
     case "$OPERATION" in
-        all)         clean || break ;;
+        all)         clean && release || break ;;
         clean)       clean || break ;;
-        debug)       debug || break ;;
-        release)     release || break ;;
-        publish)     publish || break ;;
-        test)        test || break ;;
+        debug)       clean && debug || break ;;
+        release)     clean && release || break ;;
+        publish)     clean && publish || break ;;
+        package)     clean && publish && package || break ;;
+        test)        clean && test || break ;;
         distclean)   distclean || break ;;
         dist)        dist || break ;;
 
