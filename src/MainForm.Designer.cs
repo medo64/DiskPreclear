@@ -59,6 +59,9 @@ partial class MainForm
             this.staElementMB = new System.Windows.Forms.ToolStripStatusLabel();
             this.dfgMain = new DiskPreclear.Controls.DefragControl();
             this.bwUpgradeCheck = new System.ComponentModel.BackgroundWorker();
+            this.mnuOrder = new System.Windows.Forms.ToolStripSplitButton();
+            this.mnuOrderRandom = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOrderSequential = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu.SuspendLayout();
             this.sta.SuspendLayout();
             this.SuspendLayout();
@@ -80,6 +83,7 @@ partial class MainForm
             this.mnuExecute,
             this.mnu0,
             this.mnuRandom,
+            this.mnuOrder,
             this.mnu1,
             this.mnuRefresh,
             this.mnuApp});
@@ -325,6 +329,31 @@ partial class MainForm
             this.bwUpgradeCheck.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwUpgradeCheck_DoWork);
             this.bwUpgradeCheck.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwUpgradeCheck_RunWorkerCompleted);
             // 
+            // mnuOrder
+            // 
+            this.mnuOrder.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuOrderRandom,
+            this.mnuOrderSequential});
+            this.mnuOrder.Image = global::DiskPreclear.Properties.Resources.mnuOrder_16;
+            this.mnuOrder.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuOrder.Name = "mnuOrder";
+            this.mnuOrder.Size = new System.Drawing.Size(104, 25);
+            this.mnuOrder.Text = "Random";
+            // 
+            // mnuOrderRandom
+            // 
+            this.mnuOrderRandom.Name = "mnuOrderRandom";
+            this.mnuOrderRandom.Size = new System.Drawing.Size(224, 26);
+            this.mnuOrderRandom.Text = "Random order";
+            this.mnuOrderRandom.Click += new System.EventHandler(this.mnuOrderRandom_Click);
+            // 
+            // mnuOrderSequential
+            // 
+            this.mnuOrderSequential.Name = "mnuOrderSequential";
+            this.mnuOrderSequential.Size = new System.Drawing.Size(224, 26);
+            this.mnuOrderSequential.Text = "Sequential order";
+            this.mnuOrderSequential.Click += new System.EventHandler(this.mnuOrderSequential_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -380,4 +409,7 @@ partial class MainForm
     private System.Windows.Forms.ToolStripMenuItem mnuRandomZero;
     private System.Windows.Forms.ToolStripSeparator mnu1;
     private System.ComponentModel.BackgroundWorker bwUpgradeCheck;
+    private System.Windows.Forms.ToolStripSplitButton mnuOrder;
+    private System.Windows.Forms.ToolStripMenuItem mnuOrderRandom;
+    private System.Windows.Forms.ToolStripMenuItem mnuOrderSequential;
 }

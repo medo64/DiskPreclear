@@ -4,7 +4,7 @@ namespace DiskPreclear;
 
 internal sealed class DiskWalker : IDisposable {
 
-    public DiskWalker(PhysicalDisk disk, int blockSizeInMB) {
+    public DiskWalker(PhysicalDisk disk, int blockSizeInMB, bool randomAccess) {
         Disk = disk;
         BlockSize = (ulong)blockSizeInMB * 1024 * 1024;
 
@@ -22,10 +22,12 @@ internal sealed class DiskWalker : IDisposable {
             BlockIndices[i] = i;
         }
 
-        var rnd = Random.Shared;
-        for (var i = 0; i < BlockCount; i++) {
-            var j = rnd.Next(BlockCount);
-            (BlockIndices[i], BlockIndices[j]) = (BlockIndices[j], BlockIndices[i]);  // swap
+        if (randomAccess) {
+            var rnd = Random.Shared;
+            for (var i = 0; i < BlockCount; i++) {
+                var j = rnd.Next(BlockCount);
+                (BlockIndices[i], BlockIndices[j]) = (BlockIndices[j], BlockIndices[i]);  // swap
+            }
         }
     }
 

@@ -313,6 +313,56 @@ namespace DiskPreclear.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap mnuOrder_16 {
+            get {
+                object obj = ResourceManager.GetObject("mnuOrder_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuOrder_24 {
+            get {
+                object obj = ResourceManager.GetObject("mnuOrder_24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuOrder_32 {
+            get {
+                object obj = ResourceManager.GetObject("mnuOrder_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuOrder_48 {
+            get {
+                object obj = ResourceManager.GetObject("mnuOrder_48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuOrder_64 {
+            get {
+                object obj = ResourceManager.GetObject("mnuOrder_64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap mnuRandom_16 {
             get {
                 object obj = ResourceManager.GetObject("mnuRandom_16", resourceCulture);

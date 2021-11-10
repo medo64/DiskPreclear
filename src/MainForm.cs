@@ -97,15 +97,17 @@ internal partial class MainForm : Form {
             if (hasVolumes && Medo.Windows.Forms.MessageBox.ShowWarning(this, "Selected disk has volumes present.\nAre you really sure you want to perform " + operation + " test?\nPlease note that test could fail if another process keeps disk open.\n" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
             if (hasPaths && Medo.Windows.Forms.MessageBox.ShowError(this, "Selected disk is in use!\nAre you goddamn sure you want to perform " + operation + " test?\nPlease note that test could fail if another process keeps disk open.\n" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
 
-            var walker = GetWalker(disk, allowRead, allowWrite);
-            dfgMain.Walker = walker;
-
             var randomKind = RandomKind.Secure;
             if ("mnuRandomZero".Equals(mnuRandom.Tag)) {
                 randomKind = RandomKind.Zero;
             } else if ("mnuRandomRepeat".Equals(mnuRandom.Tag)) {
                 randomKind = RandomKind.Repeat;
             }
+
+            var randomAccess = !"mnuOrderSequential".Equals(mnuOrder.Tag);
+
+            var walker = GetWalker(disk, randomAccess, allowRead, allowWrite);
+            dfgMain.Walker = walker;
 
             try {
                 walker.Open(allowRead, allowWrite);
@@ -163,6 +165,16 @@ internal partial class MainForm : Form {
     private void mnuRandomZero_Click(object sender, EventArgs e) {
         mnuRandom.Tag = "mnuRandomZero";
         mnuRandom.Text = "Zero";
+    }
+
+    private void mnuOrderRandom_Click(object sender, EventArgs e) {
+        mnuOrder.Tag = "mnuOrderRandom";
+        mnuOrder.Text = "Random";
+    }
+
+    private void mnuOrderSequential_Click(object sender, EventArgs e) {
+        mnuOrder.Tag = "mnuOrderSequential";
+        mnuOrder.Text = "Sequential";
     }
 
     private void mnuRefresh_Click(object sender, System.EventArgs e) {
@@ -377,9 +389,9 @@ internal partial class MainForm : Form {
         staRemaining.Text = "";
     }
 
-    private static DiskWalker GetWalker(PhysicalDisk disk, bool allowRead = false, bool allowWrite = false) {
+    private static DiskWalker GetWalker(PhysicalDisk disk, bool randomAccess = false, bool allowRead = false, bool allowWrite = false) {
         var blockSizeMB = disk.SizeInGB > 1000 ? 16 : disk.SizeInGB > 1000 ? 8 : 4;
-        return new DiskWalker(disk, blockSizeMB) {
+        return new DiskWalker(disk, blockSizeMB, randomAccess) {
             AllowRead = allowRead,
             AllowWrite = allowWrite
         };

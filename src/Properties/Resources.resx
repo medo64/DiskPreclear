@@ -193,6 +193,21 @@
   <data name="mnuExecuteWO_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\ExecuteWO_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="mnuOrder_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Sequence_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuOrder_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Sequence_24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuOrder_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Sequence_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuOrder_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Sequence_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mnuOrder_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Sequence_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="mnuRandom_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Random_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
