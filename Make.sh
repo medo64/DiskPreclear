@@ -130,6 +130,7 @@ function publish() {
                         -p:Deterministic=true \
                         -p:Optimize=true \
                         -p:PublishSingleFile=true \
+                        -p:EnableCompressionInSingleFile=true \
                         -p:DebugType=portable \
                         "$BASE_DIRECTORY/src/DiskPreclear.csproj" || return 1
     cp "$BASE_DIRECTORY/build/publish/$APP_NAME"* "$BASE_DIRECTORY/bin/" || return 1
