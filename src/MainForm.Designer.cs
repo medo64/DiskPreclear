@@ -59,8 +59,8 @@ partial class MainForm
             this.staPercents = new System.Windows.Forms.ToolStripStatusLabel();
             this.staProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.staRemaining = new System.Windows.Forms.ToolStripStatusLabel();
-            this.staElementMB = new System.Windows.Forms.ToolStripStatusLabel();
             this.staProcessed = new System.Windows.Forms.ToolStripStatusLabel();
+            this.staElementMB = new System.Windows.Forms.ToolStripStatusLabel();
             this.dfgMain = new DiskPreclear.Controls.DefragControl();
             this.bwUpgradeCheck = new System.ComponentModel.BackgroundWorker();
             this.mnu.SuspendLayout();
@@ -336,13 +336,6 @@ partial class MainForm
             this.staRemaining.Text = "remaining";
             this.staRemaining.Visible = false;
             // 
-            // staElementMB
-            // 
-            this.staElementMB.Margin = new System.Windows.Forms.Padding(2, 4, 2, 2);
-            this.staElementMB.Name = "staElementMB";
-            this.staElementMB.Size = new System.Drawing.Size(85, 20);
-            this.staElementMB.Text = "block = MB";
-            // 
             // staProcessed
             // 
             this.staProcessed.Margin = new System.Windows.Forms.Padding(2, 4, 2, 2);
@@ -350,6 +343,13 @@ partial class MainForm
             this.staProcessed.Size = new System.Drawing.Size(102, 20);
             this.staProcessed.Text = "MB processed";
             this.staProcessed.Visible = false;
+            // 
+            // staElementMB
+            // 
+            this.staElementMB.Margin = new System.Windows.Forms.Padding(2, 4, 2, 2);
+            this.staElementMB.Name = "staElementMB";
+            this.staElementMB.Size = new System.Drawing.Size(85, 20);
+            this.staElementMB.Text = "block = MB";
             // 
             // dfgMain
             // 

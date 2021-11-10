@@ -6,9 +6,10 @@ using System.Text;
 namespace DiskPreclear {
     internal sealed class ProgressObjectState {
 
-        public ProgressObjectState(Stopwatch operationStopwatch, int current, int maximum, int okCount, int nokCount, int blockSize, double writeBytesPerSecond, double readBytesPerSecond) {
+        public ProgressObjectState(Stopwatch operationStopwatch, int current, int maximum, long totalSize, int okCount, int nokCount, int blockSize, double writeBytesPerSecond, double readBytesPerSecond) {
             Current = current;
             Maximum = maximum;
+            TotalSize = totalSize;
             OkCount = okCount;
             NokCount = nokCount;
             BlockSize = blockSize;
@@ -24,7 +25,10 @@ namespace DiskPreclear {
 
             WriteSpeed = writeBytesPerSecond / 1024 / 1024;
             ReadSpeed = readBytesPerSecond / 1024 / 1024;
-            ProcessedMB = ((long)current * blockSize) / 1024 / 1024;
+
+            var processedBytes = (long)current * blockSize;
+            if (processedBytes > totalSize) { processedBytes = totalSize; }
+            ProcessedMB = processedBytes / 1024 / 1024;
         }
 
         /// <summary>
@@ -36,6 +40,11 @@ namespace DiskPreclear {
         /// Gets maximum value.
         /// </summary>
         public int Maximum { get; }
+
+        /// <summary>
+        /// Gets total size.
+        /// </summary>
+        public long TotalSize { get; }
 
         /// <summary>
         /// Gets number of validated blocks.

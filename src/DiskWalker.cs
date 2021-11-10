@@ -6,6 +6,7 @@ internal sealed class DiskWalker : IDisposable {
 
     public DiskWalker(PhysicalDisk disk, int blockSizeInMB, bool randomAccess) {
         Disk = disk;
+        TotalSize = (long)disk.Size;
         BlockSize = (ulong)blockSizeInMB * 1024 * 1024;
 
         DiskSize = disk.Size;
@@ -36,6 +37,11 @@ internal sealed class DiskWalker : IDisposable {
     private readonly int[] BlockIndices;
     private readonly PhysicalDisk Disk;
     private readonly ulong DiskSize;
+
+    /// <summary>
+    /// Gets total disk size.
+    /// </summary>
+    public long TotalSize { get; init; }
 
     /// <summary>
     /// Gets total block count.

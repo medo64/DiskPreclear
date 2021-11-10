@@ -375,7 +375,7 @@ internal partial class MainForm : Form {
             }
 
             if (nextUpdate < swTotal.ElapsedMilliseconds) {
-                var progress = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount, okCount, nokCount, walker.MaxBlockSize, writeSpeed.Average, readSpeed.Average);
+                var progress = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount, walker.TotalSize,  okCount, nokCount, walker.MaxBlockSize, writeSpeed.Average, readSpeed.Average);
                 bwTest.ReportProgress(0, progress);
                 nextUpdate = swTotal.ElapsedMilliseconds + 420;  // next update in 420ms
             }
@@ -384,7 +384,7 @@ internal partial class MainForm : Form {
         }
 
         walker.Close();
-        var finalProgress = new ProgressObjectState(swTotal, walker.Index, walker.BlockCount, okCount, nokCount, walker.MaxBlockSize, writeSpeed.Average, readSpeed.Average);
+        var finalProgress = new ProgressObjectState(swTotal, walker.Index, walker.BlockCount, walker.TotalSize, okCount, nokCount, walker.MaxBlockSize, writeSpeed.Average, readSpeed.Average);
         bwTest.ReportProgress(100, finalProgress);
         e.Result = finalProgress;
     }
