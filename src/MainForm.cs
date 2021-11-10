@@ -216,6 +216,16 @@ internal partial class MainForm : Form {
         Helpers.ScaleToolstrip(mnu);
     }
 
+    private void mnuRandom_ButtonClick(object sender, EventArgs e) {
+        if ("mnuRandomSecure".Equals(mnuRandom.Tag)) {
+            mnuRandomRepeat_Click(sender, EventArgs.Empty);
+        } else if ("mnuRandomRepeat".Equals(mnuRandom.Tag)) {
+            mnuRandomZero_Click(sender, EventArgs.Empty);
+        } else {
+            mnuRandomSecure_Click(sender, EventArgs.Empty);
+        }
+    }
+
     private void mnuRandomSecure_Click(object sender, EventArgs e) {
         mnuRandom.Tag = "mnuRandomSecure";
         mnuRandom.Text = "Random";
@@ -229,6 +239,14 @@ internal partial class MainForm : Form {
     private void mnuRandomZero_Click(object sender, EventArgs e) {
         mnuRandom.Tag = "mnuRandomZero";
         mnuRandom.Text = "Zero";
+    }
+
+    private void mnuOrder_ButtonClick(object sender, EventArgs e) {
+        if ("mnuOrderRandom".Equals(mnuOrder.Tag)) {
+            mnuOrderSequential_Click(sender, EventArgs.Empty);
+        } else {
+            mnuOrderRandom_Click(sender, EventArgs.Empty);
+        }
     }
 
     private void mnuOrderRandom_Click(object sender, EventArgs e) {
