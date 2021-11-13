@@ -202,18 +202,21 @@ internal partial class MainForm : Form {
         mnuExecute.Tag = "mnuExecuteRW";
         mnuExecute.Text = "Test Read-Write";
         Helpers.ScaleToolstrip(mnu);
+        mnuRandom.Enabled = true;
     }
 
     private void mnuExecuteUseRO_Click(object sender, System.EventArgs e) {
         mnuExecute.Tag = "mnuExecuteRO";
         mnuExecute.Text = "Test Read-Only";
         Helpers.ScaleToolstrip(mnu);
+        mnuRandom.Enabled = false;
     }
 
     private void mnuExecuteUseWO_Click(object sender, System.EventArgs e) {
         mnuExecute.Tag = "mnuExecuteWO";
         mnuExecute.Text = "Test Write-Only";
         Helpers.ScaleToolstrip(mnu);
+        mnuRandom.Enabled = true;
     }
 
     private void mnuRandom_ButtonClick(object sender, EventArgs e) {
