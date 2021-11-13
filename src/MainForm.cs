@@ -58,12 +58,12 @@ internal partial class MainForm : Form {
                 ToggleMenu();
                 return true;
 
-            case Keys.Alt | Keys.O:
-                if (mnuOrder.Enabled) { mnuOrder.ShowDropDown(); }
+            case Keys.Alt | Keys.D:
+                if (mnuData.Enabled) { mnuData.ShowDropDown(); }
                 return true;
 
-            case Keys.Alt | Keys.R:
-                if (mnuRandom.Enabled) { mnuRandom.ShowDropDown(); }
+            case Keys.Alt | Keys.O:
+                if (mnuOrder.Enabled) { mnuOrder.ShowDropDown(); }
                 return true;
 
             case Keys.Alt | Keys.T:
@@ -162,13 +162,13 @@ internal partial class MainForm : Form {
             if (hasPaths && Medo.Windows.Forms.MessageBox.ShowError(this, "Selected disk is in use!\nAre you goddamn sure you want to perform " + operation + " test?\nPlease note that test could fail if another process keeps disk open.\n" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
 
             var randomKind = RandomKind.Secure;
-            if ("mnuRandomZero".Equals(mnuRandom.Tag)) {
+            if ("mnuDataZero".Equals(mnuData.Tag)) {
                 randomKind = RandomKind.Zero;
-            } else if ("mnuRandomRepeat".Equals(mnuRandom.Tag)) {
+            } else if ("mnuDataRepeat".Equals(mnuData.Tag)) {
                 randomKind = RandomKind.Repeat;
             }
 
-            var randomAccess = !"mnuOrderSequential".Equals(mnuOrder.Tag);
+            var randomAccess = "mnuOrderRandom".Equals(mnuOrder.Tag);
 
             var walker = GetWalker(disk, randomAccess, allowRead, allowWrite);
             dfgMain.Walker = walker;
@@ -202,87 +202,87 @@ internal partial class MainForm : Form {
         mnuExecute.Tag = "mnuExecuteRW";
         mnuExecute.Text = "Test Read-Write";
         Helpers.ScaleToolstrip(mnu);
-        mnuRandom.Enabled = true;
+        mnuData.Enabled = true;
     }
 
     private void mnuExecuteUseRO_Click(object sender, System.EventArgs e) {
         mnuExecute.Tag = "mnuExecuteRO";
         mnuExecute.Text = "Test Read-Only";
         Helpers.ScaleToolstrip(mnu);
-        mnuRandom.Enabled = false;
+        mnuData.Enabled = false;
     }
 
     private void mnuExecuteUseWO_Click(object sender, System.EventArgs e) {
         mnuExecute.Tag = "mnuExecuteWO";
         mnuExecute.Text = "Test Write-Only";
         Helpers.ScaleToolstrip(mnu);
-        mnuRandom.Enabled = true;
+        mnuData.Enabled = true;
     }
 
-    private void mnuRandom_ButtonClick(object sender, EventArgs e) {
-        if ("mnuRandomSecure".Equals(mnuRandom.Tag)) {
-            mnuRandomRepeat_Click(sender, EventArgs.Empty);
-        } else if ("mnuRandomRepeat".Equals(mnuRandom.Tag)) {
-            mnuRandomZero_Click(sender, EventArgs.Empty);
+    private void mnuData_ButtonClick(object sender, EventArgs e) {
+        if ("mnuDataSecure".Equals(mnuData.Tag)) {
+            mnuDataRepeat_Click(sender, EventArgs.Empty);
+        } else if ("mnuDataRepeat".Equals(mnuData.Tag)) {
+            mnuDataZero_Click(sender, EventArgs.Empty);
         } else {
-            mnuRandomSecure_Click(sender, EventArgs.Empty);
+            mnuDataSecure_Click(sender, EventArgs.Empty);
         }
     }
 
-    private void mnuRandom_DropDownOpening(object sender, EventArgs e) {
-        mnuRandomSecure.Checked = false;
-        mnuRandomRepeat.Checked = false;
-        mnuRandomZero.Checked = false;
-        if ("mnuRandomRepeat".Equals(mnuRandom.Tag)) {
-            mnuRandomRepeat.Checked = true;
-        } else if ("mnuRandomZero".Equals(mnuRandom.Tag)) {
-            mnuRandomZero.Checked = true;
+    private void mnuData_DropDownOpening(object sender, EventArgs e) {
+        mnuDataSecure.Checked = false;
+        mnuDataRepeat.Checked = false;
+        mnuDataZero.Checked = false;
+        if ("mnuDataRepeat".Equals(mnuData.Tag)) {
+            mnuDataRepeat.Checked = true;
+        } else if ("mnuDataZero".Equals(mnuData.Tag)) {
+            mnuDataZero.Checked = true;
         } else {
-            mnuRandomSecure.Checked = true;
+            mnuDataSecure.Checked = true;
         }
     }
 
-    private void mnuRandomSecure_Click(object sender, EventArgs e) {
-        mnuRandom.Tag = "mnuRandomSecure";
-        mnuRandom.Text = "Random";
+    private void mnuDataSecure_Click(object sender, EventArgs e) {
+        mnuData.Tag = "mnuDataSecure";
+        mnuData.Text = "Random";
     }
 
-    private void mnuRandomRepeat_Click(object sender, EventArgs e) {
-        mnuRandom.Tag = "mnuRandomRepeat";
-        mnuRandom.Text = "Repeat";
+    private void mnuDataRepeat_Click(object sender, EventArgs e) {
+        mnuData.Tag = "mnuDataRepeat";
+        mnuData.Text = "Repeat";
     }
 
-    private void mnuRandomZero_Click(object sender, EventArgs e) {
-        mnuRandom.Tag = "mnuRandomZero";
-        mnuRandom.Text = "Zero";
+    private void mnuDataZero_Click(object sender, EventArgs e) {
+        mnuData.Tag = "mnuDataZero";
+        mnuData.Text = "Zero";
     }
 
     private void mnuOrder_ButtonClick(object sender, EventArgs e) {
-        if ("mnuOrderRandom".Equals(mnuOrder.Tag)) {
-            mnuOrderSequential_Click(sender, EventArgs.Empty);
-        } else {
+        if ("mnuOrderSequential".Equals(mnuOrder.Tag)) {
             mnuOrderRandom_Click(sender, EventArgs.Empty);
+        } else {
+            mnuOrderSequential_Click(sender, EventArgs.Empty);
         }
     }
 
     private void mnuOrder_DropDownOpening(object sender, EventArgs e) {
         mnuOrderRandom.Checked = false;
         mnuOrderSequential.Checked = false;
-        if ("mnuOrderSequential".Equals(mnuOrder.Tag)) {
-            mnuOrderSequential.Checked = true;
-        } else {
+        if ("mnuOrderRandom".Equals(mnuOrder.Tag)) {
             mnuOrderRandom.Checked = true;
+        } else {
+            mnuOrderSequential.Checked = true;
         }
-    }
-
-    private void mnuOrderRandom_Click(object sender, EventArgs e) {
-        mnuOrder.Tag = "mnuOrderRandom";
-        mnuOrder.Text = "Random";
     }
 
     private void mnuOrderSequential_Click(object sender, EventArgs e) {
         mnuOrder.Tag = "mnuOrderSequential";
         mnuOrder.Text = "Sequential";
+    }
+
+    private void mnuOrderRandom_Click(object sender, EventArgs e) {
+        mnuOrder.Tag = "mnuOrderRandom";
+        mnuOrder.Text = "Random";
     }
 
     private void mnuRefresh_Click(object sender, System.EventArgs e) {
@@ -479,8 +479,8 @@ internal partial class MainForm : Form {
 
         mnuDisks.Enabled = !testing;
         mnuExecute.Enabled = !testing;
-        mnuRandom.Enabled = !testing;
         mnuOrder.Enabled = !testing;
+        mnuData.Enabled = !testing;
         mnuRefresh.Enabled = !testing;
         mnuAppUpgrade.Enabled = !testing;
 

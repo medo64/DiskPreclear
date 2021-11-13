@@ -163,6 +163,56 @@ namespace DiskPreclear.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap mnuData_16 {
+            get {
+                object obj = ResourceManager.GetObject("mnuData_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuData_24 {
+            get {
+                object obj = ResourceManager.GetObject("mnuData_24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuData_32 {
+            get {
+                object obj = ResourceManager.GetObject("mnuData_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuData_48 {
+            get {
+                object obj = ResourceManager.GetObject("mnuData_48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mnuData_64 {
+            get {
+                object obj = ResourceManager.GetObject("mnuData_64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap mnuExecuteRO_16 {
             get {
                 object obj = ResourceManager.GetObject("mnuExecuteRO_16", resourceCulture);
@@ -356,56 +406,6 @@ namespace DiskPreclear.Properties {
         internal static System.Drawing.Bitmap mnuOrder_64 {
             get {
                 object obj = ResourceManager.GetObject("mnuOrder_64", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap mnuRandom_16 {
-            get {
-                object obj = ResourceManager.GetObject("mnuRandom_16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap mnuRandom_24 {
-            get {
-                object obj = ResourceManager.GetObject("mnuRandom_24", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap mnuRandom_32 {
-            get {
-                object obj = ResourceManager.GetObject("mnuRandom_32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap mnuRandom_48 {
-            get {
-                object obj = ResourceManager.GetObject("mnuRandom_48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap mnuRandom_64 {
-            get {
-                object obj = ResourceManager.GetObject("mnuRandom_64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

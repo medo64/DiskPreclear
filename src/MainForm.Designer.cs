@@ -37,13 +37,13 @@ partial class MainForm
             this.mnuExecuteUseRO = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuExecuteUseWO = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu0 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuRandom = new System.Windows.Forms.ToolStripSplitButton();
-            this.mnuRandomSecure = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuRandomRepeat = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuRandomZero = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuData = new System.Windows.Forms.ToolStripSplitButton();
+            this.mnuDataSecure = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuDataRepeat = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuDataZero = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOrder = new System.Windows.Forms.ToolStripSplitButton();
-            this.mnuOrderRandom = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOrderSequential = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOrderRandom = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRefresh = new System.Windows.Forms.ToolStripButton();
             this.mnuApp = new System.Windows.Forms.ToolStripDropDownButton();
@@ -83,8 +83,8 @@ partial class MainForm
             this.mnuDisks,
             this.mnuExecute,
             this.mnu0,
-            this.mnuRandom,
             this.mnuOrder,
+            this.mnuData,
             this.mnu1,
             this.mnuRefresh,
             this.mnuApp});
@@ -112,6 +112,7 @@ partial class MainForm
             this.mnuExecute.Size = new System.Drawing.Size(154, 25);
             this.mnuExecute.Tag = "mnuExecuteRW";
             this.mnuExecute.Text = "Test Read/Write";
+            this.mnuExecute.ToolTipText = "Start disk test";
             this.mnuExecute.ButtonClick += new System.EventHandler(this.mnuExecute_Click);
             this.mnuExecute.DropDownOpening += new System.EventHandler(this.mnuExecute_DropDownOpening);
             // 
@@ -141,62 +142,57 @@ partial class MainForm
             this.mnu0.Name = "mnu0";
             this.mnu0.Size = new System.Drawing.Size(6, 28);
             // 
-            // mnuRandom
+            // mnuData
             // 
-            this.mnuRandom.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuRandomSecure,
-            this.mnuRandomRepeat,
-            this.mnuRandomZero});
-            this.mnuRandom.Image = global::DiskPreclear.Properties.Resources.mnuRandom_16;
-            this.mnuRandom.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuRandom.Name = "mnuRandom";
-            this.mnuRandom.Size = new System.Drawing.Size(104, 25);
-            this.mnuRandom.Tag = "mnuRandomSecure";
-            this.mnuRandom.Text = "Random";
-            this.mnuRandom.ButtonClick += new System.EventHandler(this.mnuRandom_ButtonClick);
-            this.mnuRandom.DropDownOpening += new System.EventHandler(this.mnuRandom_DropDownOpening);
+            this.mnuData.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuDataSecure,
+            this.mnuDataRepeat,
+            this.mnuDataZero});
+            this.mnuData.Image = global::DiskPreclear.Properties.Resources.mnuData_16;
+            this.mnuData.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuData.Name = "mnuData";
+            this.mnuData.Size = new System.Drawing.Size(104, 25);
+            this.mnuData.Tag = "mnuRandomSecure";
+            this.mnuData.Text = "Random";
+            this.mnuData.ToolTipText = "Select what data will be used for write operations";
+            this.mnuData.ButtonClick += new System.EventHandler(this.mnuData_ButtonClick);
+            this.mnuData.DropDownOpening += new System.EventHandler(this.mnuData_DropDownOpening);
             // 
-            // mnuRandomSecure
+            // mnuDataSecure
             // 
-            this.mnuRandomSecure.Name = "mnuRandomSecure";
-            this.mnuRandomSecure.Size = new System.Drawing.Size(224, 26);
-            this.mnuRandomSecure.Text = "Secure Random";
-            this.mnuRandomSecure.Click += new System.EventHandler(this.mnuRandomSecure_Click);
+            this.mnuDataSecure.Name = "mnuDataSecure";
+            this.mnuDataSecure.Size = new System.Drawing.Size(210, 26);
+            this.mnuDataSecure.Text = "Secure Random";
+            this.mnuDataSecure.Click += new System.EventHandler(this.mnuDataSecure_Click);
             // 
-            // mnuRandomRepeat
+            // mnuDataRepeat
             // 
-            this.mnuRandomRepeat.Name = "mnuRandomRepeat";
-            this.mnuRandomRepeat.Size = new System.Drawing.Size(224, 26);
-            this.mnuRandomRepeat.Text = "Repeating Random";
-            this.mnuRandomRepeat.Click += new System.EventHandler(this.mnuRandomRepeat_Click);
+            this.mnuDataRepeat.Name = "mnuDataRepeat";
+            this.mnuDataRepeat.Size = new System.Drawing.Size(210, 26);
+            this.mnuDataRepeat.Text = "Repeating Pattern";
+            this.mnuDataRepeat.Click += new System.EventHandler(this.mnuDataRepeat_Click);
             // 
-            // mnuRandomZero
+            // mnuDataZero
             // 
-            this.mnuRandomZero.Name = "mnuRandomZero";
-            this.mnuRandomZero.Size = new System.Drawing.Size(224, 26);
-            this.mnuRandomZero.Text = "Zero";
-            this.mnuRandomZero.Click += new System.EventHandler(this.mnuRandomZero_Click);
+            this.mnuDataZero.Name = "mnuDataZero";
+            this.mnuDataZero.Size = new System.Drawing.Size(210, 26);
+            this.mnuDataZero.Text = "Zero";
+            this.mnuDataZero.Click += new System.EventHandler(this.mnuDataZero_Click);
             // 
             // mnuOrder
             // 
             this.mnuOrder.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuOrderRandom,
-            this.mnuOrderSequential});
+            this.mnuOrderSequential,
+            this.mnuOrderRandom});
             this.mnuOrder.Image = global::DiskPreclear.Properties.Resources.mnuOrder_16;
             this.mnuOrder.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.mnuOrder.Name = "mnuOrder";
-            this.mnuOrder.Size = new System.Drawing.Size(104, 25);
-            this.mnuOrder.Tag = "mnuOrderRandom";
-            this.mnuOrder.Text = "Random";
+            this.mnuOrder.Size = new System.Drawing.Size(118, 25);
+            this.mnuOrder.Tag = "mnuOrderSequential";
+            this.mnuOrder.Text = "Sequential";
+            this.mnuOrder.ToolTipText = "Select order of operations";
             this.mnuOrder.ButtonClick += new System.EventHandler(this.mnuOrder_ButtonClick);
             this.mnuOrder.DropDownOpening += new System.EventHandler(this.mnuOrder_DropDownOpening);
-            // 
-            // mnuOrderRandom
-            // 
-            this.mnuOrderRandom.Name = "mnuOrderRandom";
-            this.mnuOrderRandom.Size = new System.Drawing.Size(224, 26);
-            this.mnuOrderRandom.Text = "Random order";
-            this.mnuOrderRandom.Click += new System.EventHandler(this.mnuOrderRandom_Click);
             // 
             // mnuOrderSequential
             // 
@@ -204,6 +200,13 @@ partial class MainForm
             this.mnuOrderSequential.Size = new System.Drawing.Size(224, 26);
             this.mnuOrderSequential.Text = "Sequential order";
             this.mnuOrderSequential.Click += new System.EventHandler(this.mnuOrderSequential_Click);
+            // 
+            // mnuOrderRandom
+            // 
+            this.mnuOrderRandom.Name = "mnuOrderRandom";
+            this.mnuOrderRandom.Size = new System.Drawing.Size(224, 26);
+            this.mnuOrderRandom.Text = "Random order";
+            this.mnuOrderRandom.Click += new System.EventHandler(this.mnuOrderRandom_Click);
             // 
             // mnu1
             // 
@@ -419,10 +422,10 @@ partial class MainForm
     private System.Windows.Forms.ToolStripSeparator mnuApp0;
     private System.Windows.Forms.ToolStripMenuItem mnuAppUpgrade;
     private System.Windows.Forms.ToolStripStatusLabel staElementMB;
-    private System.Windows.Forms.ToolStripSplitButton mnuRandom;
-    private System.Windows.Forms.ToolStripMenuItem mnuRandomSecure;
-    private System.Windows.Forms.ToolStripMenuItem mnuRandomRepeat;
-    private System.Windows.Forms.ToolStripMenuItem mnuRandomZero;
+    private System.Windows.Forms.ToolStripSplitButton mnuData;
+    private System.Windows.Forms.ToolStripMenuItem mnuDataSecure;
+    private System.Windows.Forms.ToolStripMenuItem mnuDataRepeat;
+    private System.Windows.Forms.ToolStripMenuItem mnuDataZero;
     private System.Windows.Forms.ToolStripSeparator mnu1;
     private System.ComponentModel.BackgroundWorker bwUpgradeCheck;
     private System.Windows.Forms.ToolStripSplitButton mnuOrder;
