@@ -1,5 +1,10 @@
 ## Release Notes ##
 
+### 0.3.0 [2021-11-13] ###
+
+* Added double random write option (called "secure" pattern)
+* Other minor fixes/improvements
+
 ### 0.2.1 [2021-11-10] ###
 
 * Menu improvements
