@@ -28,7 +28,7 @@
 
   <PropertyGroup>
     <Product>Disk Preclear</Product>
-    <Version>0.3.0</Version>
+    <Version>0.3.1</Version>
     <Description>Exercise disk a bit</Description>
     <Authors>Josip Medved</Authors>
     <Copyright>Copyright (c) 2021 Josip Medved</Copyright>

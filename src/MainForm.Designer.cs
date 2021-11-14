@@ -146,14 +146,14 @@ partial class MainForm
             // mnuOrder
             // 
             this.mnuOrder.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuOrderSequential,
-            this.mnuOrderRandom});
+            this.mnuOrderRandom,
+            this.mnuOrderSequential});
             this.mnuOrder.Image = global::DiskPreclear.Properties.Resources.mnuOrder_16;
             this.mnuOrder.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.mnuOrder.Name = "mnuOrder";
-            this.mnuOrder.Size = new System.Drawing.Size(118, 25);
-            this.mnuOrder.Tag = "mnuOrderSequential";
-            this.mnuOrder.Text = "Sequential";
+            this.mnuOrder.Size = new System.Drawing.Size(104, 25);
+            this.mnuOrder.Tag = "mnuOrderRandom";
+            this.mnuOrder.Text = "Random";
             this.mnuOrder.ToolTipText = "Select order of operations";
             this.mnuOrder.ButtonClick += new System.EventHandler(this.mnuOrder_ButtonClick);
             this.mnuOrder.DropDownOpening += new System.EventHandler(this.mnuOrder_DropDownOpening);
@@ -194,7 +194,7 @@ partial class MainForm
             // mnuPatternSecure
             // 
             this.mnuPatternSecure.Name = "mnuPatternSecure";
-            this.mnuPatternSecure.Size = new System.Drawing.Size(224, 26);
+            this.mnuPatternSecure.Size = new System.Drawing.Size(160, 26);
             this.mnuPatternSecure.Text = "Secure";
             this.mnuPatternSecure.ToolTipText = "Data is written to disk twice, each using secure random";
             this.mnuPatternSecure.Click += new System.EventHandler(this.mnuPatternSecure_Click);
@@ -202,7 +202,7 @@ partial class MainForm
             // mnuPatternRandom
             // 
             this.mnuPatternRandom.Name = "mnuPatternRandom";
-            this.mnuPatternRandom.Size = new System.Drawing.Size(224, 26);
+            this.mnuPatternRandom.Size = new System.Drawing.Size(160, 26);
             this.mnuPatternRandom.Text = "Random";
             this.mnuPatternRandom.ToolTipText = "Data is written using secure random";
             this.mnuPatternRandom.Click += new System.EventHandler(this.mnuPatternRandom_Click);
@@ -210,7 +210,7 @@ partial class MainForm
             // mnuPatternRepeat
             // 
             this.mnuPatternRepeat.Name = "mnuPatternRepeat";
-            this.mnuPatternRepeat.Size = new System.Drawing.Size(224, 26);
+            this.mnuPatternRepeat.Size = new System.Drawing.Size(160, 26);
             this.mnuPatternRepeat.Text = "Repeating";
             this.mnuPatternRepeat.ToolTipText = "Data is written using repeating pattern";
             this.mnuPatternRepeat.Click += new System.EventHandler(this.mnuPatternRepeat_Click);
@@ -218,7 +218,7 @@ partial class MainForm
             // mnuPatternZero
             // 
             this.mnuPatternZero.Name = "mnuPatternZero";
-            this.mnuPatternZero.Size = new System.Drawing.Size(224, 26);
+            this.mnuPatternZero.Size = new System.Drawing.Size(160, 26);
             this.mnuPatternZero.Text = "Zero";
             this.mnuPatternZero.ToolTipText = "Data is written using zeros";
             this.mnuPatternZero.Click += new System.EventHandler(this.mnuPatternZero_Click);

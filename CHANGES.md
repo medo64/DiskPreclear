@@ -1,5 +1,9 @@
 ## Release Notes ##
 
+### 0.3.1 [2021-11-13] ###
+
+* Random access is default
+
 ### 0.3.0 [2021-11-13] ###
 
 * Added double random write option (called "secure" pattern)
