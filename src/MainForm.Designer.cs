@@ -37,13 +37,14 @@ partial class MainForm
             this.mnuExecuteUseRO = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuExecuteUseWO = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu0 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuData = new System.Windows.Forms.ToolStripSplitButton();
-            this.mnuDataSecure = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuDataRepeat = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuDataZero = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOrder = new System.Windows.Forms.ToolStripSplitButton();
             this.mnuOrderSequential = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOrderRandom = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuPattern = new System.Windows.Forms.ToolStripSplitButton();
+            this.mnuPatternSecure = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuPatternRandom = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuPatternRepeat = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuPatternZero = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRefresh = new System.Windows.Forms.ToolStripButton();
             this.mnuApp = new System.Windows.Forms.ToolStripDropDownButton();
@@ -84,7 +85,7 @@ partial class MainForm
             this.mnuExecute,
             this.mnu0,
             this.mnuOrder,
-            this.mnuData,
+            this.mnuPattern,
             this.mnu1,
             this.mnuRefresh,
             this.mnuApp});
@@ -142,43 +143,6 @@ partial class MainForm
             this.mnu0.Name = "mnu0";
             this.mnu0.Size = new System.Drawing.Size(6, 28);
             // 
-            // mnuData
-            // 
-            this.mnuData.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuDataSecure,
-            this.mnuDataRepeat,
-            this.mnuDataZero});
-            this.mnuData.Image = global::DiskPreclear.Properties.Resources.mnuData_16;
-            this.mnuData.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuData.Name = "mnuData";
-            this.mnuData.Size = new System.Drawing.Size(104, 25);
-            this.mnuData.Tag = "mnuRandomSecure";
-            this.mnuData.Text = "Random";
-            this.mnuData.ToolTipText = "Select what data will be used for write operations";
-            this.mnuData.ButtonClick += new System.EventHandler(this.mnuData_ButtonClick);
-            this.mnuData.DropDownOpening += new System.EventHandler(this.mnuData_DropDownOpening);
-            // 
-            // mnuDataSecure
-            // 
-            this.mnuDataSecure.Name = "mnuDataSecure";
-            this.mnuDataSecure.Size = new System.Drawing.Size(210, 26);
-            this.mnuDataSecure.Text = "Secure Random";
-            this.mnuDataSecure.Click += new System.EventHandler(this.mnuDataSecure_Click);
-            // 
-            // mnuDataRepeat
-            // 
-            this.mnuDataRepeat.Name = "mnuDataRepeat";
-            this.mnuDataRepeat.Size = new System.Drawing.Size(210, 26);
-            this.mnuDataRepeat.Text = "Repeating Pattern";
-            this.mnuDataRepeat.Click += new System.EventHandler(this.mnuDataRepeat_Click);
-            // 
-            // mnuDataZero
-            // 
-            this.mnuDataZero.Name = "mnuDataZero";
-            this.mnuDataZero.Size = new System.Drawing.Size(210, 26);
-            this.mnuDataZero.Text = "Zero";
-            this.mnuDataZero.Click += new System.EventHandler(this.mnuDataZero_Click);
-            // 
             // mnuOrder
             // 
             this.mnuOrder.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -197,16 +161,67 @@ partial class MainForm
             // mnuOrderSequential
             // 
             this.mnuOrderSequential.Name = "mnuOrderSequential";
-            this.mnuOrderSequential.Size = new System.Drawing.Size(224, 26);
+            this.mnuOrderSequential.Size = new System.Drawing.Size(202, 26);
             this.mnuOrderSequential.Text = "Sequential order";
+            this.mnuOrderSequential.ToolTipText = "Disk is accessed in the sequential order";
             this.mnuOrderSequential.Click += new System.EventHandler(this.mnuOrderSequential_Click);
             // 
             // mnuOrderRandom
             // 
             this.mnuOrderRandom.Name = "mnuOrderRandom";
-            this.mnuOrderRandom.Size = new System.Drawing.Size(224, 26);
+            this.mnuOrderRandom.Size = new System.Drawing.Size(202, 26);
             this.mnuOrderRandom.Text = "Random order";
+            this.mnuOrderRandom.ToolTipText = "Disk is accessed in the random order";
             this.mnuOrderRandom.Click += new System.EventHandler(this.mnuOrderRandom_Click);
+            // 
+            // mnuPattern
+            // 
+            this.mnuPattern.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuPatternSecure,
+            this.mnuPatternRandom,
+            this.mnuPatternRepeat,
+            this.mnuPatternZero});
+            this.mnuPattern.Image = global::DiskPreclear.Properties.Resources.mnuPattern_16;
+            this.mnuPattern.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuPattern.Name = "mnuPattern";
+            this.mnuPattern.Size = new System.Drawing.Size(104, 25);
+            this.mnuPattern.Tag = "mnuPatternRandom";
+            this.mnuPattern.Text = "Random";
+            this.mnuPattern.ToolTipText = "Select what data pattern will be used for write operations";
+            this.mnuPattern.ButtonClick += new System.EventHandler(this.mnuPattern_ButtonClick);
+            this.mnuPattern.DropDownOpening += new System.EventHandler(this.mnuPattern_DropDownOpening);
+            // 
+            // mnuPatternSecure
+            // 
+            this.mnuPatternSecure.Name = "mnuPatternSecure";
+            this.mnuPatternSecure.Size = new System.Drawing.Size(224, 26);
+            this.mnuPatternSecure.Text = "Secure";
+            this.mnuPatternSecure.ToolTipText = "Data is written to disk twice, each using secure random";
+            this.mnuPatternSecure.Click += new System.EventHandler(this.mnuPatternSecure_Click);
+            // 
+            // mnuPatternRandom
+            // 
+            this.mnuPatternRandom.Name = "mnuPatternRandom";
+            this.mnuPatternRandom.Size = new System.Drawing.Size(224, 26);
+            this.mnuPatternRandom.Text = "Random";
+            this.mnuPatternRandom.ToolTipText = "Data is written using secure random";
+            this.mnuPatternRandom.Click += new System.EventHandler(this.mnuPatternRandom_Click);
+            // 
+            // mnuPatternRepeat
+            // 
+            this.mnuPatternRepeat.Name = "mnuPatternRepeat";
+            this.mnuPatternRepeat.Size = new System.Drawing.Size(224, 26);
+            this.mnuPatternRepeat.Text = "Repeating";
+            this.mnuPatternRepeat.ToolTipText = "Data is written using repeating pattern";
+            this.mnuPatternRepeat.Click += new System.EventHandler(this.mnuPatternRepeat_Click);
+            // 
+            // mnuPatternZero
+            // 
+            this.mnuPatternZero.Name = "mnuPatternZero";
+            this.mnuPatternZero.Size = new System.Drawing.Size(224, 26);
+            this.mnuPatternZero.Text = "Zero";
+            this.mnuPatternZero.ToolTipText = "Data is written using zeros";
+            this.mnuPatternZero.Click += new System.EventHandler(this.mnuPatternZero_Click);
             // 
             // mnu1
             // 
@@ -422,14 +437,15 @@ partial class MainForm
     private System.Windows.Forms.ToolStripSeparator mnuApp0;
     private System.Windows.Forms.ToolStripMenuItem mnuAppUpgrade;
     private System.Windows.Forms.ToolStripStatusLabel staElementMB;
-    private System.Windows.Forms.ToolStripSplitButton mnuData;
-    private System.Windows.Forms.ToolStripMenuItem mnuDataSecure;
-    private System.Windows.Forms.ToolStripMenuItem mnuDataRepeat;
-    private System.Windows.Forms.ToolStripMenuItem mnuDataZero;
+    private System.Windows.Forms.ToolStripSplitButton mnuPattern;
+    private System.Windows.Forms.ToolStripMenuItem mnuPatternRandom;
+    private System.Windows.Forms.ToolStripMenuItem mnuPatternRepeat;
+    private System.Windows.Forms.ToolStripMenuItem mnuPatternZero;
     private System.Windows.Forms.ToolStripSeparator mnu1;
     private System.ComponentModel.BackgroundWorker bwUpgradeCheck;
     private System.Windows.Forms.ToolStripSplitButton mnuOrder;
     private System.Windows.Forms.ToolStripMenuItem mnuOrderRandom;
     private System.Windows.Forms.ToolStripMenuItem mnuOrderSequential;
     private System.Windows.Forms.ToolStripStatusLabel staProcessed;
+    private System.Windows.Forms.ToolStripMenuItem mnuPatternSecure;
 }

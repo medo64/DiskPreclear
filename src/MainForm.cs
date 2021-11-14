@@ -59,7 +59,7 @@ internal partial class MainForm : Form {
                 return true;
 
             case Keys.Alt | Keys.D:
-                if (mnuData.Enabled) { mnuData.ShowDropDown(); }
+                if (mnuPattern.Enabled) { mnuPattern.ShowDropDown(); }
                 return true;
 
             case Keys.Alt | Keys.O:
@@ -161,11 +161,13 @@ internal partial class MainForm : Form {
             if (hasVolumes && Medo.Windows.Forms.MessageBox.ShowWarning(this, "Selected disk has volumes present.\nAre you really sure you want to perform " + operation + " test?\nPlease note that test could fail if another process keeps disk open.\n" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
             if (hasPaths && Medo.Windows.Forms.MessageBox.ShowError(this, "Selected disk is in use!\nAre you goddamn sure you want to perform " + operation + " test?\nPlease note that test could fail if another process keeps disk open.\n" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
 
-            var randomKind = RandomKind.Secure;
-            if ("mnuDataZero".Equals(mnuData.Tag)) {
+            var randomKind = RandomKind.Random;
+            if ("mnuPatternZero".Equals(mnuPattern.Tag)) {
                 randomKind = RandomKind.Zero;
-            } else if ("mnuDataRepeat".Equals(mnuData.Tag)) {
+            } else if ("mnuPatternRepeat".Equals(mnuPattern.Tag)) {
                 randomKind = RandomKind.Repeat;
+            } else if ("mnuPatternSecure".Equals(mnuPattern.Tag)) {
+                randomKind = RandomKind.Secure;
             }
 
             var randomAccess = "mnuOrderRandom".Equals(mnuOrder.Tag);
@@ -202,59 +204,69 @@ internal partial class MainForm : Form {
         mnuExecute.Tag = "mnuExecuteRW";
         mnuExecute.Text = "Test Read-Write";
         Helpers.ScaleToolstrip(mnu);
-        mnuData.Enabled = true;
+        mnuPattern.Enabled = true;
     }
 
     private void mnuExecuteUseRO_Click(object sender, System.EventArgs e) {
         mnuExecute.Tag = "mnuExecuteRO";
         mnuExecute.Text = "Test Read-Only";
         Helpers.ScaleToolstrip(mnu);
-        mnuData.Enabled = false;
+        mnuPattern.Enabled = false;
     }
 
     private void mnuExecuteUseWO_Click(object sender, System.EventArgs e) {
         mnuExecute.Tag = "mnuExecuteWO";
         mnuExecute.Text = "Test Write-Only";
         Helpers.ScaleToolstrip(mnu);
-        mnuData.Enabled = true;
+        mnuPattern.Enabled = true;
     }
 
-    private void mnuData_ButtonClick(object sender, EventArgs e) {
-        if ("mnuDataSecure".Equals(mnuData.Tag)) {
-            mnuDataRepeat_Click(sender, EventArgs.Empty);
-        } else if ("mnuDataRepeat".Equals(mnuData.Tag)) {
-            mnuDataZero_Click(sender, EventArgs.Empty);
+    private void mnuPattern_ButtonClick(object sender, EventArgs e) {
+        if ("mnuPatternSecure".Equals(mnuPattern.Tag)) {
+            mnuPatternRandom_Click(sender, EventArgs.Empty);
+        } else if ("mnuPatternRepeat".Equals(mnuPattern.Tag)) {
+            mnuPatternZero_Click(sender, EventArgs.Empty);
+        } else if ("mnuPatternZero".Equals(mnuPattern.Tag)) {
+            mnuPatternSecure_Click(sender, EventArgs.Empty);
         } else {
-            mnuDataSecure_Click(sender, EventArgs.Empty);
+            mnuPatternRepeat_Click(sender, EventArgs.Empty);
         }
     }
 
-    private void mnuData_DropDownOpening(object sender, EventArgs e) {
-        mnuDataSecure.Checked = false;
-        mnuDataRepeat.Checked = false;
-        mnuDataZero.Checked = false;
-        if ("mnuDataRepeat".Equals(mnuData.Tag)) {
-            mnuDataRepeat.Checked = true;
-        } else if ("mnuDataZero".Equals(mnuData.Tag)) {
-            mnuDataZero.Checked = true;
+    private void mnuPattern_DropDownOpening(object sender, EventArgs e) {
+        mnuPatternSecure.Checked = false;
+        mnuPatternRandom.Checked = false;
+        mnuPatternRepeat.Checked = false;
+        mnuPatternZero.Checked = false;
+        if ("mnuPatternSecure".Equals(mnuPattern.Tag)) {
+            mnuPatternSecure.Checked = true;
+        } else if ("mnuPatternRepeat".Equals(mnuPattern.Tag)) {
+            mnuPatternRepeat.Checked = true;
+        } else if ("mnuPatternZero".Equals(mnuPattern.Tag)) {
+            mnuPatternZero.Checked = true;
         } else {
-            mnuDataSecure.Checked = true;
+            mnuPatternRandom.Checked = true;
         }
     }
 
-    private void mnuDataSecure_Click(object sender, EventArgs e) {
-        mnuData.Tag = "mnuDataSecure";
-        mnuData.Text = "Random";
+    private void mnuPatternSecure_Click(object sender, EventArgs e) {
+        mnuPattern.Tag = "mnuPatternSecure";
+        mnuPattern.Text = "Secure";
     }
 
-    private void mnuDataRepeat_Click(object sender, EventArgs e) {
-        mnuData.Tag = "mnuDataRepeat";
-        mnuData.Text = "Repeat";
+    private void mnuPatternRandom_Click(object sender, EventArgs e) {
+        mnuPattern.Tag = "mnuPatternRandom";
+        mnuPattern.Text = "Random";
     }
 
-    private void mnuDataZero_Click(object sender, EventArgs e) {
-        mnuData.Tag = "mnuDataZero";
-        mnuData.Text = "Zero";
+    private void mnuPatternRepeat_Click(object sender, EventArgs e) {
+        mnuPattern.Tag = "mnuPatternRepeat";
+        mnuPattern.Text = "Repeat";
+    }
+
+    private void mnuPatternZero_Click(object sender, EventArgs e) {
+        mnuPattern.Tag = "mnuPatternZero";
+        mnuPattern.Text = "Zero";
     }
 
     private void mnuOrder_ButtonClick(object sender, EventArgs e) {
@@ -360,18 +372,23 @@ internal partial class MainForm : Form {
 
         var blockCount = walker.BlockCount;
         for (var i = 0; i < blockCount; i++) {
+            // data setup
             if (walker.AllowWrite) {
                 var swRandom = Stopwatch.StartNew();
-                if (randomKind == RandomKind.Secure) {
+                if (randomKind is RandomKind.Secure or RandomKind.Random) {
                     Rnd.GetBytes(dataOut);
                 } else if ((randomKind == RandomKind.Repeat) && (i == 0)) {
-                    Rnd.GetBytes(dataOut);
+                    for (var j = 0; j < dataOut.Length; j += 2) {  // dataOut length has to be even
+                        dataOut[j] = 0x55;
+                        dataOut[j + 1] = 0xAA;
+                    }
                 }
                 swRandom.Stop();
             }
 
             var ok = true;
 
+            // first pass write
             if (walker.AllowWrite) {
                 var swWrite = Stopwatch.StartNew();
                 ok &= walker.Write(dataOut);
@@ -380,6 +397,7 @@ internal partial class MainForm : Form {
                 writeSpeed.Add(walker.OffsetLength / writeTime);
             }
 
+            // first pass read
             if (walker.AllowRead) {
                 var swRead = Stopwatch.StartNew();
                 ok &= walker.Read(dataIn);
@@ -388,24 +406,61 @@ internal partial class MainForm : Form {
                 readSpeed.Add(walker.OffsetLength / readTime);
             }
 
+            // first pass validate
             if (walker.AllowRead && walker.AllowWrite) {
                 ok &= DiskWalker.Validate(dataOut, dataIn);
             }
+
+            // second pass
+            if (randomKind is RandomKind.Secure) {
+                // reverse data "polarity"
+                for (var j = 0; j < dataOut.Length; j += 1) {
+                    dataOut[j] = (byte)~dataOut[j];
+                }
+
+                // second pass write
+                if (walker.AllowWrite) {
+                    var swWrite = Stopwatch.StartNew();
+                    ok &= walker.Write(dataOut);
+                    var writeTime = (double)swWrite.ElapsedMilliseconds / 1000;
+                    if (writeTime == 0) { writeTime = 0.000001; }
+                    writeSpeed.Add(walker.OffsetLength / writeTime);
+                }
+
+                // second pass read
+                if (walker.AllowRead) {
+                    var swRead = Stopwatch.StartNew();
+                    ok &= walker.Read(dataIn);
+                    var readTime = (double)swRead.ElapsedMilliseconds / 1000;
+                    if (readTime == 0) { readTime = 0.000001; }
+                    readSpeed.Add(walker.OffsetLength / readTime);
+                }
+
+                // second pass validate
+                if (walker.AllowRead && walker.AllowWrite) {
+                    ok &= DiskWalker.Validate(dataOut, dataIn);
+                }
+            }
+
+            // accounting
             if (ok) { okCount += 1; } else { nokCount += 1; }
             dfgMain.SetBlockState(walker.BlockIndex, ok);
 
+            // check for cancellation
             if (bwTest.CancellationPending) {
                 walker.Close();
                 e.Cancel = true;
                 return;  // done
             }
 
+            // progress update
             if (nextUpdate < swTotal.ElapsedMilliseconds) {
-                var progress = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount, walker.TotalSize,  okCount, nokCount, walker.MaxBlockSize, writeSpeed.Average, readSpeed.Average);
+                var progress = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount, walker.TotalSize, okCount, nokCount, walker.MaxBlockSize, writeSpeed.Average, readSpeed.Average);
                 bwTest.ReportProgress(0, progress);
                 nextUpdate = swTotal.ElapsedMilliseconds + 420;  // next update in 420ms
             }
 
+            // next block
             walker.Index += 1;
         }
 
@@ -480,7 +535,7 @@ internal partial class MainForm : Form {
         mnuDisks.Enabled = !testing;
         mnuExecute.Enabled = !testing;
         mnuOrder.Enabled = !testing;
-        mnuData.Enabled = !testing;
+        mnuPattern.Enabled = !testing;
         mnuRefresh.Enabled = !testing;
         mnuAppUpgrade.Enabled = !testing;
 

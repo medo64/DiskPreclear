@@ -148,20 +148,20 @@
   <data name="mnuApp_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\App_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="mnuData_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Data_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="mnuPattern_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Pattern_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="mnuData_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Data_24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="mnuPattern_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Pattern_24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="mnuData_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Data_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="mnuPattern_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Pattern_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="mnuData_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Data_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="mnuPattern_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Pattern_48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="mnuData_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Data_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="mnuPattern_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Pattern_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="mnuExecuteRO_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\ExecuteRO_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

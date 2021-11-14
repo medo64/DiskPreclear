@@ -163,9 +163,9 @@ namespace DiskPreclear.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap mnuData_16 {
+        internal static System.Drawing.Bitmap mnuPattern_16 {
             get {
-                object obj = ResourceManager.GetObject("mnuData_16", resourceCulture);
+                object obj = ResourceManager.GetObject("mnuPattern_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,9 +173,9 @@ namespace DiskPreclear.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap mnuData_24 {
+        internal static System.Drawing.Bitmap mnuPattern_24 {
             get {
-                object obj = ResourceManager.GetObject("mnuData_24", resourceCulture);
+                object obj = ResourceManager.GetObject("mnuPattern_24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -183,9 +183,9 @@ namespace DiskPreclear.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap mnuData_32 {
+        internal static System.Drawing.Bitmap mnuPattern_32 {
             get {
-                object obj = ResourceManager.GetObject("mnuData_32", resourceCulture);
+                object obj = ResourceManager.GetObject("mnuPattern_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,9 +193,9 @@ namespace DiskPreclear.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap mnuData_48 {
+        internal static System.Drawing.Bitmap mnuPattern_48 {
             get {
-                object obj = ResourceManager.GetObject("mnuData_48", resourceCulture);
+                object obj = ResourceManager.GetObject("mnuPattern_48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,9 +203,9 @@ namespace DiskPreclear.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap mnuData_64 {
+        internal static System.Drawing.Bitmap mnuPattern_64 {
             get {
-                object obj = ResourceManager.GetObject("mnuData_64", resourceCulture);
+                object obj = ResourceManager.GetObject("mnuPattern_64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
