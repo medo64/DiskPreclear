@@ -29,8 +29,10 @@ internal partial class MainForm : Form {
     private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
         bwUpgradeCheck.CancelAsync();
         if (bwTest.IsBusy) {
-            bwTest.CancelAsync();
-            e.Cancel = true;  // don't close the form if you had to cancel task
+            if (MsgBox.ShowQuestion(this, "Are you sure you want to cancel?") == DialogResult.Yes) {
+                bwTest.CancelAsync();
+            }
+            e.Cancel = true;  // don't close the form
         }
     }
 
@@ -157,9 +159,9 @@ internal partial class MainForm : Form {
                 diskData += "\n  " + path;
             }
 
-            if (Medo.Windows.Forms.MessageBox.ShowQuestion(this, "Are you sure you want to perform " + operation + " test?\n" + diskData, MessageBoxButtons.YesNo) == DialogResult.No) { return; }
-            if (hasVolumes && Medo.Windows.Forms.MessageBox.ShowWarning(this, "Selected disk has volumes present.\nAre you really sure you want to perform " + operation + " test?\nPlease note that test could fail if another process keeps disk open.\n" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
-            if (hasPaths && Medo.Windows.Forms.MessageBox.ShowError(this, "Selected disk is in use!\nAre you goddamn sure you want to perform " + operation + " test?\nPlease note that test could fail if another process keeps disk open.\n" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
+            if (MsgBox.ShowQuestion(this, "Are you sure you want to perform " + operation + " test?\n" + diskData, MessageBoxButtons.YesNo) == DialogResult.No) { return; }
+            if (hasVolumes && MsgBox.ShowWarning(this, "Selected disk has volumes present.\nAre you really sure you want to perform " + operation + " test?\nPlease note that test could fail if another process keeps disk open.\n" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
+            if (hasPaths && MsgBox.ShowError(this, "Selected disk is in use!\nAre you goddamn sure you want to perform " + operation + " test?\nPlease note that test could fail if another process keeps disk open.\n" + diskData, MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2) == DialogResult.No) { return; }
 
             var randomKind = RandomKind.Random;
             if ("mnuPatternZero".Equals(mnuPattern.Tag)) {
@@ -180,7 +182,7 @@ internal partial class MainForm : Form {
                 PrepareForTesting(walker);
                 bwTest.RunWorkerAsync(new InitObjectState(walker, randomKind));
             } catch (Exception ex) {
-                Medo.Windows.Forms.MessageBox.ShowError(this, $"Cannot open disk for {operation}.\n{ex.Message}");
+                MsgBox.ShowError(this, $"Cannot open disk for {operation}.\n{ex.Message}");
             }
         }
     }
@@ -487,18 +489,18 @@ internal partial class MainForm : Form {
     private void bwTest_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
         dfgMain.Invalidate();
         if (e.Cancelled) {
-            Medo.Windows.Forms.MessageBox.ShowWarning(this, "Operation cancelled.");
+            MsgBox.ShowWarning(this, "Operation cancelled.");
         } else if (e.Error != null) {
-            Medo.Windows.Forms.MessageBox.ShowError(this, e.Error.Message);
+            MsgBox.ShowError(this, e.Error.Message);
         } else {
             if (e.Result is ProgressObjectState state) {
                 var text = $"Verification completed in {state.TimeUsedAsString}.";
                 if (state.NokCount == 0) {
                     text += "\nNo errors found.";
-                    Medo.Windows.Forms.MessageBox.ShowInformation(this, text);
+                    MsgBox.ShowInformation(this, text);
                 } else {
                     text += $"\n{state.NokCount} " + ((state.NokCount != 1) ? "errors" : "error") + " found.";
-                    Medo.Windows.Forms.MessageBox.ShowError(this, text);
+                    MsgBox.ShowError(this, text);
                 }
             }
         }
