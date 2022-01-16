@@ -32,7 +32,8 @@ internal partial class DefragControl : Control {
         }
     }
 
-    private readonly Brush[] TrailBrushes = new Brush[101];
+    private readonly Brush[] TrailBrushes = new Brush[101];  // 0-100%
+    private readonly Brush TrailBrushLastUpdate = new SolidBrush(Color.FromArgb(0, SystemColors.Control.G, SystemColors.Control.B));
 
     private int ElementWidth;
     private int ElementHeight;
@@ -146,6 +147,7 @@ internal partial class DefragControl : Control {
                 foreach (var index in BlockTrail) {
                     var foldedIndex = index / ElementFoldCount;  // fold trail
                     if (foldedIndex == elementIndex) {
+                        if (i == 0) { return TrailBrushLastUpdate; }  // last updated element
                         var percent = i * 100 / BlockTrail.Count;
                         if (percent >= TrailBrushes.Length) { percent = TrailBrushes.Length - 1; }
                         return TrailBrushes[percent];
