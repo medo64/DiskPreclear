@@ -514,13 +514,12 @@ internal partial class MainForm : Form {
                 if (state.NokValidationCount > 0) {
                     text += $"\n{state.NokValidationCount} " + ((state.NokValidationCount != 1) ? "errors" : "error") + " found.";
                     if (state.NokAccessCount > 0) {
-                        text += $"\nAdditionally, {state.NokAccessCount} " + ((state.NokAccessCount != 1) ? "access errors" : "access error") + " found.";
-                        text += $"\nTry restarting computer and testing disk again as this could be either OS or controller error.";
+                        text += $"\nAdditionally, {state.NokAccessCount} " + ((state.NokAccessCount != 1) ? "access errors" : "access error") + " occurred.";
                     }
                     isOk = false;
                 } else if (state.NokAccessCount > 0) {
-                    text += $"\n{state.NokAccessCount} " + ((state.NokAccessCount != 1) ? "access errors" : "access error") + " found.";
-                    text += $"\nTry restarting computer and testing disk again as this could be either OS or controller error.";
+                    text += $"\n{state.NokAccessCount} " + ((state.NokAccessCount != 1) ? "access errors" : "access error") + " but no validation errors.";
+                    text += $"\n\nTry restarting computer and testing disk again as this could be either OS issue or controller error.";
                     isOk = false;
                 } else {  // no issues
                     text += "\nNo errors found.";
