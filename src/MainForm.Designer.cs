@@ -56,7 +56,8 @@ partial class MainForm
             this.staDisk = new System.Windows.Forms.ToolStripStatusLabel();
             this.staWriteSpeed = new System.Windows.Forms.ToolStripStatusLabel();
             this.staReadSpeed = new System.Windows.Forms.ToolStripStatusLabel();
-            this.staErrors = new System.Windows.Forms.ToolStripStatusLabel();
+            this.staValidationErrors = new System.Windows.Forms.ToolStripStatusLabel();
+            this.staAccessErrors = new System.Windows.Forms.ToolStripStatusLabel();
             this.staPercents = new System.Windows.Forms.ToolStripStatusLabel();
             this.staProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.staRemaining = new System.Windows.Forms.ToolStripStatusLabel();
@@ -286,7 +287,8 @@ partial class MainForm
             this.staDisk,
             this.staWriteSpeed,
             this.staReadSpeed,
-            this.staErrors,
+            this.staValidationErrors,
+            this.staAccessErrors,
             this.staPercents,
             this.staProgress,
             this.staRemaining,
@@ -323,15 +325,25 @@ partial class MainForm
             this.staReadSpeed.Text = "R:";
             this.staReadSpeed.Visible = false;
             // 
-            // staErrors
+            // staAccessErrors
             // 
-            this.staErrors.ForeColor = System.Drawing.Color.Red;
-            this.staErrors.Margin = new System.Windows.Forms.Padding(2, 4, 2, 2);
-            this.staErrors.Name = "staErrors";
-            this.staErrors.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.staErrors.Size = new System.Drawing.Size(47, 20);
-            this.staErrors.Text = "errors";
-            this.staErrors.Visible = false;
+            this.staAccessErrors.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.staAccessErrors.Margin = new System.Windows.Forms.Padding(2, 4, 2, 2);
+            this.staAccessErrors.Name = "staAccessErrors";
+            this.staAccessErrors.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.staAccessErrors.Size = new System.Drawing.Size(47, 20);
+            this.staAccessErrors.Text = "access errors";
+            this.staAccessErrors.Visible = false;
+            // 
+            // staValidationErrors
+            // 
+            this.staValidationErrors.ForeColor = System.Drawing.Color.Red;
+            this.staValidationErrors.Margin = new System.Windows.Forms.Padding(2, 4, 2, 2);
+            this.staValidationErrors.Name = "staValidationErrors";
+            this.staValidationErrors.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.staValidationErrors.Size = new System.Drawing.Size(47, 20);
+            this.staValidationErrors.Text = "errors";
+            this.staValidationErrors.Visible = false;
             // 
             // staPercents
             // 
@@ -428,7 +440,8 @@ partial class MainForm
     private System.Windows.Forms.ToolStripDropDownButton mnuApp;
     private System.Windows.Forms.ToolStripMenuItem mnuAppAbout;
     private Controls.DefragControl dfgMain;
-    private System.Windows.Forms.ToolStripStatusLabel staErrors;
+    private System.Windows.Forms.ToolStripStatusLabel staAccessErrors;
+    private System.Windows.Forms.ToolStripStatusLabel staValidationErrors;
     private System.Windows.Forms.ToolStripSplitButton mnuExecute;
     private System.Windows.Forms.ToolStripMenuItem mnuExecuteUseRW;
     private System.Windows.Forms.ToolStripMenuItem mnuExecuteUseRO;

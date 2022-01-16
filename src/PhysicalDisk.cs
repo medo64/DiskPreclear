@@ -167,8 +167,8 @@ internal sealed class PhysicalDisk : IDisposable {
     /// <param name="offset">Start offset.</param>
     /// <param name="length">Buffer lenght.</param>
     /// <returns></returns>
-    public bool Write(byte[] buffer, ulong offset, int length) {
-        if (DiskHandle == null) { return false; }
+    public IOStatus Write(byte[] buffer, ulong offset, int length) {
+        if (DiskHandle == null) { return IOStatus.InternalError; }
 
         var okMove = NativeMethods.SetFilePointerEx(DiskHandle,
                                                     offset,
@@ -176,7 +176,7 @@ internal sealed class PhysicalDisk : IDisposable {
                                                     NativeMethods.FILE_BEGIN);
         if (!okMove) {
             Trace.WriteLine("Win32 write error (move): " + Marshal.GetLastWin32Error());
-            return false;
+            return IOStatus.IOError; ;
         }
 
         var ok = NativeMethods.WriteFile(DiskHandle,
@@ -184,7 +184,12 @@ internal sealed class PhysicalDisk : IDisposable {
                                          length,
                                          out var _,
                                          IntPtr.Zero);
-        return ok;
+        if (ok) {
+            return IOStatus.Ok;
+        } else {
+            Trace.WriteLine("Win32 write error: " + Marshal.GetLastWin32Error());
+            return IOStatus.IOError;
+        }
     }
 
     /// <summary>
@@ -193,8 +198,8 @@ internal sealed class PhysicalDisk : IDisposable {
     /// <param name="buffer">Buffer.</param>
     /// <param name="offset">Start offset.</param>
     /// <param name="length">Buffer lenght.</param>
-    public bool Read(byte[] buffer, ulong offset, int length) {
-        if (DiskHandle == null) { return false; }
+    public IOStatus Read(byte[] buffer, ulong offset, int length) {
+        if (DiskHandle == null) { return IOStatus.InternalError; }
 
         var okMove = NativeMethods.SetFilePointerEx(DiskHandle,
                                                     offset,
@@ -202,7 +207,7 @@ internal sealed class PhysicalDisk : IDisposable {
                                                     NativeMethods.FILE_BEGIN);
         if (!okMove) {
             Trace.WriteLine("Win32 read error (move): " + Marshal.GetLastWin32Error());
-            return false;
+            return IOStatus.IOError;
         }
 
         var ok = NativeMethods.ReadFile(DiskHandle,
@@ -210,7 +215,12 @@ internal sealed class PhysicalDisk : IDisposable {
                                         length,
                                         out var _,
                                         IntPtr.Zero);
-        return ok;
+        if (ok) {
+            return IOStatus.Ok;
+        } else {
+            Trace.WriteLine("Win32 read error: " + Marshal.GetLastWin32Error());
+            return IOStatus.IOError;
+        }
     }
 
 

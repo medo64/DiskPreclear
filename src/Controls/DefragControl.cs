@@ -43,7 +43,7 @@ internal partial class DefragControl : Control {
     private int VerticalElements;
     private int OriginLeft;
     private int OriginTop;
-    private bool?[] BlockStates = Array.Empty<bool?>();  // null: not visited; true: ok, false: nok
+    private BlockState[] BlockStates = Array.Empty<BlockState>();
     private readonly LinkedList<int> BlockTrail = new();
     private bool NeedsUpdate = false;
     private readonly object SyncBlockStates = new();
@@ -132,9 +132,11 @@ internal partial class DefragControl : Control {
                 var index = startIndex + i;
                 if (index >= BlockStates.Length) { break; }
 
-                if (BlockStates[index] == false) {  // error takes precedence
+                if (BlockStates[index] == BlockState.ValidationError) {  // error takes precedence
                     return Brushes.Red;
-                } else if (BlockStates[index] == null) {  // if any block is not filled; you can proceed with percent highlight logic
+                } else if (BlockStates[index] == BlockState.AccessError) {  // error takes precedence
+                    return SystemBrushes.ControlDarkDark;
+                } else if (BlockStates[index] == BlockState.None) {  // if any block is not filled; you can proceed with percent highlight logic
                     allDone = false;
                     break;
                 }
@@ -167,16 +169,16 @@ internal partial class DefragControl : Control {
         set {
             lock (SyncBlockStates) {
                 _walker = value;
-                BlockStates = _walker != null ? new bool?[_walker.BlockCount] : Array.Empty<bool?>();
+                BlockStates = _walker != null ? new BlockState[_walker.BlockCount] : Array.Empty<BlockState>();
                 BlockTrail.Clear();
             }
             OnResize(EventArgs.Empty);  // force resize to recalculate
         }
     }
 
-    public void SetBlockState(int index, bool ok) {
+    public void SetBlockState(int index, BlockState newState) {
         lock (SyncBlockStates) {
-            BlockStates[index] = ok;
+            BlockStates[index] = newState;
 
             BlockTrail.AddFirst(index);
             while (BlockTrail.Count > 4200) { BlockTrail.RemoveLast(); }

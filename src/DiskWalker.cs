@@ -112,16 +112,16 @@ internal sealed class DiskWalker : IDisposable {
     /// Writes given data.
     /// </summary>
     /// <param name="data">Random data.</param>
-    public bool Write(byte[] data) {
-        if (!AllowWrite) { return false; }
+    public IOStatus Write(byte[] data) {
+        if (!AllowWrite) { return IOStatus.InternalError; }
         return Disk.Write(data, OffsetStart, OffsetLength);
     }
 
     /// <summary>
     /// Returns data that was read.
     /// </summary>
-    public bool Read(byte[] data) {
-        if (!AllowRead) { return false; }
+    public IOStatus Read(byte[] data) {
+        if (!AllowRead) { return IOStatus.InternalError; }
         return Disk.Read(data, OffsetStart, OffsetLength);
     }
 

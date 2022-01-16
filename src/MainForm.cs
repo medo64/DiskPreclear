@@ -366,7 +366,8 @@ internal partial class MainForm : Form {
         var nextUpdate = swTotal.ElapsedMilliseconds;
 
         var okCount = 0;
-        var nokCount = 0;
+        var nokAccessCount = 0;
+        var nokValidationCount = 0;
 
         var dataOut = new byte[walker.MaxBlockSize];
         var dataIn = new byte[walker.MaxBlockSize];
@@ -390,12 +391,13 @@ internal partial class MainForm : Form {
                 swRandom.Stop();
             }
 
-            var ok = true;
+            var okAccess = true;
+            var okValidate = true;
 
             // first pass write
             if (walker.AllowWrite) {
                 var swWrite = Stopwatch.StartNew();
-                ok &= walker.Write(dataOut);
+                okAccess &= (walker.Write(dataOut) == IOStatus.Ok);
                 var writeTime = (double)swWrite.ElapsedMilliseconds / 1000;
                 if (writeTime == 0) { writeTime = 0.000001; }
                 writeSpeed.Add(walker.OffsetLength / writeTime);
@@ -404,7 +406,7 @@ internal partial class MainForm : Form {
             // first pass read
             if (walker.AllowRead) {
                 var swRead = Stopwatch.StartNew();
-                ok &= walker.Read(dataIn);
+                okAccess &= (walker.Read(dataIn) == IOStatus.Ok);
                 var readTime = (double)swRead.ElapsedMilliseconds / 1000;
                 if (readTime == 0) { readTime = 0.000001; }
                 readSpeed.Add(walker.OffsetLength / readTime);
@@ -412,7 +414,7 @@ internal partial class MainForm : Form {
 
             // first pass validate
             if (walker.AllowRead && walker.AllowWrite) {
-                ok &= DiskWalker.Validate(dataOut, dataIn);
+                okValidate &= DiskWalker.Validate(dataOut, dataIn);
             }
 
             // second pass
@@ -425,7 +427,7 @@ internal partial class MainForm : Form {
                 // second pass write
                 if (walker.AllowWrite) {
                     var swWrite = Stopwatch.StartNew();
-                    ok &= walker.Write(dataOut);
+                    okAccess &= (walker.Write(dataOut) == IOStatus.Ok);
                     var writeTime = (double)swWrite.ElapsedMilliseconds / 1000;
                     if (writeTime == 0) { writeTime = 0.000001; }
                     writeSpeed.Add(walker.OffsetLength / writeTime);
@@ -434,7 +436,7 @@ internal partial class MainForm : Form {
                 // second pass read
                 if (walker.AllowRead) {
                     var swRead = Stopwatch.StartNew();
-                    ok &= walker.Read(dataIn);
+                    okAccess &= (walker.Read(dataIn) == IOStatus.Ok);
                     var readTime = (double)swRead.ElapsedMilliseconds / 1000;
                     if (readTime == 0) { readTime = 0.000001; }
                     readSpeed.Add(walker.OffsetLength / readTime);
@@ -442,13 +444,21 @@ internal partial class MainForm : Form {
 
                 // second pass validate
                 if (walker.AllowRead && walker.AllowWrite) {
-                    ok &= DiskWalker.Validate(dataOut, dataIn);
+                    okValidate &= DiskWalker.Validate(dataOut, dataIn);
                 }
             }
 
             // accounting
-            if (ok) { okCount += 1; } else { nokCount += 1; }
-            dfgMain.SetBlockState(walker.BlockIndex, ok);
+            if (okValidate) {
+                okCount += 1;
+                dfgMain.SetBlockState(walker.BlockIndex, BlockState.Validated);
+            } else if (!okAccess) {
+                nokAccessCount += 1;
+                dfgMain.SetBlockState(walker.BlockIndex, BlockState.AccessError);
+            } else {
+                nokValidationCount += 1;
+                dfgMain.SetBlockState(walker.BlockIndex, BlockState.ValidationError);
+            }
 
             // check for cancellation
             if (bwTest.CancellationPending) {
@@ -459,7 +469,7 @@ internal partial class MainForm : Form {
 
             // progress update
             if (nextUpdate < swTotal.ElapsedMilliseconds) {
-                var progress = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount, walker.TotalSize, okCount, nokCount, walker.MaxBlockSize, writeSpeed.Average, readSpeed.Average);
+                var progress = new ProgressObjectState(swTotal, walker.Index + 1, walker.BlockCount, walker.TotalSize, okCount, nokAccessCount, nokValidationCount, walker.MaxBlockSize, writeSpeed.Average, readSpeed.Average);
                 bwTest.ReportProgress(0, progress);
                 nextUpdate = swTotal.ElapsedMilliseconds + 420;  // next update in 420ms
             }
@@ -469,7 +479,7 @@ internal partial class MainForm : Form {
         }
 
         walker.Close();
-        var finalProgress = new ProgressObjectState(swTotal, walker.Index, walker.BlockCount, walker.TotalSize, okCount, nokCount, walker.MaxBlockSize, writeSpeed.Average, readSpeed.Average);
+        var finalProgress = new ProgressObjectState(swTotal, walker.Index, walker.BlockCount, walker.TotalSize, okCount, nokAccessCount, nokValidationCount, walker.MaxBlockSize, writeSpeed.Average, readSpeed.Average);
         bwTest.ReportProgress(100, finalProgress);
         e.Result = finalProgress;
     }
@@ -478,8 +488,11 @@ internal partial class MainForm : Form {
         if (e.UserState is ProgressObjectState state) {
             staWriteSpeed.Text = $"W: {state.WriteSpeed:#,##0} MB/s";
             staReadSpeed.Text = $"R: {state.ReadSpeed:#,##0} MB/s";
-            if (state.NokCount > 0) {
-                staErrors.Text = $"{state.NokCount:#,##0} " + ((state.NokCount != 1) ? "errors" : "error");
+            if (state.NokValidationCount > 0) {
+                staValidationErrors.Text = $"{state.NokValidationCount:#,##0} " + ((state.NokValidationCount != 1) ? "errors" : "error");
+            }
+            if (state.NokAccessCount > 0) {
+                staAccessErrors.Text = $"{state.NokAccessCount:#,##0} " + ((state.NokAccessCount != 1) ? "access errors" : "access error");
             }
             staPercents.Text = state.Percents.ToString("0.000", CultureInfo.CurrentCulture) + "%";
             staProgress.Value = state.Permilles;
@@ -496,12 +509,25 @@ internal partial class MainForm : Form {
             MsgBox.ShowError(this, e.Error.Message);
         } else {
             if (e.Result is ProgressObjectState state) {
+                var isOk = true;
                 var text = $"Verification completed in {state.TimeUsedAsString}.";
-                if (state.NokCount == 0) {
+                if (state.NokValidationCount > 0) {
+                    text += $"\n{state.NokValidationCount} " + ((state.NokValidationCount != 1) ? "errors" : "error") + " found.";
+                    if (state.NokAccessCount > 0) {
+                        text += $"\nAdditionally, {state.NokAccessCount} " + ((state.NokAccessCount != 1) ? "access errors" : "access error") + " found.";
+                        text += $"\nTry restarting computer and testing disk again as this could be either OS or controller error.";
+                    }
+                    isOk = false;
+                } else if (state.NokAccessCount > 0) {
+                    text += $"\n{state.NokAccessCount} " + ((state.NokAccessCount != 1) ? "access errors" : "access error") + " found.";
+                    text += $"\nTry restarting computer and testing disk again as this could be either OS or controller error.";
+                    isOk = false;
+                } else {  // no issues
                     text += "\nNo errors found.";
+                }
+                if (isOk) {
                     MsgBox.ShowInformation(this, text);
                 } else {
-                    text += $"\n{state.NokCount} " + ((state.NokCount != 1) ? "errors" : "error") + " found.";
                     MsgBox.ShowError(this, text);
                 }
             }
@@ -547,8 +573,10 @@ internal partial class MainForm : Form {
         staWriteSpeed.Text = "";
         staReadSpeed.Visible = testingRead;
         staReadSpeed.Text = "";
-        staErrors.Visible = testing;
-        staErrors.Text = "";
+        staAccessErrors.Visible = testing;
+        staAccessErrors.Text = "";
+        staValidationErrors.Visible = testing;
+        staValidationErrors.Text = "";
         staPercents.Visible = testing;
         staPercents.Text = "";
         staPercents.Height = staDisk.Height;

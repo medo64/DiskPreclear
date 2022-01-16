@@ -6,12 +6,13 @@ using System.Text;
 namespace DiskPreclear {
     internal sealed class ProgressObjectState {
 
-        public ProgressObjectState(Stopwatch operationStopwatch, int current, int maximum, long totalSize, int okCount, int nokCount, int blockSize, double writeBytesPerSecond, double readBytesPerSecond) {
+        public ProgressObjectState(Stopwatch operationStopwatch, int current, int maximum, long totalSize, int okCount, int nokAccessCount, int nokValidationCount, int blockSize, double writeBytesPerSecond, double readBytesPerSecond) {
             Current = current;
             Maximum = maximum;
             TotalSize = totalSize;
             OkCount = okCount;
-            NokCount = nokCount;
+            NokAccessCount = nokAccessCount;
+            NokValidationCount = nokValidationCount;
             BlockSize = blockSize;
 
             var timeTaken = operationStopwatch.Elapsed.TotalSeconds;
@@ -52,9 +53,14 @@ namespace DiskPreclear {
         public int OkCount { get; }
 
         /// <summary>
-        /// Gets number of blocks with errors.
+        /// Gets number of blocks with access errors.
         /// </summary>
-        public int NokCount { get; }
+        public int NokAccessCount { get; }
+
+        /// <summary>
+        /// Gets number of blocks with validation errors.
+        /// </summary>
+        public int NokValidationCount { get; }
 
         /// <summary>
         /// Gets block size in MB.
