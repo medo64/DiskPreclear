@@ -397,19 +397,25 @@ internal partial class MainForm : Form {
             // first pass write
             if (walker.AllowWrite) {
                 var swWrite = Stopwatch.StartNew();
-                okAccess &= (walker.Write(dataOut) == IOStatus.Ok);
-                var writeTime = (double)swWrite.ElapsedMilliseconds / 1000;
-                if (writeTime == 0) { writeTime = 0.000001; }
-                writeSpeed.Add(walker.OffsetLength / writeTime);
+                var status = walker.Write(dataOut);
+                okAccess &= (status == IOStatus.Ok);
+                if (status != IOStatus.InternalError) {
+                    var writeTime = (double)swWrite.ElapsedMilliseconds / 1000;
+                    if (writeTime == 0) { writeTime = 0.000001; }
+                    writeSpeed.Add(walker.OffsetLength / writeTime);
+                }
             }
 
             // first pass read
             if (walker.AllowRead) {
                 var swRead = Stopwatch.StartNew();
-                okAccess &= (walker.Read(dataIn) == IOStatus.Ok);
-                var readTime = (double)swRead.ElapsedMilliseconds / 1000;
-                if (readTime == 0) { readTime = 0.000001; }
-                readSpeed.Add(walker.OffsetLength / readTime);
+                var status = walker.Read(dataIn);
+                okAccess &= (status == IOStatus.Ok);
+                if (status != IOStatus.InternalError) {
+                    var readTime = (double)swRead.ElapsedMilliseconds / 1000;
+                    if (readTime == 0) { readTime = 0.000001; }
+                    readSpeed.Add(walker.OffsetLength / readTime);
+                }
             }
 
             // first pass validate
@@ -427,19 +433,25 @@ internal partial class MainForm : Form {
                 // second pass write
                 if (walker.AllowWrite) {
                     var swWrite = Stopwatch.StartNew();
-                    okAccess &= (walker.Write(dataOut) == IOStatus.Ok);
-                    var writeTime = (double)swWrite.ElapsedMilliseconds / 1000;
-                    if (writeTime == 0) { writeTime = 0.000001; }
-                    writeSpeed.Add(walker.OffsetLength / writeTime);
+                    var status = walker.Write(dataOut);
+                    okAccess &= (status == IOStatus.Ok);
+                    if (status != IOStatus.InternalError) {
+                        var writeTime = (double)swWrite.ElapsedMilliseconds / 1000;
+                        if (writeTime == 0) { writeTime = 0.000001; }
+                        writeSpeed.Add(walker.OffsetLength / writeTime);
+                    }
                 }
 
                 // second pass read
                 if (walker.AllowRead) {
                     var swRead = Stopwatch.StartNew();
-                    okAccess &= (walker.Read(dataIn) == IOStatus.Ok);
-                    var readTime = (double)swRead.ElapsedMilliseconds / 1000;
-                    if (readTime == 0) { readTime = 0.000001; }
-                    readSpeed.Add(walker.OffsetLength / readTime);
+                    var status = walker.Read(dataIn);
+                    okAccess &= (status == IOStatus.Ok);
+                    if (status != IOStatus.InternalError) {
+                        var readTime = (double)swRead.ElapsedMilliseconds / 1000;
+                        if (readTime == 0) { readTime = 0.000001; }
+                        readSpeed.Add(walker.OffsetLength / readTime);
+                    }
                 }
 
                 // second pass validate
