@@ -561,7 +561,13 @@ internal partial class MainForm : Form {
     }
 
     private static DiskWalker GetWalker(PhysicalDisk disk, bool randomAccess = false, bool allowRead = false, bool allowWrite = false) {
-        var blockSizeMB = disk.SizeInGB > 1000 ? 16 : disk.SizeInGB > 1000 ? 8 : 4;
+        var blockSizeMB = disk.SizeInGB switch {
+            > 10000 => 16,
+            > 1000 => 8,
+            > 100 => 4,
+            > 10 => 2,
+            _ => 1,
+        };
         return new DiskWalker(disk, blockSizeMB, randomAccess) {
             AllowRead = allowRead,
             AllowWrite = allowWrite
