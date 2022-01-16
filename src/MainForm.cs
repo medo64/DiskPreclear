@@ -29,8 +29,10 @@ internal partial class MainForm : Form {
     private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
         bwUpgradeCheck.CancelAsync();
         if (bwTest.IsBusy) {
-            if (MsgBox.ShowQuestion(this, "Are you sure you want to cancel?") == DialogResult.Yes) {
-                bwTest.CancelAsync();
+            if (!bwTest.CancellationPending) {
+                if (MsgBox.ShowQuestion(this, "Are you sure you want to cancel?") == DialogResult.Yes) {
+                    bwTest.CancelAsync();
+                }
             }
             e.Cancel = true;  // don't close the form
         }
