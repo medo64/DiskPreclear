@@ -327,7 +327,7 @@ partial class MainForm
             // 
             // staAccessErrors
             // 
-            this.staAccessErrors.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.staAccessErrors.ForeColor = System.Drawing.Color.DarkRed;
             this.staAccessErrors.Margin = new System.Windows.Forms.Padding(2, 4, 2, 2);
             this.staAccessErrors.Name = "staAccessErrors";
             this.staAccessErrors.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
